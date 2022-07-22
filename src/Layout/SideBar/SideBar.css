@@ -1,0 +1,22 @@
+.side-bar {
+  width: 20rem;
+  border-right: 0.1rem solid #e6e6e6;
+}
+.side-bar__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--gray);
+  border-bottom: 0.1rem solid #e6e6e6;
+  height: 3.6rem;
+  padding: 0.6rem;
+}
+.side-bar__head__title {
+  font-weight: 300;
+  padding-left: 0.5rem;
+  font-size: 1.2rem;
+}
+.side-bar__head__buttons {
+  display: flex;
+  gap: 0.5rem;
+}

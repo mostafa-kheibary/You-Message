@@ -1,0 +1,14 @@
+.input-bar {
+  padding: 1rem;
+  background-color: var(--gray);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: calc(100% - 20rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.input-bar__input {
+  width: 100%;
+}
