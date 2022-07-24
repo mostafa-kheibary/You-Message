@@ -5,6 +5,14 @@ const store = configureStore({
   reducer: {
     user: userReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['user/login'],
+        ignoredState: ['user'],
+        ignoredPaths: ['user.info'],
+      },
+    }),
   devTools: true,
 });
 export type RootState = ReturnType<typeof store.getState>;

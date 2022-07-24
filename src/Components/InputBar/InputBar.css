@@ -1,5 +1,5 @@
 .input-bar {
-  padding: 1rem;
+  padding: 0.4rem 1rem;
   background-color: var(--gray);
   position: fixed;
   bottom: 0;
@@ -8,7 +8,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  border-top: 0.1rem solid #e6e6e6;
 }
 .input-bar__input {
   width: 100%;
+  height: 3rem;
+  border-radius: 50rem !important;
+  background-color: white;
+}
+.input-bar__input:hover {
+  outline: none !important;
+  border: none !important;
+}
+.input-bar__send {
+  width: 4rem;
+  height: 4rem;
+}
+.input-bar__send > svg {
+  font-size: 2rem !important;
 }

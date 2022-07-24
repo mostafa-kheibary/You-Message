@@ -1,0 +1,34 @@
+.sign-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.sign-up__content {
+  text-align: center;
+  width: 20rem;
+  margin-top: -8rem;
+}
+.sign-up__title {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+.sign-up__logo-image {
+  width: 7rem;
+}
+.sign-up__inputs {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.sign-up__submit-button {
+  width: 10rem !important;
+  margin: 0.5rem auto !important;
+}
+.sign-up__link {
+  text-decoration: none;
+  color: black;
+  font-weight: 300;
+  font-size: 0.9rem;
+}

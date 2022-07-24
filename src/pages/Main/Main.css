@@ -1,0 +1,12 @@
+.chat-app {
+  display: flex;
+  height: 100vh;
+}
+@media screen and (max-width: 700px) {
+  .chat-app > .chat {
+    display: none;
+  }
+  .chat-app > .side-bar {
+    width: 100%;
+  }
+}

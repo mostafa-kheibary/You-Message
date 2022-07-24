@@ -3,9 +3,9 @@ import { FC } from 'react';
 import { Badge, Chip, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye';
+import { InputBar } from '../../Components';
 
 import './Chat.css';
-import InputBar from '../../Components/InputBar/InputBar';
 
 const Chat: FC = () => {
   return (

@@ -1,5 +1,7 @@
 import { User } from 'firebase/auth';
 
-type UserState = User | null;
+interface UserState {
+  info: User | null;
+}
 
 export type { UserState };

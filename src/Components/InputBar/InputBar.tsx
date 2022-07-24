@@ -7,9 +7,9 @@ import './InputBar.css';
 const InputBar: FC = () => {
   return (
     <div className='input-bar'>
-      <OutlinedInput className='input-bar__input' placeholder='Your message ...' />
+      <OutlinedInput size='medium' className='input-bar__input' placeholder='Your message ...' />
       <div className='input-bar__buttons'>
-        <IconButton color='primary'>
+        <IconButton size='large' className='input-bar__send' color='primary'>
           <SendIcon />
         </IconButton>
       </div>
