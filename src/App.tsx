@@ -17,9 +17,10 @@ const App: FC = () => {
     });
     return () => sub();
   }, []);
+
   return (
     <BrowserRouter>
-      <Routes>
+      <Routes location={window.location} key={window.location.pathname}>
         <Route element={<PriveteRoute />}>
           <Route path='/' element={<Main />} />
         </Route>

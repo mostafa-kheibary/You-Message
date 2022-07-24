@@ -1,0 +1,19 @@
+.loading-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.loading-page__content {
+  width: 10rem;
+}
+.loading-page__icon {
+  width: 7rem;
+  margin-bottom: 1rem;
+}
+.loading-page__progress {
+  height: 0.4rem !important;
+  border-radius: 50rem !important;
+  /* box-shadow: 0 ; */
+}
