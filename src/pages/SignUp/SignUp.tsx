@@ -1,28 +1,52 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import iconImage from '../../assets/image/icon.png';
 import useForm from '../../hook/useForm';
-import { useDispatch } from 'react-redux';
-import './SignUp.css';
-import { login } from '../../store/reducers/user/userSlice';
-import { doc, setDoc } from 'firebase/firestore';
+import { ref, set } from 'firebase/database';
 import { db } from '../../config/firebase.config';
+import { IUser } from '../../types/stateTypes';
+import './SignUp.css';
+import useToast from '../../hook/useToast';
+import { Loader } from '../../Layout';
+
+const avatarImage =
+  'https://s3-us-west-1.amazonaws.com/eegprd-files-uploaded-by-attendees-and-admins/panwsymphony/src/a0L4T000002PFGCUA4-Headshot';
 
 const SignUp: FC = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
+  const toast = useToast();
 
   const handleSignUp = async () => {
+    setLoading(true);
     const auth = getAuth();
-    const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password);
-    await setDoc(doc(db, 'users', ''), {
-      userName: user.displayName,
-      email: user.email,
-    });
-    dispatch(login(user));
-    navigate('/');
+    try {
+      const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const userSchema: IUser = {
+        uid: user.uid,
+        userName: values.userName,
+        bio: '',
+        email: values.email,
+        lastSeen: new Date().getTime().toString(),
+        contact: [],
+        isTyping: false,
+        isOnline: true,
+        avatar: avatarImage,
+      };
+      set(ref(db, `users/${user.uid}`), userSchema);
+      navigate('/');
+      setLoading(false);
+    } catch (e: any) {
+      const error = e.message as string;
+      setLoading(false);
+      if (error.includes('email-already-in-use')) {
+        toast('email already use by another person', 'error');
+      } else if (error.includes('weak-password')) {
+        toast('password must be 8 or more', 'error');
+      }
+    }
   };
 
   const { handleChange, handleSubmit, values } = useForm(handleSignUp, {
@@ -33,6 +57,7 @@ const SignUp: FC = () => {
 
   return (
     <div className='sign-up'>
+      <Loader isLoading={loading} />
       <div className='sign-up__content'>
         <div className='sign-up__logo'>
           <img className='sign-up__logo-image' src={iconImage} alt='logo' />

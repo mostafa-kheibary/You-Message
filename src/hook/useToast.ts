@@ -13,7 +13,7 @@ const useToast = () => {
     }
     setTimeout(() => {
       dispatch(setVisibility(false));
-    }, 1000);
+    }, 2000);
   };
   return toast;
 };

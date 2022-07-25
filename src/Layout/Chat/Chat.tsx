@@ -13,7 +13,7 @@ const Chat: FC = () => {
       <div className='chat__head'>
         <div className='chat__head__user-info'>
           <Badge variant='dot' color='success'>
-            <h4 className='chat__head__user-name'>{info?.displayName}</h4>
+            <h4 className='chat__head__user-name'>{info?.userName}</h4>
           </Badge>
           <p className='chat__head__user-status'>Last seen on Sat 8</p>
         </div>

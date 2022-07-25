@@ -1,11 +1,20 @@
-import { IconButton } from '@mui/material';
+import { Button, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 
 import { FC } from 'react';
 import './SideBar.css';
+import { getAuth, signOut } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/reducers/user/userSlice';
 
 const SideBar: FC = () => {
+  const auth = getAuth();
+  const dispatch = useDispatch();
+  const handleSignout = async () => {
+    await signOut(auth);
+    dispatch(logout);
+  };
   return (
     <aside className='side-bar'>
       <div className='side-bar__head'>
@@ -19,6 +28,9 @@ const SideBar: FC = () => {
           </IconButton>
         </div>
       </div>
+      <Button onClick={handleSignout} color='error'>
+        sign out
+      </Button>
     </aside>
   );
 };

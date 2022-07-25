@@ -1,22 +1,35 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { Button, TextField } from '@mui/material';
+import { Backdrop, Button, CircularProgress, TextField } from '@mui/material';
 import useForm from '../../hook/useForm';
 import iconImage from '../../assets/image/icon.png';
 import './SignIn.css';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/reducers/user/userSlice';
+import { onValue, ref } from 'firebase/database';
+import { db } from '../../config/firebase.config';
+import { Loader } from '../../Layout';
 
 const SignIn: FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignIn = async () => {
+    setLoading(true);
     const auth = getAuth();
     const userCridintional = await signInWithEmailAndPassword(auth, values.email, values.password);
-    dispatch(login(userCridintional.user));
-    navigate('/');
+    const userRef = ref(db, `users/${userCridintional.user.uid}`);
+    return onValue(
+      userRef,
+      (snap) => {
+        dispatch(login(snap.val()));
+        navigate('/');
+        setLoading(false);
+      },
+      { onlyOnce: true }
+    );
   };
 
   const { handleChange, handleSubmit, values } = useForm(handleSignIn, {
@@ -25,6 +38,7 @@ const SignIn: FC = () => {
   });
   return (
     <div className='sign-in'>
+      <Loader isLoading={loading} />
       <div className='sign-in__content'>
         <div className='sign-in__logo'>
           <img className='sign-in__logo-image' src={iconImage} alt='logo' />
