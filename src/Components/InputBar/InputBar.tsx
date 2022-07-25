@@ -1,5 +1,4 @@
 import { FC } from 'react';
-
 import { IconButton, OutlinedInput } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import './InputBar.css';

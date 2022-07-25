@@ -1,0 +1,27 @@
+.toast-bar > div {
+  background-color: white;
+  color: black;
+}
+.toast-bar {
+  position: relative;
+}
+.toast-bar.error > div::after {
+  content: '';
+  position: absolute;
+  left: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 70%;
+  width: 0.13rem;
+  background-color: red;
+}
+.toast-bar.success > div::after {
+  content: '';
+  position: absolute;
+  left: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 70%;
+  width: 0.13rem;
+  background-color: #2e7d32;
+}

@@ -1,10 +1,11 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { FC, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { login } from './store/reducers/user/userSlice';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { login } from './store/reducers/user/userSlice';
 import { SignIn, Main, SignUp } from './pages';
 import PriveteRoute from './routes/PriveteRoute';
+import { Toast } from './Components';
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const App: FC = () => {
 
   return (
     <BrowserRouter>
+      <Toast />
       <Routes location={window.location} key={window.location.pathname}>
         <Route element={<PriveteRoute />}>
           <Route path='/' element={<Main />} />

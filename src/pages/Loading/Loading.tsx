@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import {  motion } from 'framer-motion';
 import { LinearProgress } from '@mui/material';
 import iconImage from '../../assets/image/icon.png';
 import './Loading.css';

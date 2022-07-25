@@ -17,10 +17,6 @@
   border-radius: 50rem !important;
   background-color: white;
 }
-.input-bar__input:hover {
-  outline: none !important;
-  border: none !important;
-}
 .input-bar__send {
   width: 4rem;
   height: 4rem;

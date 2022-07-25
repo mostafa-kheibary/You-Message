@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import toastReducer from './reducers/toast/toastSlice';
 import userReducer from './reducers/user/userSlice';
-
 const store = configureStore({
   reducer: {
     user: userReducer,
+    toast: toastReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

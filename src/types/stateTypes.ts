@@ -1,7 +1,11 @@
 import { User } from 'firebase/auth';
 
-interface UserState {
+interface IUserState {
   info: User | null;
 }
-
-export type { UserState };
+interface IToastState {
+  message: string;
+  status: 'error' | 'success';
+  visibility: boolean;
+}
+export type { IUserState, IToastState };

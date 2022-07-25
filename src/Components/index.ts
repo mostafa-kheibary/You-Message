@@ -1,2 +1,3 @@
 import InputBar from './InputBar/InputBar';
-export { InputBar };
+import Toast from './Toast/Toast';
+export { InputBar, Toast };

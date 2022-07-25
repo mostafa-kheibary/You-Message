@@ -7,6 +7,8 @@ import useForm from '../../hook/useForm';
 import { useDispatch } from 'react-redux';
 import './SignUp.css';
 import { login } from '../../store/reducers/user/userSlice';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../config/firebase.config';
 
 const SignUp: FC = () => {
   const dispatch = useDispatch();
@@ -14,8 +16,12 @@ const SignUp: FC = () => {
 
   const handleSignUp = async () => {
     const auth = getAuth();
-    const userCriditional = await createUserWithEmailAndPassword(auth, values.email, values.password);
-    dispatch(login(userCriditional.user));
+    const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password);
+    await setDoc(doc(db, 'users', ''), {
+      userName: user.displayName,
+      email: user.email,
+    });
+    dispatch(login(user));
     navigate('/');
   };
 
