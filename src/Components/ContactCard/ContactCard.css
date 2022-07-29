@@ -1,0 +1,33 @@
+.contact-card {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 5rem;
+  position: relative;
+  border-bottom: 0.02rem solid #eeeeee;
+}
+.contact-card:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+.contact-card__content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+.contact-card__info {
+  width: 100%;
+}
+.contact-card__user-name {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.contact-card__last-seen {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  font-size: 0.6rem;
+  transform: translateY(-50%);
+}

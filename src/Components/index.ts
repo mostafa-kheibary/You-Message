@@ -1,3 +1,4 @@
 import InputBar from './InputBar/InputBar';
 import Toast from './Toast/Toast';
-export { InputBar, Toast };
+import ContactCard from './ContactCard/ContactCard';
+export { InputBar, Toast, ContactCard };

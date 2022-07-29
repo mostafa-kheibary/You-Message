@@ -1,0 +1,17 @@
+.message-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.message-wrapper__message {
+  background-color: rgb(193, 226, 255);
+  width: fit-content;
+  padding: 1rem;
+}
+.message-wrapper__message.owner {
+  margin-left: auto;
+}
+.message-wrapper__message.reciver {
+  margin-right: auto;
+  background-color: aliceblue;
+}

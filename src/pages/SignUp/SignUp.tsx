@@ -4,15 +4,13 @@ import { Button, TextField } from '@mui/material';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import iconImage from '../../assets/image/icon.png';
 import useForm from '../../hook/useForm';
-import { ref, set } from 'firebase/database';
+import { serverTimestamp, set } from 'firebase/database';
 import { db } from '../../config/firebase.config';
 import { IUser } from '../../types/stateTypes';
-import './SignUp.css';
 import useToast from '../../hook/useToast';
 import { Loader } from '../../Layout';
-
-const avatarImage =
-  'https://s3-us-west-1.amazonaws.com/eegprd-files-uploaded-by-attendees-and-admins/panwsymphony/src/a0L4T000002PFGCUA4-Headshot';
+import './SignUp.css';
+import { setDoc, doc } from 'firebase/firestore';
 
 const SignUp: FC = () => {
   const navigate = useNavigate();
@@ -29,13 +27,12 @@ const SignUp: FC = () => {
         userName: values.userName,
         bio: '',
         email: values.email,
-        lastSeen: new Date().getTime().toString(),
-        contact: [],
+        lastSeen: serverTimestamp(),
         isTyping: false,
         isOnline: true,
-        avatar: avatarImage,
+        avatar: '',
       };
-      set(ref(db, `users/${user.uid}`), userSchema);
+      await setDoc(doc(db, 'users', user.uid), userSchema);
       navigate('/');
       setLoading(false);
     } catch (e: any) {

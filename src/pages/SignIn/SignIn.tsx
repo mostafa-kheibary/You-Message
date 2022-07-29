@@ -1,41 +1,36 @@
 import { FC, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import { Backdrop, Button, CircularProgress, TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import useForm from '../../hook/useForm';
 import iconImage from '../../assets/image/icon.png';
-import './SignIn.css';
 import { useDispatch } from 'react-redux';
 import { login } from '../../store/reducers/user/userSlice';
-import { onValue, ref } from 'firebase/database';
 import { db } from '../../config/firebase.config';
 import { Loader } from '../../Layout';
+import { doc, getDoc } from 'firebase/firestore';
+import { IUser } from '../../types/stateTypes';
+import './SignIn.css';
 
 const SignIn: FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSignIn = async () => {
     setLoading(true);
     const auth = getAuth();
-    const userCridintional = await signInWithEmailAndPassword(auth, values.email, values.password);
-    const userRef = ref(db, `users/${userCridintional.user.uid}`);
-    return onValue(
-      userRef,
-      (snap) => {
-        dispatch(login(snap.val()));
-        navigate('/');
-        setLoading(false);
-      },
-      { onlyOnce: true }
-    );
+    const userCriditila = await signInWithEmailAndPassword(auth, values.email, values.password);
+    const userData = await getDoc(doc(db, 'users', userCriditila.user.uid));
+    dispatch(login(userData.data() as IUser));
+    navigate('/');
   };
 
   const { handleChange, handleSubmit, values } = useForm(handleSignIn, {
     email: '',
     password: '',
   });
+
   return (
     <div className='sign-in'>
       <Loader isLoading={loading} />

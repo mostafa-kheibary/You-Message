@@ -7,20 +7,22 @@ import { SignIn, Main, SignUp } from './pages';
 import { Toast } from './Components';
 import PriveteRoute from './routes/PriveteRoute';
 import useToast from './hook/useToast';
-import { onValue, ref } from 'firebase/database';
 import { db } from './config/firebase.config';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { IUser } from './types/stateTypes';
 
 const App: FC = () => {
   const dispatch = useDispatch();
   const toast = useToast();
+
   useEffect(() => {
+    let subscribe: () => void;
+    // get user if befor login
     const auth = getAuth();
-    const sub = onAuthStateChanged(auth, (user) => {
+    subscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        const userRef = ref(db, `users/${user.uid}`);
-        onValue(userRef, (snapShot) => {
-          const userData = snapShot.val();
-          dispatch(login(userData));
+        onSnapshot(doc(db, 'users', user.uid), (snapShot) => {
+          dispatch(login(snapShot.data() as IUser));
         });
       } else {
         dispatch(logout());
@@ -29,7 +31,9 @@ const App: FC = () => {
     // online and ofline toast
     window.addEventListener('offline', () => toast('No internet! you are offline', 'error'));
     window.addEventListener('online', () => toast('Internet is back! you are online', 'success'));
-    return () => sub();
+    // disable default context menu
+    window.addEventListener('contextmenu', (e) => e.preventDefault());
+    return () => subscribe();
   }, []);
 
   return (
