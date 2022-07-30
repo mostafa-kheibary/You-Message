@@ -42,23 +42,7 @@ const SideBar: FC = () => {
     if (!info?.uid) {
       return;
     }
-    const userRef = doc(db, 'users', info.uid);
-    const messagesQuery = query(collection(db, 'messages'), where('from', '==', userRef));
-    onSnapshot(messagesQuery, (snapShot) => {
-      snapShot.docChanges().forEach((itemSnap) => {
-        switch (itemSnap.type) {
-          case 'added':
-            dispatch(addMessages(itemSnap.doc.data() as IMessage));
-            break;
-          case 'modified':
-            dispatch(editMessage({ id: itemSnap.doc.id, message: itemSnap.doc.data() }));
-            break;
-          case 'removed':
-            dispatch(deleteMessage(itemSnap.doc.id));
-            break;
-        }
-      });
-    });
+  
   }, []);
 
   return (
