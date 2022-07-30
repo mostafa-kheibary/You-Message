@@ -1,11 +1,11 @@
-import { DocumentReference } from 'firebase/firestore';
+import { DocumentReference, Timestamp } from 'firebase/firestore';
 
 interface IUser {
   uid: string;
   userName: string;
   bio: string;
   email: string;
-  lastSeen: any;
+  lastSeen: Timestamp;
   isTyping: boolean;
   isOnline: boolean;
   avatar: string;
@@ -19,7 +19,7 @@ interface IToastState {
   status: 'error' | 'success';
   visibility: boolean;
 }
-interface IMessageChats {
+interface IMessageChat {
   owner: string;
   text: string;
 }
@@ -27,10 +27,13 @@ interface IMessage {
   id: string;
   from: DocumentReference;
   to: DocumentReference;
-  messages: IMessageChats[];
+  messages: IMessageChat[];
 }
 interface IMessageState {
   messages: IMessage[];
-  currentChat: IMessage | null;
+  currentChat: {
+    to: IUser | null;
+    chats: IMessageChat[];
+  };
 }
-export type { IUserState, IToastState, IUser, IMessageState, IMessage, IMessageChats };
+export type { IUserState, IToastState, IUser, IMessageState, IMessage, IMessageChat };

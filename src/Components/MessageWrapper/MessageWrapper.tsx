@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import { selectUser } from '../../store/reducers/user/userSlice';
-import { IMessage, IMessageChats } from '../../types/stateTypes';
 import classNames from '../../utils/classNames';
 import './MessageWrapper.css';
 
@@ -12,8 +11,11 @@ const MessageWrapper: FC = () => {
 
   return (
     <div className='message-wrapper'>
-      {currentChat?.messages.map((message) => (
-        <div className={classNames('message-wrapper__message', message.owner === info!.uid ? 'owner' : 'reciver')}>
+      {currentChat?.chats.map((message, i) => (
+        <div
+          key={i}
+          className={classNames('message-wrapper__message', message.owner === info!.uid ? 'owner' : 'reciver')}
+        >
           {message.text}
         </div>
       ))}

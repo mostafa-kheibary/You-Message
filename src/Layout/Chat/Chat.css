@@ -24,3 +24,12 @@
   font-weight: 300;
   margin-top: -0.4rem;
 }
+.chat__start-chat {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+}
+.chat__start-chat__title {
+  font-size: 1rem;
+  font-weight: 400;
+}

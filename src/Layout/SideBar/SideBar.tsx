@@ -7,7 +7,7 @@ import { Button, IconButton } from '@mui/material';
 import { logout, selectUser } from '../../store/reducers/user/userSlice';
 import { db } from '../../config/firebase.config';
 import { ContactCard } from '../../Components';
-import { collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, onSnapshot, query, setDoc, where } from 'firebase/firestore';
 import useToast from '../../hook/useToast';
 import { addMessages, deleteMessage, editMessage, selectMessage } from '../../store/reducers/message/messageSlice';
 import { IMessage } from '../../types/stateTypes';

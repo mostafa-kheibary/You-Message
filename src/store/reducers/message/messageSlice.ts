@@ -1,10 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../..';
-import { IMessage, IMessageState, IUser } from '../../../types/stateTypes';
+import { IMessage, IMessageChat, IMessageState, IUser } from '../../../types/stateTypes';
 
 const initialState: IMessageState = {
   messages: [],
-  currentChat: null,
+  currentChat: {
+    to: null,
+    chats: [],
+  },
 };
 
 const messageSlice = createSlice({
@@ -29,13 +32,16 @@ const messageSlice = createSlice({
         state.messages.splice(index, 1);
       }
     },
-    setCurrentChat: (state: IMessageState, action: PayloadAction<IMessage>) => {
-      state.currentChat = action.payload;
+    setCurrentChat: (state: IMessageState, action: PayloadAction<IMessageChat[]>) => {
+      state.currentChat.chats = action.payload;
+    },
+    setCurrentChatTo: (state: IMessageState, action: PayloadAction<IUser>) => {
+      state.currentChat.to = action.payload;
     },
   },
 });
 
-export const { addMessages, deleteMessage, editMessage, setCurrentChat } = messageSlice.actions;
+export const { addMessages, deleteMessage, editMessage, setCurrentChat,setCurrentChatTo } = messageSlice.actions;
 export default messageSlice.reducer;
 export const selectMessage = (state: RootState) => state.message.messages;
 export const selectCurrentChat = (state: RootState) => state.message.currentChat;

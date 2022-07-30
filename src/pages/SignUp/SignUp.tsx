@@ -10,7 +10,7 @@ import { IUser } from '../../types/stateTypes';
 import useToast from '../../hook/useToast';
 import { Loader } from '../../Layout';
 import './SignUp.css';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, Timestamp } from 'firebase/firestore';
 
 const SignUp: FC = () => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const SignUp: FC = () => {
         userName: values.userName,
         bio: '',
         email: values.email,
-        lastSeen: serverTimestamp(),
+        lastSeen: Timestamp.now(),
         isTyping: false,
         isOnline: true,
         avatar: '',

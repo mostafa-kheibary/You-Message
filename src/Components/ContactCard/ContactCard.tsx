@@ -2,7 +2,7 @@ import { Avatar } from '@mui/material';
 import { onSnapshot } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setCurrentChat } from '../../store/reducers/message/messageSlice';
+import { setCurrentChat, setCurrentChatTo } from '../../store/reducers/message/messageSlice';
 import { IMessage, IUser } from '../../types/stateTypes';
 import './ContactCard.css';
 
@@ -23,7 +23,8 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
     if (!toUser) {
       return;
     }
-    dispatch(setCurrentChat(messageData as IMessage));
+    dispatch(setCurrentChatTo(toUser));
+    dispatch(setCurrentChat(messageData.messages));
   };
 
   if (!toUser) {

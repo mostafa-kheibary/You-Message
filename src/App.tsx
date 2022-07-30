@@ -8,14 +8,17 @@ import { Toast } from './Components';
 import PriveteRoute from './routes/PriveteRoute';
 import useToast from './hook/useToast';
 import { db } from './config/firebase.config';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { IUser } from './types/stateTypes';
+import useInit from './hook/useInit';
 
 const App: FC = () => {
   const dispatch = useDispatch();
   const toast = useToast();
+  const init = useInit();
 
   useEffect(() => {
+    init();
     let subscribe: () => void;
     // get user if befor login
     const auth = getAuth();
@@ -39,7 +42,7 @@ const App: FC = () => {
   return (
     <BrowserRouter>
       <Toast />
-      <Routes location={window.location} key={window.location.pathname}>
+      <Routes>
         <Route element={<PriveteRoute />}>
           <Route path='/' element={<Main />} />
         </Route>
