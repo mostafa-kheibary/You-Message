@@ -31,8 +31,7 @@ const SideBar: FC = () => {
     const docId: string = uuidv4();
     await setDoc(doc(db, 'messages', docId), {
       id: docId,
-      from: doc(db, 'users', info!.uid),
-      to: doc(db, 'users', userData.docs[0].id),
+      owners: [doc(db, 'users', info!.uid), doc(db, 'users', userData.docs[0].id)],
       messages: [],
     });
   };
@@ -40,7 +39,7 @@ const SideBar: FC = () => {
   return (
     <aside className='side-bar'>
       <div className='side-bar__head'>
-        <h2 className='side-bar__head__title'>Message</h2>
+        <h2 className='side-bar__head__title'>{info?.userName}</h2>
         <div className='side-bar__head__buttons'>
           <IconButton color='secondary'>
             <MoreVertOutlinedIcon />

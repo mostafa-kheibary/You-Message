@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { collection, doc, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, doc, FieldPath, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase.config';
 import { addMessages, deleteMessage, editMessage } from '../store/reducers/message/messageSlice';
 import { IMessage, IUser } from '../types/stateTypes';
 import { login, logout } from '../store/reducers/user/userSlice';
 import { useDispatch } from 'react-redux';
 import useToast from './useToast';
+import { get } from 'http';
 
 const useInit = () => {
   const auth = getAuth();
@@ -35,7 +36,7 @@ const useInit = () => {
       return;
     }
     const userRef = doc(db, 'users', userId);
-    const messagesQuery = query(collection(db, 'messages'), where('from', '==', userRef));
+    const messagesQuery = query(collection(db, 'messages'), where('owners', 'array-contains', userRef));
     onSnapshot(messagesQuery, (snapShot) => {
       snapShot.docChanges().forEach((itemSnap) => {
         switch (itemSnap.type) {

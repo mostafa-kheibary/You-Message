@@ -1,4 +1,5 @@
 import { Avatar, Skeleton } from '@mui/material';
+import { getAuth } from 'firebase/auth';
 import { onSnapshot, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,15 +12,25 @@ interface IProps {
   messageData: IMessage;
 }
 const ContactCard: FC<IProps> = ({ messageData }) => {
+  const auth = getAuth();
   const [toUser, setToUser] = useState<IUser | null>(null);
   const { to: selectedUser } = useSelector(selectCurrentChat);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    onSnapshot(messageData.to, (snapShot) => {
-      setToUser(snapShot.data() as IUser);
-    });
+    if (!auth.currentUser) return;
+
+    if (messageData.owners[0].id === auth.currentUser.uid) {
+      onSnapshot(messageData.owners[1], (snapShot) => {
+        setToUser(snapShot.data() as IUser);
+      });
+    } else {
+      onSnapshot(messageData.owners[0], (snapShot) => {
+        setToUser(snapShot.data() as IUser);
+      });
+    }
   }, []);
+
   useEffect(() => {
     handleOpenChat();
   }, [messageData]);

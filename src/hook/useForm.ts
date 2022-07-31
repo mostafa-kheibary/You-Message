@@ -9,7 +9,7 @@ const useForm = (submitFunction: () => void, defualtValues = {}) => {
     e.preventDefault();
     submitFunction();
   };
-  return { handleChange, handleSubmit, values };
+  return { handleChange, handleSubmit, setValues, values };
 };
 
 export default useForm;

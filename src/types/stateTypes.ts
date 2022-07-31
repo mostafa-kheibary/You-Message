@@ -25,8 +25,7 @@ interface IMessageChat {
 }
 interface IMessage {
   id: string;
-  from: DocumentReference;
-  to: DocumentReference;
+  owners: DocumentReference[];
   messages: IMessageChat[];
 }
 interface IMessageState {
