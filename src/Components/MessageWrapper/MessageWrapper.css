@@ -4,14 +4,43 @@
   padding: 1rem;
 }
 .message-wrapper__message {
-  background-color: rgb(193, 226, 255);
+  border-radius: 100rem;
   width: fit-content;
-  padding: 1rem;
+  padding: 0.8rem;
 }
 .message-wrapper__message.owner {
+  position: relative;
+  background-color: var(--primary-color);
+  color: white;
   margin-left: auto;
+  text-align: right;
+}
+.message-wrapper__message.owner::after {
+  content: '';
+  position: absolute;
+  bottom: 0.3rem;
+  right: -1rem;
+  width: 1rem;
+  height: 1rem;
+  border-left: 0.5rem solid var(--primary-color);
+  border-radius: 50%;
+  transform: rotate(-20deg);
 }
 .message-wrapper__message.reciver {
+  position: relative;
   margin-right: auto;
-  background-color: aliceblue;
+  text-align: left;
+  color: black;
+  background-color: #e7e6ec;
+}
+.message-wrapper__message.reciver::after {
+  content: '';
+  position: absolute;
+  bottom: 0.3rem;
+  left: -1rem;
+  width: 1rem;
+  height: 1rem;
+  border-right: 0.5rem solid #e7e6ec;
+  border-radius: 50%;
+  transform: rotate(20deg);
 }

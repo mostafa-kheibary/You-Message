@@ -38,13 +38,6 @@ const SideBar: FC = () => {
     });
   };
 
-  useEffect(() => {
-    if (!info?.uid) {
-      return;
-    }
-  
-  }, []);
-
   return (
     <aside className='side-bar'>
       <div className='side-bar__head'>
