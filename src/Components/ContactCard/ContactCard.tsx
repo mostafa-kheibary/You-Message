@@ -20,6 +20,9 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
       setToUser(snapShot.data() as IUser);
     });
   }, []);
+  useEffect(() => {
+    handleOpenChat();
+  }, [messageData]);
 
   const handleOpenChat = () => {
     if (!toUser) {

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import { selectUser } from '../../store/reducers/user/userSlice';

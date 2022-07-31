@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
@@ -7,10 +7,9 @@ import { Button, IconButton } from '@mui/material';
 import { logout, selectUser } from '../../store/reducers/user/userSlice';
 import { db } from '../../config/firebase.config';
 import { ContactCard } from '../../Components';
-import { collection, doc, getDocs, onSnapshot, query, setDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import useToast from '../../hook/useToast';
-import { addMessages, deleteMessage, editMessage, selectMessage } from '../../store/reducers/message/messageSlice';
-import { IMessage } from '../../types/stateTypes';
+import { selectMessage } from '../../store/reducers/message/messageSlice';
 import { v4 as uuidv4 } from 'uuid';
 import './SideBar.css';
 
