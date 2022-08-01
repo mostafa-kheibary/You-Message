@@ -36,6 +36,9 @@ const messageSlice = createSlice({
     setCurrentChat: (state: IMessageState, action: PayloadAction<IMessageChat[]>) => {
       state.currentChat.chats = action.payload;
     },
+    addCuurentChat: (state: IMessageState, action: PayloadAction<IMessageChat>) => {
+      state.currentChat.chats.push(action.payload);
+    },
     setCurrentChatTo: (state: IMessageState, action: PayloadAction<IUser>) => {
       state.currentChat.to = action.payload;
     },
@@ -45,8 +48,15 @@ const messageSlice = createSlice({
   },
 });
 
-export const { addMessages, deleteMessage, editMessage, setCurrentChat, setCurrentChatTo, setChatOpenStatus } =
-  messageSlice.actions;
+export const {
+  addMessages,
+  deleteMessage,
+  editMessage,
+  setCurrentChat,
+  setCurrentChatTo,
+  setChatOpenStatus,
+  addCuurentChat,
+} = messageSlice.actions;
 export default messageSlice.reducer;
 export const selectMessage = (state: RootState) => state.message.messages;
 export const selectCurrentChat = (state: RootState) => state.message.currentChat;

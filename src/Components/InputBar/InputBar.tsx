@@ -1,38 +1,38 @@
 import { FC } from 'react';
-import { IconButton, OutlinedInput } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import './InputBar.css';
-import useForm from '../../hook/useForm';
-import { useSelector } from 'react-redux';
-import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
-import { arrayUnion, collection, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
-import { db } from '../../config/firebase.config';
+import { useDispatch, useSelector } from 'react-redux';
 import { getAuth } from 'firebase/auth';
+import { arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import SendIcon from '@mui/icons-material/Send';
+import { IconButton, OutlinedInput } from '@mui/material';
+import useForm from '../../hook/useForm';
+import { addCuurentChat, selectCurrentChat } from '../../store/reducers/message/messageSlice';
+import { db } from '../../config/firebase.config';
+import './InputBar.css';
 
 const InputBar: FC = () => {
   const { to } = useSelector(selectCurrentChat);
+  const dispacth = useDispatch();
   const auth = getAuth();
 
   const handleAddChats = async () => {
+    const chatText = values.chat;
     if (!auth.currentUser || !to) return;
 
     try {
       const userToRef = doc(db, 'users', to.uid);
       const currentUserRef = doc(db, 'users', auth.currentUser.uid);
-      console.log(userToRef.id, currentUserRef.id);
-
+      dispacth(addCuurentChat({ owner: currentUserRef.id, text: chatText }));
+      setValues({ ...values, chat: '' });
       const queryTo = query(collection(db, 'messages'), where('owners', '==', [userToRef, currentUserRef]));
       let docData = await getDocs(queryTo);
       if (docData.empty) {
         const queryTo2 = query(collection(db, 'messages'), where('owners', '==', [currentUserRef, userToRef]));
         docData = await getDocs(queryTo2);
       }
-      console.log(docData.docs[0].data());
       const docRef = docData.docs[0].ref;
       await updateDoc(docRef, {
-        messages: arrayUnion({ owner: currentUserRef.id, text: values.chat }),
+        messages: arrayUnion({ owner: currentUserRef.id, text: chatText }),
       });
-      setValues({ ...values, chat: '' });
     } catch (error) {
       console.log(error);
     }
