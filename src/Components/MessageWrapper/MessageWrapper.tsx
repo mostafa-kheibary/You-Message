@@ -12,10 +12,10 @@ const MessageWrapper: FC = () => {
 
   useEffect(() => {
     messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight });
-  }, []);
+  }, [currentChat.to]);
 
   useEffect(() => {
-    messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'smooth' });
+      messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'smooth' });
   }, [currentChat.chats]);
 
   return (

@@ -3,7 +3,7 @@
   height: 100%;
   overflow-y: auto;
   border-right: 0.1rem solid #e6e6e6;
-  padding-top: 3rem;
+  padding-top: 3.5rem;
   transition: all 500ms ease;
 }
 .side-bar__head {

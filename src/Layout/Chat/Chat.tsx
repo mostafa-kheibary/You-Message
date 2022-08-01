@@ -47,7 +47,7 @@ const Chat: FC = () => {
               <h4 className='chat__head__user-name'>{to.userName}</h4>
             </Badge>
             <p className='chat__head__user-status'>
-              Last seen {lastSeenTime.toDateString()} , {lastSeenTime.toLocaleTimeString()}
+              {lastSeenTime.toDateString()} , {lastSeenTime.toLocaleTimeString()}
             </p>
           </div>
         </div>

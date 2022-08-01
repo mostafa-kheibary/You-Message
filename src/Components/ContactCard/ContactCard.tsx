@@ -53,7 +53,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
     return (
       <div className='contact-card__skeleton'>
         <div className='contact-card__skeleton__avatar'>
-          <Skeleton variant='circular' width={50} height={50} animation='pulse' />
+          <Skeleton variant='circular' width={40} height={40} animation='pulse' />
         </div>
         <div className='contact-card__skeleton__texts'>
           <Skeleton variant='text' width='100%' height={20} animation='pulse' />
@@ -64,14 +64,16 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
   }
   return (
     <Button
+      color='inherit'
       autoCapitalize='off'
       onClick={handleOpenChat}
       className={classNames('contact-card', toUser.uid === selectedUser?.uid ? 'active' : '')}
     >
       <div className='contact-card__content'>
-        <Avatar />
+        <Avatar src={toUser.avatar ? toUser.avatar : ''} />
         <div className='contact-card__info'>
           <h4 className='contact-card__user-name'>{toUser.userName}</h4>
+          <p className='contact-card__last-message'>{messageData.messages[messageData.messages.length - 1].text}</p>
         </div>
         <span className='contact-card__last-seen'>
           {new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate().toDateString()}

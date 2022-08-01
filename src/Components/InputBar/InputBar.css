@@ -35,3 +35,8 @@
     right: 0;
   }
 }
+@media screen and (max-width: 400px) {
+  .input-bar {
+    gap: 0.5rem;
+  }
+}

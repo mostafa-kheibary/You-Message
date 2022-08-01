@@ -33,6 +33,11 @@
   font-size: 0.6rem;
   transform: translateY(-50%);
 }
+.contact-card__last-message{
+  font-size: 0.75rem;
+  font-weight: 300;
+  margin-top: -0.3rem;
+}
 .contact-card__skeleton {
   height: 5rem;
   display: flex;

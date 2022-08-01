@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { collection, doc, FieldPath, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, doc, enableIndexedDbPersistence, FieldPath, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase.config';
 import { addMessages, deleteMessage, editMessage } from '../store/reducers/message/messageSlice';
 import { IMessage, IUser } from '../types/stateTypes';
 import { login, logout } from '../store/reducers/user/userSlice';
 import { useDispatch } from 'react-redux';
 import useToast from './useToast';
-import { get } from 'http';
 
 const useInit = () => {
   const auth = getAuth();
@@ -20,7 +19,7 @@ const useInit = () => {
     const unSubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         getInitialsMessages(user.uid);
-        onSnapshot(doc(db, 'users', user.uid), (snapShot) => {
+        onSnapshot(doc(db, 'users', user.uid), { includeMetadataChanges: true }, (snapShot) => {
           dispatch(login(snapShot.data() as IUser));
         });
       } else {
@@ -37,7 +36,7 @@ const useInit = () => {
     }
     const userRef = doc(db, 'users', userId);
     const messagesQuery = query(collection(db, 'messages'), where('owners', 'array-contains', userRef));
-    onSnapshot(messagesQuery, (snapShot) => {
+    onSnapshot(messagesQuery, { includeMetadataChanges: true }, (snapShot) => {
       snapShot.docChanges().forEach((itemSnap) => {
         switch (itemSnap.type) {
           case 'added':
@@ -60,6 +59,7 @@ const useInit = () => {
     window.addEventListener('contextmenu', (e) => e.preventDefault());
   };
   const init = (): void => {
+    enableIndexedDbPersistence(db);
     registerEvent();
   };
   return init;
