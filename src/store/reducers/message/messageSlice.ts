@@ -39,7 +39,7 @@ const messageSlice = createSlice({
     addCuurentChat: (state: IMessageState, action: PayloadAction<IMessageChat>) => {
       state.currentChat.chats.push(action.payload);
     },
-    setCurrentChatTo: (state: IMessageState, action: PayloadAction<IUser>) => {
+    setCurrentChatTo: (state: IMessageState, action: PayloadAction<IUser | null>) => {
       state.currentChat.to = action.payload;
     },
     setChatOpenStatus: (state: IMessageState, action: PayloadAction<boolean>) => {

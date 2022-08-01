@@ -10,6 +10,7 @@
   align-items: center;
   gap: 1rem;
   border-top: 0.1rem solid #e6e6e6;
+  transition: all 500ms ease;
 }
 .input-bar__input {
   width: 100%;
@@ -28,5 +29,9 @@
 @media screen and (max-width: 700px) {
   .input-bar {
     width: 100%;
+    right: -200%;
+  }
+  .chat.open > .input-bar {
+    right: 0;
   }
 }

@@ -3,13 +3,10 @@
   height: 100vh;
 }
 @media screen and (max-width: 700px) {
-  .chat-app > .chat {
-    position: fixed;
-    right: -200%;
-    transition: all 700ms ease;
+  .chat-app {
+    display: block;
   }
   .chat-app > .chat.open {
-    right: 0;
     width: 100%;
   }
   .chat-app > .side-bar {

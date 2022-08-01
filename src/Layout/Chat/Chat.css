@@ -8,7 +8,7 @@
   top: 0;
   right: 0;
   width: calc(100% - 20rem);
-  z-index: 1000;
+  z-index: 10000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -16,6 +16,10 @@
   height: 3.6rem;
   background-color: var(--gray);
   padding: 0.5rem;
+}
+.chat__head__left {
+  display: flex;
+  align-items: center;
 }
 .chat__head__user-info {
   padding-left: 1rem;
@@ -40,7 +44,21 @@
 }
 
 @media screen and (max-width: 700px) {
+  .chat {
+    transition: all 500ms ease;
+    position: fixed;
+    top: 0;
+    right: -100%;
+  }
+  .chat.open {
+    right: 0;
+  }
   .chat__head {
     width: 100%;
+    transition: all 500ms ease;
+    right: -100%;
+  }
+  .chat.open > .chat__head {
+    right: 0;
   }
 }
