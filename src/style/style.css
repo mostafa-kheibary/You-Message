@@ -6,8 +6,23 @@
   font-family: 'Poppins', sans-serif;
   user-select: none;
 }
-
 :root {
   --gray: #f7f7f7;
   --primary-color: #1088ff;
+}
+
+::-webkit-scrollbar {
+  width: 0.8rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(206, 206, 206);
+  border: 0.2rem white solid;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }

@@ -24,3 +24,9 @@
 .input-bar__send > svg {
   font-size: 2rem !important;
 }
+
+@media screen and (max-width: 700px) {
+  .input-bar {
+    width: 100%;
+  }
+}

@@ -1,10 +1,13 @@
 .message-wrapper {
   display: flex;
   flex-direction: column;
-  height: 80%;
+  /* height: calc(100% - 8rem); */
+  height: 100vh;
   width: 100%;
   overflow-y: auto;
   padding: 1rem;
+  padding-top: 4rem;
+  padding-bottom: 6rem;
   gap: 0.5rem;
 }
 .message-wrapper__message {
@@ -17,6 +20,7 @@
   background-color: var(--primary-color);
   color: white;
   margin-left: auto;
+  margin-right: 0.5rem;
   text-align: right;
 }
 .message-wrapper__message.owner::after {
@@ -33,6 +37,7 @@
 .message-wrapper__message.reciver {
   position: relative;
   margin-right: auto;
+  margin-left: 0.5rem;
   text-align: left;
   color: black;
   background-color: #e7e6ec;

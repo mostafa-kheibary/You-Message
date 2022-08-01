@@ -3,7 +3,12 @@ import { getAuth } from 'firebase/auth';
 import { onSnapshot, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectCurrentChat, setCurrentChat, setCurrentChatTo } from '../../store/reducers/message/messageSlice';
+import {
+  selectCurrentChat,
+  setChatOpenStatus,
+  setCurrentChat,
+  setCurrentChatTo,
+} from '../../store/reducers/message/messageSlice';
 import { IMessage, IUser } from '../../types/stateTypes';
 import classNames from '../../utils/classNames';
 import './ContactCard.css';
@@ -41,6 +46,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
     }
     dispatch(setCurrentChatTo(toUser));
     dispatch(setCurrentChat(messageData.messages));
+    dispatch(setChatOpenStatus(true));
   };
 
   if (!toUser) {

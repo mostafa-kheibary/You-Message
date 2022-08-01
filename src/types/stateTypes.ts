@@ -34,5 +34,6 @@ interface IMessageState {
     to: IUser | null;
     chats: IMessageChat[];
   };
+  isOpen: boolean;
 }
 export type { IUserState, IToastState, IUser, IMessageState, IMessage, IMessageChat };

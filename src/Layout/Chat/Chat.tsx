@@ -4,12 +4,14 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { InputBar } from '../../Components';
 import { useSelector } from 'react-redux';
 import './Chat.css';
-import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
+import { selectChatOpenStatus, selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
 import { Timestamp } from 'firebase/firestore';
+import classNames from '../../utils/classNames';
 
 const Chat: FC = () => {
   const { to } = useSelector(selectCurrentChat);
+  const isChatOpen = useSelector(selectChatOpenStatus);
 
   if (!to) {
     return (
@@ -23,7 +25,7 @@ const Chat: FC = () => {
   }
   const lastSeenTime = new Timestamp(to.lastSeen.seconds, to.lastSeen.nanoseconds).toDate();
   return (
-    <div className='chat'>
+    <div className={classNames('chat', isChatOpen ? 'open' : '')}>
       <div className='chat__head'>
         <div className='chat__head__user-info'>
           <Badge variant='dot' color={to.isOnline ? 'success' : 'error'}>

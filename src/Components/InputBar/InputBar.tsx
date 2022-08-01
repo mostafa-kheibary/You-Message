@@ -52,7 +52,7 @@ const InputBar: FC = () => {
         placeholder='Your message ...'
       />
       <div className='input-bar__buttons'>
-        <IconButton size='large' className='input-bar__send' color='primary'>
+        <IconButton type='submit' size='large' className='input-bar__send' color='primary'>
           <SendIcon />
         </IconButton>
       </div>
