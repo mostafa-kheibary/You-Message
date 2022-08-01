@@ -29,9 +29,9 @@
 @media screen and (max-width: 700px) {
   .input-bar {
     width: 100%;
-    right: -200%;
+    right: -100%;
   }
-  .chat.open > .input-bar {
+  .chat-app.open > .chat > .input-bar {
     right: 0;
   }
 }

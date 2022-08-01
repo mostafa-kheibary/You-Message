@@ -3,13 +3,30 @@
   height: 100vh;
 }
 @media screen and (max-width: 700px) {
-  .chat-app {
-    display: block;
+  .chat-app > .chat {
+    position: fixed;
+    right: -100%;
   }
-  .chat-app > .chat.open {
+  .chat-app > .side-bar,
+  .chat-app > .side-bar > .side-bar__head {
     width: 100%;
   }
-  .chat-app > .side-bar {
+  .chat-app.open > .side-bar > .side-bar__head {
+    z-index: -1;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+  .chat-app.open > .chat {
+    width: 100%;
+    right: 0;
+  }
+  .chat-app > .chat > .chat__head {
+    right: -100%;
+  }
+  .chat-app.open > .chat > .chat__head {
+    left: 0;
+    top: 0;
     width: 100%;
   }
 }

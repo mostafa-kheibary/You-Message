@@ -45,6 +45,7 @@ const InputBar: FC = () => {
     <form className='input-bar' onSubmit={handleSubmit}>
       <OutlinedInput
         onChange={handleChange}
+        autoComplete='off'
         value={values.chat}
         size='medium'
         name='chat'

@@ -19,14 +19,9 @@ import './Chat.css';
 const Chat: FC = () => {
   const { to } = useSelector(selectCurrentChat);
   const dispatch = useDispatch();
-  const isChatOpen = useSelector(selectChatOpenStatus);
 
   const handleGoBack = (): void => {
     dispatch(setChatOpenStatus(false));
-    setTimeout(() => {
-      dispatch(setCurrentChatTo(null));
-      dispatch(setCurrentChat([]));
-    }, 500);
   };
 
   if (!to) {
@@ -41,10 +36,10 @@ const Chat: FC = () => {
   }
   const lastSeenTime = new Timestamp(to.lastSeen.seconds, to.lastSeen.nanoseconds).toDate();
   return (
-    <div className={classNames('chat', isChatOpen ? 'open' : '')}>
+    <div className='chat'>
       <div className='chat__head'>
         <div className='chat__head__left'>
-          <IconButton onClick={handleGoBack}>
+          <IconButton className='chat__head__back-button' onClick={handleGoBack}>
             <ArrowBackIosNewIcon />
           </IconButton>
           <div className='chat__head__user-info'>

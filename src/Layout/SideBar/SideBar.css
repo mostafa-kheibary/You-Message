@@ -4,6 +4,7 @@
   overflow-y: auto;
   border-right: 0.1rem solid #e6e6e6;
   padding-top: 3rem;
+  transition: all 500ms ease;
 }
 .side-bar__head {
   position: fixed;
@@ -18,6 +19,7 @@
   border-bottom: 0.1rem solid #e6e6e6;
   height: 3.6rem;
   padding: 0.6rem;
+  transition: all 500ms ease;
 }
 .side-bar__head__title {
   font-weight: 300;
@@ -30,8 +32,4 @@
 }
 
 @media screen and (max-width: 700px) {
-  .side-bar__head {
-    width: 100%;
-    display: none;
-  }
 }

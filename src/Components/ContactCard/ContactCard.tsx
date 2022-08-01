@@ -1,4 +1,4 @@
-import { Avatar, Skeleton } from '@mui/material';
+import { Avatar, Button, Skeleton } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 import { onSnapshot, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
@@ -63,7 +63,8 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
     );
   }
   return (
-    <div
+    <Button
+      autoCapitalize='off'
       onClick={handleOpenChat}
       className={classNames('contact-card', toUser.uid === selectedUser?.uid ? 'active' : '')}
     >
@@ -76,7 +77,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
           {new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate().toDateString()}
         </span>
       </div>
-    </div>
+    </Button>
   );
 };
 
