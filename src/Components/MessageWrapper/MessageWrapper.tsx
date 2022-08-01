@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import { selectUser } from '../../store/reducers/user/userSlice';
@@ -8,9 +8,18 @@ import './MessageWrapper.css';
 const MessageWrapper: FC = () => {
   const { info } = useSelector(selectUser);
   const currentChat = useSelector(selectCurrentChat);
+  const messageDivRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight });
+  }, []);
+
+  useEffect(() => {
+    messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'smooth' });
+  }, [currentChat.chats]);
 
   return (
-    <div className='message-wrapper'>
+    <div ref={messageDivRef} className='message-wrapper'>
       {currentChat?.chats.map((message, i) => (
         <div
           key={i}
