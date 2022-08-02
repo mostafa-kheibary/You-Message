@@ -1,13 +1,15 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth } from 'firebase/auth';
+import { IconButton, OutlinedInput } from '@mui/material';
 import { arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 import SendIcon from '@mui/icons-material/Send';
-import { IconButton, OutlinedInput } from '@mui/material';
+import { v4 as uuidv4 } from 'uuid';
 import useForm from '../../hook/useForm';
 import { addCuurentChat, selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import { db } from '../../config/firebase.config';
 import './InputBar.css';
+import { IMessageChat } from '../../types/stateTypes';
 
 const InputBar: FC = () => {
   const { to } = useSelector(selectCurrentChat);
@@ -21,7 +23,14 @@ const InputBar: FC = () => {
     try {
       const userToRef = doc(db, 'users', to.uid);
       const currentUserRef = doc(db, 'users', auth.currentUser.uid);
-      dispacth(addCuurentChat({ owner: currentUserRef.id, text: chatText, status: 'pending' }));
+      const messageId: string = uuidv4();
+      let messageSchema: IMessageChat = {
+        id: messageId,
+        owner: currentUserRef.id,
+        text: chatText,
+        status: 'pending',
+      };
+      dispacth(addCuurentChat(messageSchema));
       setValues({ ...values, chat: '' });
       const queryTo = query(collection(db, 'messages'), where('owners', '==', [userToRef, currentUserRef]));
       let docData = await getDocs(queryTo);
@@ -30,8 +39,10 @@ const InputBar: FC = () => {
         docData = await getDocs(queryTo2);
       }
       const docRef = docData.docs[0].ref;
+      const sentMessage = { ...messageSchema };
+      sentMessage.status = 'sent';
       await updateDoc(docRef, {
-        messages: arrayUnion({ owner: currentUserRef.id, text: chatText, status: 'sent' }),
+        messages: arrayUnion(sentMessage),
       });
     } catch (error) {
       console.log(error);

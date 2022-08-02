@@ -20,9 +20,10 @@ interface IToastState {
   visibility: boolean;
 }
 interface IMessageChat {
-  owner: string;
+  id: string;
   status: 'pending' | 'sent' | 'seen';
   text: string;
+  owner: string;
 }
 interface IMessage {
   id: string;

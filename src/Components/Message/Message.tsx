@@ -1,5 +1,5 @@
 import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
-import { useInView } from 'framer-motion';
+import { domMax, useInView } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
@@ -9,6 +9,7 @@ import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import { IMessageChat } from '../../types/stateTypes';
 import classNames from '../../utils/classNames';
+import { motion } from 'framer-motion';
 import './Message.css';
 
 interface IProps {
@@ -16,20 +17,36 @@ interface IProps {
 }
 const Message: FC<IProps> = ({ message }) => {
   const { info } = useSelector(selectUser);
-  const { id } = useSelector(selectCurrentChat);
+  const { id, chats } = useSelector(selectCurrentChat);
   const messageRef = useRef<HTMLDivElement | null>(null);
   const isSeen = useInView(messageRef);
 
   useEffect(() => {
-    if (isSeen && message.status !== 'seen') {
+    if (isSeen && message.status !== 'seen' && message.owner !== info?.uid) {
       (async () => {
-        console.log('seen');
+        const currentChatRef = doc(db, 'messages', id);
+        const allCurrentChat = chats.filter((chatMessage) => chatMessage !== message);
+        const seenMessage = { ...message };
+        seenMessage.status = 'seen';
+        await updateDoc(currentChatRef, {
+          messages: [...allCurrentChat, seenMessage],
+        });
       })();
     }
   }, [isSeen]);
 
+  const handleRightClick = async () => {
+    if (message.owner !== info?.uid) return;
+
+    const currentChatRef = doc(db, 'messages', id);
+    await updateDoc(currentChatRef, {
+      messages: arrayRemove(message),
+    });
+  };
+
   return (
-    <div
+    <motion.div
+      onContextMenu={handleRightClick}
       ref={messageRef}
       className={classNames(
         'message',
@@ -38,8 +55,16 @@ const Message: FC<IProps> = ({ message }) => {
       )}
     >
       {message.text}
-      <p className='message-status'>{message.status === 'pending' ? <AccessTimeIcon /> : ''}</p>
-    </div>
+      <p className='message-status'>
+        {message.status === 'pending' ? (
+          <AccessTimeIcon />
+        ) : message.status === 'seen' && message.owner === info!.uid ? (
+          <CheckIcon />
+        ) : (
+          ''
+        )}
+      </p>
+    </motion.div>
   );
 };
 
