@@ -45,7 +45,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
       return;
     }
     dispatch(setCurrentChatTo(toUser));
-    dispatch(setCurrentChat(messageData.messages));
+    dispatch(setCurrentChat({ chats: messageData.messages, id: messageData.id }));
     dispatch(setChatOpenStatus(true));
   };
 
@@ -73,7 +73,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
         <Avatar className='contact-card__avatar' src={toUser.avatar} />
         <div className='contact-card__info'>
           <h4 className='contact-card__user-name'>{toUser.userName}</h4>
-          <p className='contact-card__last-message'>{messageData.messages[messageData.messages.length - 1].text}</p>
+          <p className='contact-card__last-message'>{messageData.messages[messageData.messages.length - 1]?.text}</p>
         </div>
         <span className='contact-card__last-seen'>
           {new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate().toDateString()}

@@ -21,7 +21,7 @@ const InputBar: FC = () => {
     try {
       const userToRef = doc(db, 'users', to.uid);
       const currentUserRef = doc(db, 'users', auth.currentUser.uid);
-      dispacth(addCuurentChat({ owner: currentUserRef.id, text: chatText }));
+      dispacth(addCuurentChat({ owner: currentUserRef.id, text: chatText, status: 'pending' }));
       setValues({ ...values, chat: '' });
       const queryTo = query(collection(db, 'messages'), where('owners', '==', [userToRef, currentUserRef]));
       let docData = await getDocs(queryTo);
@@ -31,7 +31,7 @@ const InputBar: FC = () => {
       }
       const docRef = docData.docs[0].ref;
       await updateDoc(docRef, {
-        messages: arrayUnion({ owner: currentUserRef.id, text: chatText }),
+        messages: arrayUnion({ owner: currentUserRef.id, text: chatText, status: 'sent' }),
       });
     } catch (error) {
       console.log(error);

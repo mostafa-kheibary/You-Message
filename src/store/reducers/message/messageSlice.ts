@@ -5,6 +5,7 @@ import { IMessage, IMessageChat, IMessageState, IUser } from '../../../types/sta
 const initialState: IMessageState = {
   messages: [],
   currentChat: {
+    id: '',
     to: null,
     chats: [],
   },
@@ -33,8 +34,10 @@ const messageSlice = createSlice({
         state.messages.splice(index, 1);
       }
     },
-    setCurrentChat: (state: IMessageState, action: PayloadAction<IMessageChat[]>) => {
-      state.currentChat.chats = action.payload;
+    setCurrentChat: (state: IMessageState, action: PayloadAction<{ chats: IMessageChat[]; id: string }>) => {
+      const { chats, id } = action.payload;
+      state.currentChat.chats = chats;
+      state.currentChat.id = id;
     },
     addCuurentChat: (state: IMessageState, action: PayloadAction<IMessageChat>) => {
       state.currentChat.chats.push(action.payload);

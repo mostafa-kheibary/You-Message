@@ -1,4 +1,5 @@
 import InputBar from './InputBar/InputBar';
 import Toast from './Toast/Toast';
 import ContactCard from './ContactCard/ContactCard';
-export { InputBar, Toast, ContactCard };
+import Message from './Message/Message';
+export { InputBar, Toast, ContactCard, Message };

@@ -21,6 +21,7 @@ interface IToastState {
 }
 interface IMessageChat {
   owner: string;
+  status: 'pending' | 'sent' | 'seen';
   text: string;
 }
 interface IMessage {
@@ -31,6 +32,7 @@ interface IMessage {
 interface IMessageState {
   messages: IMessage[];
   currentChat: {
+    id: string;
     to: IUser | null;
     chats: IMessageChat[];
   };
