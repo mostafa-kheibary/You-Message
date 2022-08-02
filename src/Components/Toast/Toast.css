@@ -4,6 +4,8 @@
 }
 .toast-bar {
   position: relative;
+  z-index: 100000;
+  transform: scale(1);
 }
 .toast-bar.error > div::after {
   content: '';
