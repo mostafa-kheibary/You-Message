@@ -12,10 +12,12 @@ import useToast from '../../hook/useToast';
 import { selectMessage } from '../../store/reducers/message/messageSlice';
 import { v4 as uuidv4 } from 'uuid';
 import './SideBar.css';
+import { useNavigate } from 'react-router-dom';
 
 const SideBar: FC = () => {
   const auth = getAuth();
   const toast = useToast();
+  const navigate = useNavigate();
   const { info } = useSelector(selectUser);
   const messages = useSelector(selectMessage);
   const dispatch = useDispatch();
@@ -40,7 +42,7 @@ const SideBar: FC = () => {
     <aside className='side-bar'>
       <div className='side-bar__head'>
         <div className='side-bar__head__left'>
-          <IconButton style={{ position: 'relative' }}>
+          <IconButton onClick={() => navigate('/profile')} style={{ position: 'relative' }}>
             <Avatar className='side-bar__avatar' src={info?.avatar} />
             <SettingsIcon color='action' className='side-bar__head__edit-profile' />
           </IconButton>
