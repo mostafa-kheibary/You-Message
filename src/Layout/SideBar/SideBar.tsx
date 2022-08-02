@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import SettingsIcon from '@mui/icons-material/Settings';
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
-import { Button, IconButton } from '@mui/material';
+import { Avatar, Button, Icon, IconButton } from '@mui/material';
 import { logout, selectUser } from '../../store/reducers/user/userSlice';
 import { db } from '../../config/firebase.config';
 import { ContactCard } from '../../Components';
@@ -39,18 +39,18 @@ const SideBar: FC = () => {
   return (
     <aside className='side-bar'>
       <div className='side-bar__head'>
-        <h2 className='side-bar__head__title'>{info?.userName}</h2>
-        <div className='side-bar__head__buttons'>
-          <IconButton color='secondary'>
-            <MoreVertOutlinedIcon />
+        <div className='side-bar__head__left'>
+          <IconButton style={{ position: 'relative' }}>
+            <Avatar className='side-bar__avatar' src={info?.avatar} />
+            <SettingsIcon color='action' className='side-bar__head__edit-profile' />
           </IconButton>
+          <h2 className='side-bar__head__title'>Hi {info?.userName}</h2>
+        </div>
+        <div className='side-bar__head__buttons'>
           <IconButton onClick={handleAddContact} color='primary'>
             <MapsUgcIcon />
           </IconButton>
         </div>
-        <Button onClick={handleSignout} color='error'>
-          sign out
-        </Button>
       </div>
       {messages.map((contact: any, i: number) => (
         <ContactCard key={i} messageData={contact} />

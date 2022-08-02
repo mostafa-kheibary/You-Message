@@ -70,7 +70,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
       className={classNames('contact-card', toUser.uid === selectedUser?.uid ? 'active' : '')}
     >
       <div className='contact-card__content'>
-        <Avatar src={toUser.avatar ? toUser.avatar : ''} />
+        <Avatar className='contact-card__avatar' src={toUser.avatar} />
         <div className='contact-card__info'>
           <h4 className='contact-card__user-name'>{toUser.userName}</h4>
           <p className='contact-card__last-message'>{messageData.messages[messageData.messages.length - 1].text}</p>

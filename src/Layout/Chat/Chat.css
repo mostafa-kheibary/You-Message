@@ -10,7 +10,7 @@
   z-index: 10000;
   display: flex;
   height: 3.6rem;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   position: fixed;
   transform: scale(1);
   align-items: center;
@@ -48,5 +48,10 @@
 @media screen and (min-width: 700px) {
   .chat__head__back-button {
     display: none !important;
+  }
+}
+@media screen and (max-width: 700px) {
+  .chat__head {
+    padding: 0.5rem;
   }
 }

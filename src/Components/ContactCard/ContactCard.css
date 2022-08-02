@@ -33,10 +33,14 @@
   font-size: 0.6rem;
   transform: translateY(-50%);
 }
-.contact-card__last-message{
+.contact-card__last-message {
   font-size: 0.75rem;
   font-weight: 300;
   margin-top: -0.3rem;
+}
+.contact-card__avatar {
+  width: 2.8rem !important;
+  height: 2.8rem !important;
 }
 .contact-card__skeleton {
   height: 5rem;
