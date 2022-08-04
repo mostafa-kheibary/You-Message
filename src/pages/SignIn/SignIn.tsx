@@ -20,8 +20,10 @@ const SignIn: FC = () => {
   const handleSignIn = async () => {
     setLoading(true);
     const auth = getAuth();
-    const userCriditila = await signInWithEmailAndPassword(auth, values.email, values.password);
-    const userData = await getDoc(doc(db, 'users', userCriditila.user.uid));
+    const [_, userData] = await Promise.all([
+      await signInWithEmailAndPassword(auth, values.email, values.password),
+      await getDoc(doc(db, 'users', auth.currentUser!.uid)),
+    ]);
     dispatch(login(userData.data() as IUser));
     navigate('/');
   };

@@ -4,7 +4,6 @@ import { Button, TextField } from '@mui/material';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import iconImage from '../../assets/image/icon.png';
 import useForm from '../../hook/useForm';
-import { serverTimestamp, set } from 'firebase/database';
 import { db } from '../../config/firebase.config';
 import { IUser } from '../../types/stateTypes';
 import useToast from '../../hook/useToast';
@@ -21,9 +20,8 @@ const SignUp: FC = () => {
     setLoading(true);
     const auth = getAuth();
     try {
-      const { user } = await createUserWithEmailAndPassword(auth, values.email, values.password);
       const userSchema: IUser = {
-        uid: user.uid,
+        uid: '',
         userName: values.userName,
         bio: '',
         email: values.email,
@@ -32,10 +30,15 @@ const SignUp: FC = () => {
         isOnline: true,
         avatar: '',
       };
-      await setDoc(doc(db, 'users', user.uid), userSchema);
+      console.log(userSchema);
+      await Promise.all([
+        await createUserWithEmailAndPassword(auth, values.email, values.password),
+        await setDoc(doc(db, 'users', auth.currentUser!.uid), { ...userSchema, uid: auth.currentUser!.uid }),
+      ]);
       navigate('/');
       setLoading(false);
     } catch (e: any) {
+      console.log(e);
       const error = e.message as string;
       setLoading(false);
       if (error.includes('email-already-in-use')) {

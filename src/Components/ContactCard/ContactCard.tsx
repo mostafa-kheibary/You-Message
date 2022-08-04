@@ -19,11 +19,14 @@ interface IProps {
 const ContactCard: FC<IProps> = ({ messageData }) => {
   const auth = getAuth();
   const [toUser, setToUser] = useState<IUser | null>(null);
+  const [unReadMessage, setUnReadMessage] = useState<number>(0);
   const { to: selectedUser } = useSelector(selectCurrentChat);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (!auth.currentUser) return;
+    const unRead = messageData.messages.filter((message) => message.status !== 'seen');
+    setUnReadMessage(unRead.length);
 
     if (messageData.owners[0].id === auth.currentUser.uid) {
       onSnapshot(messageData.owners[1], (snapShot) => {
@@ -70,6 +73,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
       className={classNames('contact-card', toUser.uid === selectedUser?.uid ? 'active' : '')}
     >
       <div className='contact-card__content'>
+        <span>{unReadMessage > 0 && unReadMessage}</span>
         <Avatar className='contact-card__avatar' src={toUser.avatar} />
         <div className='contact-card__info'>
           <h4 className='contact-card__user-name'>{toUser.userName}</h4>

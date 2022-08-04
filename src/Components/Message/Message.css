@@ -3,7 +3,7 @@
   border-radius: 100rem;
   width: fit-content;
   padding: 0.8rem;
-  transition: all 200ms ease;
+  transition: margin 200ms ease;
 }
 .message.owner {
   position: relative;
