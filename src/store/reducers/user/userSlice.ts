@@ -1,6 +1,23 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IUser, IUserState } from '../../../types/stateTypes';
+import { Timestamp } from 'firebase/firestore';
 import { RootState } from '../..';
+
+// *** types ***
+export interface IUser {
+  uid: string;
+  userName: string;
+  bio: string;
+  email: string;
+  lastSeen: Timestamp;
+  isTyping: boolean;
+  isOnline: boolean;
+  avatar: string;
+}
+export interface IUserState {
+  info: IUser | null;
+  status: 'loading' | 'isAuth' | 'isNotAuth';
+}
+// *** types ***
 
 const initialState: IUserState = {
   info: null,
@@ -19,10 +36,9 @@ const userSlice = createSlice({
       state.info = null;
       state.status = 'isNotAuth';
     },
-    
   },
 });
 
+export default userSlice.reducer;
 export const { login, logout } = userSlice.actions;
 export const selectUser = (state: RootState) => state.user;
-export default userSlice.reducer;

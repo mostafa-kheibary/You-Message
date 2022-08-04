@@ -2,48 +2,37 @@ import { FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAuth } from 'firebase/auth';
 import { IconButton, OutlinedInput } from '@mui/material';
-import { arrayUnion, collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import SendIcon from '@mui/icons-material/Send';
 import { v4 as uuidv4 } from 'uuid';
 import useForm from '../../hook/useForm';
-import { addCuurentChat, selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import { db } from '../../config/firebase.config';
 import './InputBar.css';
-import { IMessageChat } from '../../types/stateTypes';
+import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
+import { addMessages } from '../../store/reducers/message/messageSlice';
 
 const InputBar: FC = () => {
-  const { to } = useSelector(selectCurrentChat);
   const dispacth = useDispatch();
+  const { id } = useSelector(selectCurrentConversation);
   const auth = getAuth();
 
   const handleAddChats = async () => {
-    const chatText = values.chat;
-    if (!auth.currentUser || !to) return;
+    if (!auth.currentUser) return;
 
     try {
-      const userToRef = doc(db, 'users', to.uid);
-      const currentUserRef = doc(db, 'users', auth.currentUser.uid);
-      const messageId: string = uuidv4();
-      let messageSchema: IMessageChat = {
-        id: messageId,
-        owner: currentUserRef.id,
+      const chatText = values.chat;
+      const messageId = uuidv4();
+      const messagePayload = {
+        timeStamp: Timestamp.now(),
+        owner: auth.currentUser.uid,
         text: chatText,
-        status: 'pending',
+        status: 'sent',
+        id: messageId,
       };
-      dispacth(addCuurentChat(messageSchema));
       setValues({ ...values, chat: '' });
-      const queryTo = query(collection(db, 'messages'), where('owners', '==', [userToRef, currentUserRef]));
-      let docData = await getDocs(queryTo);
-      if (docData.empty) {
-        const queryTo2 = query(collection(db, 'messages'), where('owners', '==', [currentUserRef, userToRef]));
-        docData = await getDocs(queryTo2);
-      }
-      const docRef = docData.docs[0].ref;
-      const sentMessage = { ...messageSchema };
-      sentMessage.status = 'sent';
-      await updateDoc(docRef, {
-        messages: arrayUnion(sentMessage),
-      });
+      dispacth(addMessages({ ...messagePayload, status: 'pending' }));
+      const messageRef = doc(db, 'conversations', id, 'messages', messageId);
+      await setDoc(messageRef, messagePayload);
     } catch (error) {
       console.log(error);
     }

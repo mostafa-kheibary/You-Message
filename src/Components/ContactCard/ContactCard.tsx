@@ -3,31 +3,30 @@ import { getAuth } from 'firebase/auth';
 import { onSnapshot, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
-  selectCurrentChat,
-  setChatOpenStatus,
-  setCurrentChat,
-  setCurrentChatTo,
-} from '../../store/reducers/message/messageSlice';
-import { IMessage, IUser } from '../../types/stateTypes';
+  changeOpenStatus,
+  IConversation,
+  selectCurrentConversation,
+  setCurrentConversation,
+} from '../../store/reducers/conversations/conversationsSlice';
+import { IMessage } from '../../store/reducers/message/messageSlice';
+import { IUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import './ContactCard.css';
 
 interface IProps {
-  messageData: IMessage;
+  messageData: IConversation;
 }
 const ContactCard: FC<IProps> = ({ messageData }) => {
   const auth = getAuth();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [toUser, setToUser] = useState<IUser | null>(null);
   const [unReadMessage, setUnReadMessage] = useState<number>(0);
-  const { to: selectedUser } = useSelector(selectCurrentChat);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!auth.currentUser) return;
-    const unRead = messageData.messages.filter((message) => message.status !== 'seen');
-    setUnReadMessage(unRead.length);
-
     if (messageData.owners[0].id === auth.currentUser.uid) {
       onSnapshot(messageData.owners[1], (snapShot) => {
         setToUser(snapShot.data() as IUser);
@@ -39,17 +38,12 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
     }
   }, []);
 
-  useEffect(() => {
-    handleOpenChat();
-  }, [messageData]);
-
   const handleOpenChat = () => {
     if (!toUser) {
       return;
     }
-    dispatch(setCurrentChatTo(toUser));
-    dispatch(setCurrentChat({ chats: messageData.messages, id: messageData.id }));
-    dispatch(setChatOpenStatus(true));
+    dispatch(setCurrentConversation({ id: messageData.id, toUser }));
+    dispatch(changeOpenStatus(true));
   };
 
   if (!toUser) {
@@ -70,14 +64,15 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
       color='inherit'
       autoCapitalize='off'
       onClick={handleOpenChat}
-      className={classNames('contact-card', toUser.uid === selectedUser?.uid ? 'active' : '')}
+      // className={classNames('contact-card', toUser.uid === selectedUser?.uid ? 'active' : '')}
+      className='contact-card'
     >
       <div className='contact-card__content'>
         <span>{unReadMessage > 0 && unReadMessage}</span>
         <Avatar className='contact-card__avatar' src={toUser.avatar} />
         <div className='contact-card__info'>
           <h4 className='contact-card__user-name'>{toUser.userName}</h4>
-          <p className='contact-card__last-message'>{messageData.messages[messageData.messages.length - 1]?.text}</p>
+          <p className='contact-card__last-message'></p>
         </div>
         <span className='contact-card__last-seen'>
           {new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate().toDateString()}

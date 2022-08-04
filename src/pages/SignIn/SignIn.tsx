@@ -5,11 +5,10 @@ import { Button, TextField } from '@mui/material';
 import useForm from '../../hook/useForm';
 import iconImage from '../../assets/image/icon.png';
 import { useDispatch } from 'react-redux';
-import { login } from '../../store/reducers/user/userSlice';
+import { IUser, login } from '../../store/reducers/user/userSlice';
 import { db } from '../../config/firebase.config';
 import { Loader } from '../../Layout';
 import { doc, getDoc } from 'firebase/firestore';
-import { IUser } from '../../types/stateTypes';
 import './SignIn.css';
 
 const SignIn: FC = () => {

@@ -12,7 +12,7 @@ const useAuth = () => {
     if (status !== 'loading') {
       if (info && auth.currentUser) {
         setIsLogin(true);
-        setLoading(false);
+        setLoading(false);  
       } else {
         setIsLogin(false);
         setLoading(false);

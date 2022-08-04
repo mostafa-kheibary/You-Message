@@ -1,15 +1,20 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Timestamp } from 'firebase/firestore';
 import { RootState } from '../..';
-import { IMessage, IMessageChat, IMessageState, IUser } from '../../../types/stateTypes';
+
+export interface IMessage {
+  timeStamp: Timestamp;
+  id: string;
+  owner: string;
+  status: 'pending' | 'sent' | 'seen';
+  text: string;
+}
+export interface IMessageState {
+  messages: IMessage[];
+}
 
 const initialState: IMessageState = {
   messages: [],
-  currentChat: {
-    id: '',
-    to: null,
-    chats: [],
-  },
-  isOpen: false,
 };
 
 const messageSlice = createSlice({
@@ -17,50 +22,23 @@ const messageSlice = createSlice({
   initialState: initialState,
   reducers: {
     addMessages: (state: IMessageState, action: PayloadAction<IMessage>) => {
-      const sameMessage = state.messages.find((message: any) => message.id === action.payload.id);
-      if (!sameMessage) {
+      const oldMessage = state.messages.findIndex((message) => message.id === action.payload.id);
+      if (oldMessage === -1) {
         state.messages.push(action.payload);
+        return;
       }
+      state.messages[oldMessage] = action.payload;
     },
     editMessage: (state: IMessageState, action: PayloadAction<{ id: string; message: any }>) => {
-      const { id, message } = action.payload;
-      const index = state.messages.findIndex((m) => m.id === id);
-      state.messages[index] = message;
+      const index = state.messages.findIndex((message) => message.id === action.payload.id);
+      state.messages[index] = action.payload.message;
     },
-    deleteMessage: (state: IMessageState, action: PayloadAction<string>) => {
-      const id = action.payload;
-      const index = state.messages.findIndex((m) => m.id === id);
-      if (index !== -1) {
-        state.messages.splice(index, 1);
-      }
-    },
-    setCurrentChat: (state: IMessageState, action: PayloadAction<{ chats: IMessageChat[]; id: string }>) => {
-      const { chats, id } = action.payload;
-      state.currentChat.chats = chats;
-      state.currentChat.id = id;
-    },
-    addCuurentChat: (state: IMessageState, action: PayloadAction<IMessageChat>) => {
-      state.currentChat.chats.push(action.payload);
-    },
-    setCurrentChatTo: (state: IMessageState, action: PayloadAction<IUser | null>) => {
-      state.currentChat.to = action.payload;
-    },
-    setChatOpenStatus: (state: IMessageState, action: PayloadAction<boolean>) => {
-      state.isOpen = action.payload;
+    removeMessage: (state: IMessageState, action: PayloadAction<string>) => {
+      state.messages = state.messages.filter((message) => message.id !== action.payload);
     },
   },
 });
 
-export const {
-  addMessages,
-  deleteMessage,
-  editMessage,
-  setCurrentChat,
-  setCurrentChatTo,
-  setChatOpenStatus,
-  addCuurentChat,
-} = messageSlice.actions;
+export const { addMessages, removeMessage, editMessage } = messageSlice.actions;
 export default messageSlice.reducer;
 export const selectMessage = (state: RootState) => state.message.messages;
-export const selectCurrentChat = (state: RootState) => state.message.currentChat;
-export const selectChatOpenStatus = (state: RootState) => state.message.isOpen;

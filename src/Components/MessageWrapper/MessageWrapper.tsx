@@ -1,25 +1,26 @@
-import { AnimatePresence } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Message } from '../';
-import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
+import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
+import { selectMessage } from '../../store/reducers/message/messageSlice';
 import './MessageWrapper.css';
 
 const MessageWrapper: FC = () => {
-  const currentChat = useSelector(selectCurrentChat);
   const messageDivRef = useRef<HTMLDivElement | null>(null);
+  const messages = useSelector(selectMessage);
+  const { id } = useSelector(selectCurrentConversation);
 
   useEffect(() => {
     messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight });
-  }, [currentChat.to]);
+  }, [id]);
 
   useEffect(() => {
     messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'smooth' });
-  }, [currentChat.chats]);
+  }, [messages]);
 
   return (
     <div ref={messageDivRef} className='message-wrapper'>
-      {currentChat?.chats.map((message, i) => (
+      {messages.map((message, i) => (
         <Message message={message} key={i} />
       ))}
     </div>

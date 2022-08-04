@@ -1,23 +1,53 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Badge, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { Timestamp } from 'firebase/firestore';
+import { useParams } from 'react-router-dom';
+import { collection, getDoc, getDocs, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { InputBar } from '../../Components';
-import { selectCurrentChat, setChatOpenStatus } from '../../store/reducers/message/messageSlice';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
+import {
+  changeOpenStatus,
+  selectConversations,
+  selectCurrentConversation,
+} from '../../store/reducers/conversations/conversationsSlice';
 import './Chat.css';
+import { db } from '../../config/firebase.config';
+import { addMessages, editMessage, IMessage, removeMessage } from '../../store/reducers/message/messageSlice';
+import { queries } from '@testing-library/react';
 
 const Chat: FC = () => {
-  const { to } = useSelector(selectCurrentChat);
+  const conversations = useSelector(selectConversations);
+  const { id, toUser } = useSelector(selectCurrentConversation);
   const dispatch = useDispatch();
 
   const handleGoBack = (): void => {
-    dispatch(setChatOpenStatus(false));
+    dispatch(changeOpenStatus(false));
   };
 
-  if (!to) {
+  useEffect(() => {
+    if (!id) return;
+
+    const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
+    onSnapshot(messagesRef, (snapShot) => {
+      snapShot.docChanges().forEach((change) => {
+        switch (change.type) {
+          case 'added':
+            dispatch(addMessages(change.doc.data() as IMessage));
+            break;
+          case 'modified':
+            dispatch(editMessage({ id: change.doc.id, message: change.doc.data() as IMessage }));
+            break;
+          case 'removed':
+            dispatch(removeMessage(change.doc.id));
+            break;
+        }
+      });
+    });
+  }, [id]);
+
+  if (!toUser) {
     return (
       <div className='chat'>
         <div className='chat__head'></div>
@@ -27,7 +57,7 @@ const Chat: FC = () => {
       </div>
     );
   }
-  const lastSeenTime = new Timestamp(to.lastSeen.seconds, to.lastSeen.nanoseconds).toDate();
+  const lastSeenTime = new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate();
   return (
     <div className='chat'>
       <div className='chat__head'>
@@ -35,10 +65,10 @@ const Chat: FC = () => {
           <IconButton className='chat__head__back-button' onClick={handleGoBack}>
             <ArrowBackIosNewIcon />
           </IconButton>
-          <Avatar src={to.avatar} />
+          <Avatar src={toUser.avatar} />
           <div className='chat__head__user-info'>
-            <Badge variant='dot' color={to.isOnline ? 'success' : 'error'}>
-              <h4 className='chat__head__user-name'>{to.userName}</h4>
+            <Badge variant='dot' color={toUser.isOnline ? 'success' : 'error'}>
+              <h4 className='chat__head__user-name'>{toUser.userName}</h4>
             </Badge>
             <p className='chat__head__user-status'>
               {lastSeenTime.toDateString()} , {lastSeenTime.toLocaleTimeString()}

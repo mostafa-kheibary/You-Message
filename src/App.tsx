@@ -1,5 +1,5 @@
 import { FC, useEffect } from 'react';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 import PriveteRoute from './routes/PriveteRoute';
 import { SignIn, Main, SignUp, Profile } from './pages';
 import { Toast } from './Components';

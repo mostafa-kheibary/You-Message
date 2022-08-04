@@ -5,11 +5,11 @@ import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import iconImage from '../../assets/image/icon.png';
 import useForm from '../../hook/useForm';
 import { db } from '../../config/firebase.config';
-import { IUser } from '../../types/stateTypes';
 import useToast from '../../hook/useToast';
 import { Loader } from '../../Layout';
 import './SignUp.css';
 import { setDoc, doc, Timestamp } from 'firebase/firestore';
+import { IUser } from '../../store/reducers/user/userSlice';
 
 const SignUp: FC = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ const SignUp: FC = () => {
     setLoading(true);
     const auth = getAuth();
     try {
-      const userSchema: IUser = {
+      const userPayload: IUser = {
         uid: '',
         userName: values.userName,
         bio: '',
@@ -30,10 +30,9 @@ const SignUp: FC = () => {
         isOnline: true,
         avatar: '',
       };
-      console.log(userSchema);
       await Promise.all([
         await createUserWithEmailAndPassword(auth, values.email, values.password),
-        await setDoc(doc(db, 'users', auth.currentUser!.uid), { ...userSchema, uid: auth.currentUser!.uid }),
+        await setDoc(doc(db, 'users', auth.currentUser!.uid), { ...userPayload, uid: auth.currentUser?.uid }),
       ]);
       navigate('/');
       setLoading(false);

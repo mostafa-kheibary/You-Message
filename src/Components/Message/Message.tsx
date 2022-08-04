@@ -1,35 +1,32 @@
-import { arrayRemove, arrayUnion, doc, updateDoc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { domMax, useInView } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckIcon from '@mui/icons-material/Check';
-import { selectCurrentChat } from '../../store/reducers/message/messageSlice';
 import { selectUser } from '../../store/reducers/user/userSlice';
-import { IMessageChat } from '../../types/stateTypes';
 import classNames from '../../utils/classNames';
 import { motion } from 'framer-motion';
 import './Message.css';
+import { IMessage } from '../../store/reducers/message/messageSlice';
+import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 
 interface IProps {
-  message: IMessageChat;
+  message: IMessage;
 }
 const Message: FC<IProps> = ({ message }) => {
   const { info } = useSelector(selectUser);
-  const { id, chats } = useSelector(selectCurrentChat);
+  const { id } = useSelector(selectCurrentConversation);
   const messageRef = useRef<HTMLDivElement | null>(null);
   const isSeen = useInView(messageRef);
 
   useEffect(() => {
     if (isSeen && message.status !== 'seen' && message.owner !== info?.uid) {
       (async () => {
-        const currentChatRef = doc(db, 'messages', id);
-        const allCurrentChat = chats.filter((chatMessage) => chatMessage !== message);
-        const seenMessage = { ...message };
-        seenMessage.status = 'seen';
+        const currentChatRef = doc(db, 'conversations', id, 'messages', message.id);
         await updateDoc(currentChatRef, {
-          messages: [...allCurrentChat, seenMessage],
+          status: 'seen',
         });
       })();
     }
@@ -37,11 +34,8 @@ const Message: FC<IProps> = ({ message }) => {
 
   const handleRightClick = async () => {
     if (message.owner !== info?.uid) return;
-
-    const currentChatRef = doc(db, 'messages', id);
-    await updateDoc(currentChatRef, {
-      messages: arrayRemove(message),
-    });
+    const currentChatRef = doc(db, 'conversations', id, 'messages', message.id);
+    await deleteDoc(currentChatRef);
   };
 
   return (
