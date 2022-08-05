@@ -14,11 +14,15 @@ import {
 } from '../../store/reducers/conversations/conversationsSlice';
 import './Chat.css';
 import { db } from '../../config/firebase.config';
-import { addMessages, editMessage, IMessage, removeMessage } from '../../store/reducers/message/messageSlice';
-import { queries } from '@testing-library/react';
+import {
+  addMessages,
+  clearMessage,
+  editMessage,
+  IMessage,
+  removeMessage,
+} from '../../store/reducers/message/messageSlice';
 
 const Chat: FC = () => {
-  const conversations = useSelector(selectConversations);
   const { id, toUser } = useSelector(selectCurrentConversation);
   const dispatch = useDispatch();
 
@@ -28,7 +32,7 @@ const Chat: FC = () => {
 
   useEffect(() => {
     if (!id) return;
-
+    dispatch(clearMessage());
     const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
     onSnapshot(messagesRef, (snapShot) => {
       snapShot.docChanges().forEach((change) => {

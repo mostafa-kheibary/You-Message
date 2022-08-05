@@ -22,6 +22,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
   const auth = getAuth();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const currentConversation = useSelector(selectCurrentConversation);
   const [toUser, setToUser] = useState<IUser | null>(null);
   const [unReadMessage, setUnReadMessage] = useState<number>(0);
 
@@ -64,8 +65,7 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
       color='inherit'
       autoCapitalize='off'
       onClick={handleOpenChat}
-      // className={classNames('contact-card', toUser.uid === selectedUser?.uid ? 'active' : '')}
-      className='contact-card'
+      className={classNames('contact-card', toUser.uid === currentConversation.toUser?.uid ? 'active' : '')}
     >
       <div className='contact-card__content'>
         <span>{unReadMessage > 0 && unReadMessage}</span>

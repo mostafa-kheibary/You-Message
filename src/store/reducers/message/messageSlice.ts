@@ -36,9 +36,12 @@ const messageSlice = createSlice({
     removeMessage: (state: IMessageState, action: PayloadAction<string>) => {
       state.messages = state.messages.filter((message) => message.id !== action.payload);
     },
+    clearMessage: (state: IMessageState) => {
+      state.messages = [];
+    },
   },
 });
 
-export const { addMessages, removeMessage, editMessage } = messageSlice.actions;
+export const { addMessages, removeMessage, editMessage, clearMessage } = messageSlice.actions;
 export default messageSlice.reducer;
 export const selectMessage = (state: RootState) => state.message.messages;
