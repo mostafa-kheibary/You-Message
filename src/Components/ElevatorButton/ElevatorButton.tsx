@@ -10,17 +10,18 @@ interface IProps {
 const ElevatorButton: FC<IProps> = ({ containerRef }) => {
   const [isShow, setIshow] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (!containerRef) return;
-  //   const unsub = containerRef.addEventListener('scroll', () => {
-  //     if (containerRef.scrollTop >= containerRef.scrollHeight - 200) {
-  //       setIshow(true);
-  //     } else {
-  //       setIshow(false);
-  //     }
-  //   });
-  //   return unsub;
-  // }, [containerRef]);
+  useEffect(() => {
+    if (!containerRef) return;
+    const unsub = containerRef.addEventListener('scroll', () => {
+      if (containerRef.scrollHeight - containerRef.offsetHeight - 200 >= containerRef.scrollTop) {
+        setIshow(true);
+      } else {
+        setIshow(false);
+      }
+    });
+    return unsub;
+  }, [containerRef]);
+
   const goToButton = () => {
     containerRef?.scrollTo({ left: 0, top: containerRef.scrollHeight, behavior: 'smooth' });
   };
