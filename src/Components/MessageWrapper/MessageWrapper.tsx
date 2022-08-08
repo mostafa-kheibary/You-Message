@@ -34,7 +34,6 @@ const MessageWrapper: FC = () => {
   useEffect(() => {
     if (!isMount.current) {
       messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'auto' });
-      console.log('first');
     }
     if (messages[messages.length - 1]?.owner === info?.uid || isInView) {
       messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'smooth' });

@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import {
   collection,
-  collectionGroup,
   doc,
   enableIndexedDbPersistence,
   onSnapshot,
@@ -16,6 +15,7 @@ import useToast from './useToast';
 import {
   addConversation,
   editConversation,
+  IConversation,
   removeConversation,
 } from '../store/reducers/conversations/conversationsSlice';
 
@@ -51,7 +51,7 @@ const useInit = () => {
       snapShot.docChanges().forEach((itemSnap) => {
         switch (itemSnap.type) {
           case 'added':
-            dispatch(addConversation(itemSnap.doc.data() as any));
+            dispatch(addConversation(itemSnap.doc.data() as IConversation));
             break;
           case 'modified':
             dispatch(editConversation({ id: itemSnap.doc.id, message: itemSnap.doc.data() }));

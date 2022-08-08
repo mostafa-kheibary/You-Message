@@ -29,14 +29,15 @@ const Chat: FC = () => {
     if (!id) return;
     dispatch(clearMessage());
     const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
-    onSnapshot(messagesRef, (snapShot) => {
+    onSnapshot(messagesRef, { includeMetadataChanges: true }, (snapShot) => {
       snapShot.docChanges().forEach((change) => {
         switch (change.type) {
           case 'added':
-            dispatch(addMessage(change.doc.data() as IMessage));
+            const messageData = change.doc.data() as IMessage;
+            dispatch(addMessage(messageData));
             break;
           case 'modified':
-            dispatch(editMessage({ id: change.doc.id, message: change.doc.data() as IMessage }));
+            dispatch(editMessage({ id: change.doc.id, message: change.doc.data() }));
             break;
           case 'removed':
             dispatch(removeMessage(change.doc.id));

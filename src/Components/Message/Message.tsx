@@ -1,6 +1,5 @@
-import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from 'firebase/firestore';
-import { domMax, useInView } from 'framer-motion';
-import { FC, useEffect, useRef } from 'react';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { FC, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -8,9 +7,9 @@ import CheckIcon from '@mui/icons-material/Check';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import { motion } from 'framer-motion';
-import './Message.css';
 import { IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
+import './Message.css';
 
 interface IProps {
   message: IMessage;
