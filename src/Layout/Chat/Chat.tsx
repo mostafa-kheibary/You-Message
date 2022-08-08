@@ -2,25 +2,20 @@ import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Badge, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { useParams } from 'react-router-dom';
-import { collection, getDoc, getDocs, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { InputBar } from '../../Components';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
-import {
-  changeOpenStatus,
-  selectConversations,
-  selectCurrentConversation,
-} from '../../store/reducers/conversations/conversationsSlice';
-import './Chat.css';
+import { changeOpenStatus, selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import { db } from '../../config/firebase.config';
 import {
-  addMessages,
+  addMessage,
   clearMessage,
   editMessage,
   IMessage,
   removeMessage,
 } from '../../store/reducers/message/messageSlice';
+import './Chat.css';
 
 const Chat: FC = () => {
   const { id, toUser } = useSelector(selectCurrentConversation);
@@ -38,7 +33,7 @@ const Chat: FC = () => {
       snapShot.docChanges().forEach((change) => {
         switch (change.type) {
           case 'added':
-            dispatch(addMessages(change.doc.data() as IMessage));
+            dispatch(addMessage(change.doc.data() as IMessage));
             break;
           case 'modified':
             dispatch(editMessage({ id: change.doc.id, message: change.doc.data() as IMessage }));

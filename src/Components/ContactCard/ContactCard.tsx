@@ -1,9 +1,10 @@
 import { Avatar, Button, Skeleton } from '@mui/material';
 import { getAuth } from 'firebase/auth';
-import { onSnapshot, Timestamp } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { db } from '../../config/firebase.config';
 import {
   changeOpenStatus,
   IConversation,
@@ -20,11 +21,11 @@ interface IProps {
 }
 const ContactCard: FC<IProps> = ({ messageData }) => {
   const auth = getAuth();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentConversation = useSelector(selectCurrentConversation);
   const [toUser, setToUser] = useState<IUser | null>(null);
   const [unReadMessage, setUnReadMessage] = useState<number>(0);
+  const [lastMessage, setLastMessage] = useState<IMessage | null>(null);
 
   useEffect(() => {
     if (!auth.currentUser) return;
@@ -37,7 +38,17 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
         setToUser(snapShot.data() as IUser);
       });
     }
+    getLastMessage();
   }, []);
+
+  const getLastMessage = async () => {
+    const messageRef = query(collection(db, 'conversations', messageData.id, 'messages'), orderBy('timeStamp', 'asc'));
+    onSnapshot(messageRef, (snapShot) => {
+      if (!snapShot.empty) {
+        setLastMessage(snapShot.docs[snapShot.docs.length - 1].data() as IMessage);
+      }
+    });
+  };
 
   const handleOpenChat = () => {
     if (!toUser) {
@@ -68,11 +79,10 @@ const ContactCard: FC<IProps> = ({ messageData }) => {
       className={classNames('contact-card', toUser.uid === currentConversation.toUser?.uid ? 'active' : '')}
     >
       <div className='contact-card__content'>
-        <span>{unReadMessage > 0 && unReadMessage}</span>
         <Avatar className='contact-card__avatar' src={toUser.avatar} />
         <div className='contact-card__info'>
           <h4 className='contact-card__user-name'>{toUser.userName}</h4>
-          <p className='contact-card__last-message'></p>
+          <p className='contact-card__last-message'>{lastMessage?.text}</p>
         </div>
         <span className='contact-card__last-seen'>
           {new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate().toDateString()}

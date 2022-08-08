@@ -7,9 +7,9 @@ import SendIcon from '@mui/icons-material/Send';
 import { v4 as uuidv4 } from 'uuid';
 import useForm from '../../hook/useForm';
 import { db } from '../../config/firebase.config';
-import './InputBar.css';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
-import { addMessages } from '../../store/reducers/message/messageSlice';
+import { addMessage } from '../../store/reducers/message/messageSlice';
+import './InputBar.css';
 
 const InputBar: FC = () => {
   const dispacth = useDispatch();
@@ -30,7 +30,7 @@ const InputBar: FC = () => {
         id: messageId,
       };
       setValues({ ...values, chat: '' });
-      dispacth(addMessages({ ...messagePayload, status: 'pending' }));
+      dispacth(addMessage({ ...messagePayload, status: 'pending' }));
       const messageRef = doc(db, 'conversations', id, 'messages', messageId);
       await setDoc(messageRef, messagePayload);
     } catch (error) {

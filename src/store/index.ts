@@ -2,8 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import toastReducer from './reducers/toast/toastSlice';
 import messageReducer from './reducers/message/messageSlice';
 import conversationReducer from './reducers/conversations/conversationsSlice';
-
 import userReducer from './reducers/user/userSlice';
+
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -16,12 +16,19 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [
           'user/login',
-          'conversations/addConversation',
-          'conversations/removeConversation',
-          'conversations/editConversation',
+          'conversation/addConversation',
+          'conversation/removeConversation',
+          'conversation/editConversation',
+          'conversation/setCurrentConversation',
+          'message/addMessage',
         ],
-        ignoredState: ['user', 'conversations'],
-        ignoredPaths: ['user.info.lastSeen', 'conversations.currentConversation', 'conversations.conversations'],
+        ignoredState: ['conversations'],
+        ignoredPaths: [
+          'message.messages',
+          'user.info.lastSeen',
+          'conversations.currentConversation',
+          'conversations.conversations',
+        ],
       },
     }),
   devTools: true,

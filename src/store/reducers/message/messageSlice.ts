@@ -21,7 +21,7 @@ const messageSlice = createSlice({
   name: 'message',
   initialState: initialState,
   reducers: {
-    addMessages: (state: IMessageState, action: PayloadAction<IMessage>) => {
+    addMessage: (state: IMessageState, action: PayloadAction<IMessage>) => {
       const oldMessage = state.messages.findIndex((message) => message.id === action.payload.id);
       if (oldMessage === -1) {
         state.messages.push(action.payload);
@@ -42,6 +42,6 @@ const messageSlice = createSlice({
   },
 });
 
-export const { addMessages, removeMessage, editMessage, clearMessage } = messageSlice.actions;
+export const { addMessage, removeMessage, editMessage, clearMessage } = messageSlice.actions;
 export default messageSlice.reducer;
 export const selectMessage = (state: RootState) => state.message.messages;
