@@ -1,10 +1,8 @@
 .input-bar {
   padding: 0.4rem 1rem;
   background-color: var(--gray);
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: calc(100% - 20rem);
+  width: 100%;
+  height: 5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -26,15 +24,6 @@
   font-size: 2rem !important;
 }
 
-@media screen and (max-width: 700px) {
-  .input-bar {
-    width: 100%;
-    right: -100%;
-  }
-  .chat-app.open > .chat > .input-bar {
-    right: 0;
-  }
-}
 @media screen and (max-width: 400px) {
   .input-bar {
     gap: 0.5rem;

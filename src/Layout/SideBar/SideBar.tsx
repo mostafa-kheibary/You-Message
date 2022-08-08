@@ -53,9 +53,11 @@ const SideBar: FC = () => {
           </IconButton>
         </div>
       </div>
-      {conversations.map((contact: any, i: number) => (
-        <ContactCard key={i} messageData={contact} />
-      ))}
+      <div className='side-bar__conversations-container'>
+        {conversations.map((contact: any, i: number) => (
+          <ContactCard key={i} messageData={contact} />
+        ))}
+      </div>
     </aside>
   );
 };

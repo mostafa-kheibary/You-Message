@@ -1,16 +1,10 @@
 .side-bar {
   width: 20rem;
-  height: 100%;
-  overflow-y: auto;
   border-right: 0.1rem solid #e6e6e6;
-  padding-top: 3.5rem;
   transition: all 500ms ease;
 }
 .side-bar__head {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 20rem;
+  width: 100%;
   display: flex;
   z-index: 1000;
   justify-content: space-between;
@@ -21,6 +15,12 @@
   height: 3.6rem;
   padding: 1rem;
   transition: all 500ms ease;
+}
+.side-bar__conversations-container {
+  width: 100%;
+  max-height: calc(100% - 3.6rem);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .side-bar__head__edit-profile {
   position: absolute;

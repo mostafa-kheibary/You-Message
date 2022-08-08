@@ -5,15 +5,11 @@
   transition: all 500ms ease;
 }
 .chat__head {
-  top: 0;
-  right: 0;
-  z-index: 1000;
   display: flex;
   height: 3.6rem;
   padding: 0.5rem 1rem;
-  position: fixed;
   align-items: center;
-  width: calc(100% - 20rem);
+  width: 100%;
   transition: all 500ms ease;
   background-color: var(--gray);
   justify-content: space-between;
