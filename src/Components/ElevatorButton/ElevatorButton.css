@@ -1,0 +1,10 @@
+.elevator-button {
+  position: fixed !important;
+  bottom: 6rem;
+  right: 1rem;
+  background-color: white !important;
+  box-shadow: 0 0.2rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+}
+.elevator-button.show {
+  background-color: red !important;
+}

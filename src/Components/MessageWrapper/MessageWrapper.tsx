@@ -1,4 +1,4 @@
-import { collection, doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { useInView } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { db } from '../../config/firebase.config';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import { selectMessage } from '../../store/reducers/message/messageSlice';
 import { selectUser } from '../../store/reducers/user/userSlice';
+import ElevatorButton from '../ElevatorButton/ElevatorButton';
 import './MessageWrapper.css';
 
 const MessageWrapper: FC = () => {
@@ -47,6 +48,7 @@ const MessageWrapper: FC = () => {
         <Message message={message} key={i} />
       ))}
       <div ref={isSeenRef}></div>
+      <ElevatorButton containerRef={messageDivRef.current} />
     </div>
   );
 };
