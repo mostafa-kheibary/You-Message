@@ -1,21 +1,45 @@
+import { collection, doc, updateDoc } from 'firebase/firestore';
+import { useInView } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Message } from '../';
+import { db } from '../../config/firebase.config';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import { selectMessage } from '../../store/reducers/message/messageSlice';
+import { selectUser } from '../../store/reducers/user/userSlice';
 import './MessageWrapper.css';
 
 const MessageWrapper: FC = () => {
   const messageDivRef = useRef<HTMLDivElement | null>(null);
+  const isSeenRef = useRef<HTMLDivElement | null>(null);
   const messages = useSelector(selectMessage);
+  const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
+  const isInView = useInView(isSeenRef);
+  const isMount = useRef<boolean>(false);
+
+  // for seen messages when user see the bottom of the message
+  useEffect(() => {
+    if (isInView) {
+      messages.forEach(async (message) => {
+        if (message.owner !== info?.uid) {
+          await updateDoc(doc(db, 'conversations', id, 'messages', message.id), {
+            status: 'seen',
+          });
+        }
+      });
+    }
+  }, [isInView, messages]);
 
   useEffect(() => {
-    messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight });
-  }, [id]);
-
-  useEffect(() => {
-    messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'smooth' });
+    if (!isMount.current) {
+      messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'auto' });
+      console.log('first');
+    }
+    if (messages[messages.length - 1]?.owner === info?.uid || isInView) {
+      messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, behavior: 'smooth' });
+      isMount.current = true;
+    }
   }, [messages]);
 
   return (
@@ -23,6 +47,7 @@ const MessageWrapper: FC = () => {
       {messages.map((message, i) => (
         <Message message={message} key={i} />
       ))}
+      <div ref={isSeenRef}></div>
     </div>
   );
 };

@@ -19,18 +19,6 @@ const Message: FC<IProps> = ({ message }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
   const messageRef = useRef<HTMLDivElement | null>(null);
-  const isSeen = useInView(messageRef);
-
-  useEffect(() => {
-    if (isSeen && message.status !== 'seen' && message.owner !== info?.uid) {
-      (async () => {
-        const currentChatRef = doc(db, 'conversations', id, 'messages', message.id);
-        await updateDoc(currentChatRef, {
-          status: 'seen',
-        });
-      })();
-    }
-  }, [isSeen]);
 
   const handleRightClick = async () => {
     if (message.owner !== info?.uid) return;

@@ -21,6 +21,7 @@ const store = configureStore({
           'conversation/editConversation',
           'conversation/setCurrentConversation',
           'message/addMessage',
+          'message/editMessage',
         ],
         ignoredState: ['conversations'],
         ignoredPaths: [
