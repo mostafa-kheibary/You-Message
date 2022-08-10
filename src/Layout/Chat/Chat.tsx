@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Badge, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
@@ -25,6 +25,7 @@ const Chat: FC = () => {
     dispatch(changeOpenStatus(false));
   };
 
+  // loading chat message
   useEffect(() => {
     if (!id) return;
     dispatch(clearMessage());
@@ -52,7 +53,9 @@ const Chat: FC = () => {
       <div className='chat'>
         <div className='chat__head'></div>
         <div className='chat__start-chat'>
-          <h2 className='chat__start-chat__title'>Open chat and start conversation</h2>
+          <h2 className='chat__start-chat__title'>
+            Open chat <strong>or</strong> start conversation
+          </h2>
         </div>
       </div>
     );

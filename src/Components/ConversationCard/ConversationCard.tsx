@@ -1,4 +1,5 @@
 import { Avatar, Button, Skeleton } from '@mui/material';
+import { info } from 'console';
 import { getAuth } from 'firebase/auth';
 import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
@@ -11,7 +12,7 @@ import {
   setCurrentConversation,
 } from '../../store/reducers/conversations/conversationsSlice';
 import { IMessage } from '../../store/reducers/message/messageSlice';
-import { IUser } from '../../store/reducers/user/userSlice';
+import { IUser, selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import './ConversationCard.css';
 
@@ -22,6 +23,7 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
   const auth = getAuth();
   const dispatch = useDispatch();
   const currentConversation = useSelector(selectCurrentConversation);
+  const { info } = useSelector(selectUser);
   const [toUser, setToUser] = useState<IUser | null>(null);
   const [unReadMessage, setUnReadMessage] = useState<number>(0);
   const [lastMessage, setLastMessage] = useState<IMessage | null>(null);
@@ -45,6 +47,10 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
     onSnapshot(messageRef, (snapShot) => {
       if (!snapShot.empty) {
         setLastMessage(snapShot.docs[snapShot.docs.length - 1].data() as IMessage);
+        const unread = snapShot.docs.filter(
+          (message) => message.data().status === 'sent' && message.data().owner !== info!.uid
+        );
+        setUnReadMessage(unread.length);
       }
     });
   };
@@ -87,7 +93,7 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
           <h5 className='conversation-card__last-seen'>
             {new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate().toLocaleTimeString()}
           </h5>
-          <h5 className='conversation-card__notif'>21</h5>
+          {unReadMessage > 0 && <h5 className='conversation-card__notif'>{unReadMessage}</h5>}
         </div>
       </div>
     </Button>

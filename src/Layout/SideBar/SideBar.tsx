@@ -22,10 +22,7 @@ const SideBar: FC = () => {
   const { info } = useSelector(selectUser);
   const conversations = useSelector(selectConversations);
 
-  const handleSignout = async () => {
-    await signOut(auth);
-    dispatch(logout);
-  };
+
 
   const handleAddContact = async () => {
     const newUserName = prompt('enter userName');

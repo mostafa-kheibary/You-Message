@@ -1,6 +1,6 @@
 import InputBar from './InputBar/InputBar';
 import Toast from './Toast/Toast';
-import ContactCard from './ContactCard/ContactCard';
+import ConversationCard from './ConversationCard/ConversationCard';
 import Message from './Message/Message';
 import ElevatorButton from './ElevatorButton/ElevatorButton';
-export { InputBar, Toast, ContactCard, Message, ElevatorButton };
+export { InputBar, Toast, ConversationCard, Message, ElevatorButton };
