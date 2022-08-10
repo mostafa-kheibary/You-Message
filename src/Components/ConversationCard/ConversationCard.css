@@ -1,0 +1,85 @@
+.conversation-card {
+  all: unset;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 5rem;
+  position: relative;
+  border-radius: 0.8rem !important;
+  border-bottom: 0.02rem solid #eeeeee;
+}
+
+.conversation-card__content {
+  color: black;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+.conversation-card__content > * {
+  text-transform: none;
+}
+.conversation-card__info {
+  width: 100%;
+}
+.conversation-card__user-name {
+  font-size: 1rem;
+  font-weight: 500;
+}
+.conversation-card__last-seen {
+  font-size: 0.6rem;
+  font-weight: 400;
+}
+.conversation-card__last-message {
+  font-size: 0.75rem;
+  font-weight: 300;
+  margin-top: -0.3rem;
+}
+.conversation-card__avatar {
+  width: 2.8rem !important;
+  height: 2.8rem !important;
+}
+.conversation-card__skeleton {
+  height: 5rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0 1rem;
+}
+.conversation-card__skeleton__texts {
+  width: 100%;
+}
+.conversation-card__status {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  justify-content: right;
+  text-align: right;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.conversation-card__notif {
+  background-color: var(--primary-color);
+  color: white;
+  margin-left: auto;
+  padding: 0.2rem 0.5rem;
+  border-radius: 50rem;
+}
+@media screen and (min-width: 700px) {
+  .conversation-card.active {
+    background-color: var(--primary-color);
+  }
+  .conversation-card.active:hover {
+    background-color: var(--primary-color);
+  }
+  .conversation-card.active .conversation-card__content {
+    color: white;
+  }
+  .conversation-card.active .conversation-card__notif {
+    background-color: white;
+    color: var(--primary-color);
+  }
+}

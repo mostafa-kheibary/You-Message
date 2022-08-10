@@ -6,7 +6,7 @@ import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import { Avatar, IconButton } from '@mui/material';
 import { logout, selectUser } from '../../store/reducers/user/userSlice';
 import { db } from '../../config/firebase.config';
-import { ContactCard } from '../../Components';
+import { ConversationCard } from '../../Components';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import useToast from '../../hook/useToast';
 import { v4 as uuidv4 } from 'uuid';
@@ -55,7 +55,7 @@ const SideBar: FC = () => {
       </div>
       <div className='side-bar__conversations-container'>
         {conversations.map((contact: any, i: number) => (
-          <ContactCard key={i} messageData={contact} />
+          <ConversationCard key={i} messageData={contact} />
         ))}
       </div>
     </aside>

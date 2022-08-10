@@ -1,5 +1,5 @@
 import { deleteDoc, doc } from 'firebase/firestore';
-import { FC, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -18,7 +18,7 @@ const Message: FC<IProps> = ({ message }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
   const messageRef = useRef<HTMLDivElement | null>(null);
-
+  
   const handleRightClick = async () => {
     if (message.owner !== info?.uid) return;
     const currentChatRef = doc(db, 'conversations', id, 'messages', message.id);
