@@ -1,9 +1,12 @@
 .message {
   position: relative;
-  border-radius: 100rem;
-  width: fit-content;
+  border-radius: 2rem;
+  max-width: 480px;
   padding: 0.8rem;
   transition: margin 200ms ease;
+  word-wrap: break-word;
+  user-select: text;
+  text-align: left;
 }
 .message.owner {
   position: relative;
@@ -11,7 +14,6 @@
   color: white;
   margin-left: auto;
   margin-right: 0.5rem;
-  text-align: right;
 }
 .message.owner.pending {
   margin-right: 1rem;
@@ -29,12 +31,12 @@
   border-left: 0.5rem solid var(--primary-color);
   border-radius: 50%;
   transform: rotate(-20deg);
+  z-index: -1;
 }
 .message.reciver {
   position: relative;
   margin-right: auto;
   margin-left: 0.5rem;
-  text-align: left;
   color: black;
   background-color: #e7e6ec;
 }
@@ -48,6 +50,7 @@
   border-right: 0.5rem solid #e7e6ec;
   border-radius: 50%;
   transform: rotate(20deg);
+  z-index: -1;
 }
 .message-status {
   position: absolute;
@@ -58,4 +61,10 @@
 }
 .message-status > svg {
   font-size: 1rem !important;
+}
+
+@media screen and (max-width: 700px) {
+  .message {
+    max-width: 90%;
+  }
 }

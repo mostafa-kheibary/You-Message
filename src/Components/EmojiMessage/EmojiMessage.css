@@ -1,0 +1,52 @@
+.emoji-sender {
+  position: relative;
+}
+.emoji__select-tab {
+  padding: 0.5rem;
+  width: 20rem;
+  height: 16rem;
+  background-color: white;
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 1000;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  border-radius: 0.8rem;
+  transform-origin: left bottom;
+  transform: scale(0);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 300ms ease;
+}
+.emoji__select-tab__head {
+  display: flex;
+  overflow-x: auto;
+  touch-action: pan-x;
+  height: 3rem;
+  gap: 0.5rem;
+  font-size: 0.5rem !important;
+}
+.emoji__select-tab__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  max-height: calc(100% - 3.5rem);
+  overflow-y: auto;
+}
+.emoji__select-tab__emoji {
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+.emoji__select-tab__emoji:hover {
+  transform: scale(1.2);
+}
+
+.emoji__select-tab.open {
+  transform: scale(1);
+  opacity: 1;
+  visibility: visible;
+}

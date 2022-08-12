@@ -32,6 +32,9 @@
   font-weight: 400;
 }
 .conversation-card__last-message {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 70%;
   font-size: 0.75rem;
   font-weight: 300;
   margin-top: -0.3rem;

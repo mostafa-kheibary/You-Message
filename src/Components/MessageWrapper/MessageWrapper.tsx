@@ -31,6 +31,9 @@ const MessageWrapper: FC = () => {
     }
   }, [isInView, messages]);
 
+  useEffect(() => {
+    messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, left: 0, behavior: 'auto' });
+  }, [messages]);
 
   const renderdAllMessage = () => {
     if (messages.length <= 0) {

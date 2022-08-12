@@ -4,7 +4,7 @@ import { Avatar, Badge, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { collection, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { InputBar } from '../../Components';
+import { SendMessageBar } from '../../Components';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
 import { changeOpenStatus, selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import { db } from '../../config/firebase.config';
@@ -85,7 +85,7 @@ const Chat: FC = () => {
         </div>
       </div>
       <MessageWrapper />
-      <InputBar />
+      <SendMessageBar />
     </div>
   );
 };
