@@ -4,6 +4,7 @@ import messageReducer from './reducers/message/messageSlice';
 import conversationReducer from './reducers/conversations/conversationsSlice';
 import userReducer from './reducers/user/userSlice';
 import ContextReducer from './reducers/contextMenu/ContextMenu';
+import messageInputReducer from './reducers/messageInput/messageInputSlice';
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     toast: toastReducer,
     conversations: conversationReducer,
     message: messageReducer,
+    messageInput: messageInputReducer,
     contextMenu: ContextReducer,
   },
   middleware: (getDefaultMiddleware) =>

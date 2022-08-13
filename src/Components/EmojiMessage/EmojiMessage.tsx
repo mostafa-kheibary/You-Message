@@ -7,6 +7,8 @@ import TagFacesIcon from '@mui/icons-material/TagFaces';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import classNames from '../../utils/classNames';
 import './EmojiMessage.css';
+import { useDispatch } from 'react-redux';
+import { addMessageInput } from '../../store/reducers/messageInput/messageInputSlice';
 
 type emojiType =
   | 'Smileys & Emotion'
@@ -22,11 +24,9 @@ interface ICatagory {
   name: emojiType;
   icon: ReactNode;
 }
-interface IProps {
-  addEmojis: (emoji: string) => void;
-}
 
-const EmojiMessage: FC<IProps> = ({ addEmojis }) => {
+const EmojiMessage: FC = () => {
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [currentCatagory, setCurrentCatagory] = useState<emojiType>('Smileys & Emotion');
   const [emojis, setEmojis] = useState<any>([]);
@@ -47,13 +47,16 @@ const EmojiMessage: FC<IProps> = ({ addEmojis }) => {
   const handleCloseTab = (): void => {
     setIsOpen(false);
   };
+  const addEmoji = (emoji: string) => {
+    dispatch(addMessageInput(emoji));
+  };
   useMemo(() => {
     setEmojis(emojisData.filter((emoji) => emoji.category === currentCatagory));
   }, [currentCatagory]);
 
   const renderedEmojis = useMemo(() => {
     return emojis.map((emoji: any, i: number) => (
-      <span className='emoji__select-tab__emoji' key={i} onClick={() => addEmojis(emoji.emoji)}>
+      <span className='emoji__select-tab__emoji' key={i} onClick={() => addEmoji(emoji.emoji)}>
         {emoji.emoji}
       </span>
     ));

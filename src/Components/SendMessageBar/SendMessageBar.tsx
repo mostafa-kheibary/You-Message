@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { ChangeEvent, FC, FormEvent, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from 'firebase/auth';
@@ -10,26 +10,32 @@ import { addMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import { VoiceMessageSender, EmojiMessage } from '../';
 import './SendMessageBar.css';
+import {
+  selectMessageInput,
+  setMessageInput,
+  clearMessageInput,
+} from '../../store/reducers/messageInput/messageInputSlice';
 
 const SendMessageBar: FC = () => {
-  const dispacth = useDispatch();
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const { id } = useSelector(selectCurrentConversation);
   const auth = getAuth();
+  const { id } = useSelector(selectCurrentConversation);
+  const { message, mode } = useSelector(selectMessageInput);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const dispacth = useDispatch();
 
-  const handleAddChats = async () => {
+  const handleAddChats = async (e: FormEvent) => {
+    e.preventDefault();
     if (!auth.currentUser) return;
     try {
-      const chatText = values.chat;
       const messageId = uuidv4();
       const messagePayload = {
         timeStamp: Timestamp.now(),
         owner: auth.currentUser.uid,
-        text: chatText,
+        text: message,
         status: 'sent',
         id: messageId,
       };
-      setValues({ ...values, chat: '' });
+      dispacth(clearMessageInput());
       dispacth(addMessage({ ...messagePayload, status: 'pending' }));
       const messageRef = doc(db, 'conversations', id, 'messages', messageId);
       await setDoc(messageRef, messagePayload);
@@ -38,23 +44,18 @@ const SendMessageBar: FC = () => {
     }
   };
 
-  const handleAddEmoji = (emoji: string) => {
-    inputRef.current!.value += emoji;
-    setValues({ ...values, chat: inputRef.current?.value });
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    dispacth(setMessageInput(e.target.value));
   };
 
-  const { handleChange, handleSubmit, setValues, values } = useForm(handleAddChats, {
-    chat: '',
-  });
-
   return (
-    <form className='send-message-bar' onSubmit={handleSubmit}>
-      <EmojiMessage addEmojis={handleAddEmoji} />
+    <form className='send-message-bar' onSubmit={handleAddChats}>
+      <EmojiMessage />
       <OutlinedInput
         inputRef={inputRef}
         onChange={handleChange}
         autoComplete='off'
-        value={values.chat}
+        value={message}
         size='medium'
         name='chat'
         className='send-message-bar__input'
