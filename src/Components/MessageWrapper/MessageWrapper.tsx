@@ -1,6 +1,6 @@
 import { doc, updateDoc } from 'firebase/firestore';
-import { AnimatePresence, useInView } from 'framer-motion';
-import { FC, useEffect, useRef, useState } from 'react';
+import { useInView } from 'framer-motion';
+import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Message } from '../';
 import { db } from '../../config/firebase.config';

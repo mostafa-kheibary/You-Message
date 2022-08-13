@@ -63,6 +63,13 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
     dispatch(changeOpenStatus(true));
   };
 
+  const handleRightClick = () => {
+    // setContextMenus([
+    //   { name: 'delete', function: () => console.log('delte') },
+    //   { name: 'edit', function: () => console.log('edit') },
+    // ])
+  };
+
   if (!toUser) {
     return (
       <div className='conversation-card__skeleton'>
@@ -81,6 +88,7 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
       color='inherit'
       autoCapitalize='off'
       onClick={handleOpenChat}
+      onContextMenu={handleRightClick}
       className={classNames('conversation-card', toUser.uid === currentConversation.toUser?.uid ? 'active' : '')}
     >
       <div className='conversation-card__content'>

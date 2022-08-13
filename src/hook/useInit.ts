@@ -1,13 +1,6 @@
 import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import {
-  collection,
-  doc,
-  enableIndexedDbPersistence,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore';
+import { collection, doc, enableIndexedDbPersistence, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase.config';
 import { IUser, login, logout } from '../store/reducers/user/userSlice';
 import { useDispatch } from 'react-redux';

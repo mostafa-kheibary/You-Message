@@ -5,6 +5,7 @@ import { SignIn, Main, SignUp, Profile } from './pages';
 import { Toast } from './Components';
 
 import useInit from './hook/useInit';
+import ContextMenu from './Components/ContextMenu/ContextMenu';
 
 const App: FC = () => {
   const init = useInit();
@@ -16,6 +17,7 @@ const App: FC = () => {
   return (
     <BrowserRouter>
       <Toast />
+      <ContextMenu />
       <Routes>
         <Route element={<PriveteRoute />}>
           <Route path='/' element={<Main />} />

@@ -1,0 +1,15 @@
+.context-menu {
+  position: fixed;
+  width: 14rem !important;
+  background-color: white;
+  border-radius: 0.8rem;
+  z-index: 100000;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+}
+.context-menu__list {
+  padding: 0.5rem !important;
+  font-size: 0.9rem;
+}
+.context-menu__list > div{
+  border-radius: 0.5rem;
+}

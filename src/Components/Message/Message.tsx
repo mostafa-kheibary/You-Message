@@ -1,6 +1,6 @@
 import { deleteDoc, doc } from 'firebase/firestore';
 import { FC, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckIcon from '@mui/icons-material/Check';
@@ -9,6 +9,7 @@ import classNames from '../../utils/classNames';
 import { motion } from 'framer-motion';
 import { IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
+import useContextMenu from '../../hook/useContextMenu';
 import './Message.css';
 
 interface IProps {
@@ -17,12 +18,34 @@ interface IProps {
 const Message: FC<IProps> = ({ message }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
+  const { changeContextMenus, openContext } = useContextMenu();
   const messageRef = useRef<HTMLDivElement | null>(null);
-  
-  const handleRightClick = async () => {
+
+  const deleteMessage = async () => {
     if (message.owner !== info?.uid) return;
     const currentChatRef = doc(db, 'conversations', id, 'messages', message.id);
     await deleteDoc(currentChatRef);
+  };
+
+  const editMessage = () => {};
+  const replyMessage = () => {};
+  const forwardMessage = () => {};
+
+  const handleRightClick = async () => {
+    if (message.owner === info!.uid) {
+      changeContextMenus([
+        { name: 'Reply', function: replyMessage },
+        { name: 'Forward', function: forwardMessage },
+        { name: 'Edit', function: editMessage },
+        { name: 'Delete', function: deleteMessage },
+      ]);
+    } else {
+      changeContextMenus([
+        { name: 'Reply', function: replyMessage },
+        { name: 'Forward', function: forwardMessage },
+      ]);
+    }
+    openContext();
   };
 
   return (
