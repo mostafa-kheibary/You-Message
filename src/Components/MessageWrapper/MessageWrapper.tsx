@@ -7,6 +7,7 @@ import { db } from '../../config/firebase.config';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import { selectMessage } from '../../store/reducers/message/messageSlice';
 import { selectUser } from '../../store/reducers/user/userSlice';
+import classNames from '../../utils/classNames';
 import ElevatorButton from '../ElevatorButton/ElevatorButton';
 import './MessageWrapper.css';
 
@@ -49,7 +50,7 @@ const MessageWrapper: FC = () => {
   };
 
   return (
-    <div ref={messageDivRef} className='message-wrapper'>
+    <div ref={messageDivRef} className={classNames('message-wrapper',)}>
       {false ? <h2>loading</h2> : renderdAllMessage()}
       <div ref={isSeenRef}></div>
       <ElevatorButton containerRef={messageDivRef.current} />

@@ -11,6 +11,7 @@ import { IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import useContextMenu from '../../hook/useContextMenu';
 import './Message.css';
+import { setReplyTo } from '../../store/reducers/messageInput/messageInputSlice';
 
 interface IProps {
   message: IMessage;
@@ -19,6 +20,7 @@ const Message: FC<IProps> = ({ message }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
   const { changeContextMenus, openContext } = useContextMenu();
+  const dispatch = useDispatch();
   const messageRef = useRef<HTMLDivElement | null>(null);
 
   const deleteMessage = async () => {
@@ -28,7 +30,10 @@ const Message: FC<IProps> = ({ message }) => {
   };
 
   const editMessage = () => {};
-  const replyMessage = () => {};
+  const replyMessage = () => {
+    console.log('first');
+    dispatch(setReplyTo({ to: message.owner, text: message.text }));
+  };
   const forwardMessage = () => {};
 
   const handleRightClick = async () => {
