@@ -11,7 +11,11 @@ import { IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import useContextMenu from '../../hook/useContextMenu';
 import './Message.css';
-import { setReplyTo } from '../../store/reducers/messageInput/messageInputSlice';
+import {
+  chnageMessageInputMode,
+  setMessageInput,
+  setReplyTo,
+} from '../../store/reducers/messageInput/messageInputSlice';
 
 interface IProps {
   message: IMessage;
@@ -29,9 +33,12 @@ const Message: FC<IProps> = ({ message }) => {
     await deleteDoc(currentChatRef);
   };
 
-  const editMessage = () => {};
+  const editMessage = () => {
+    dispatch(setMessageInput(message.text));
+    dispatch(chnageMessageInputMode('edit'));
+  };
+
   const replyMessage = () => {
-    console.log('first');
     dispatch(setReplyTo({ to: message.owner, text: message.text }));
   };
   const forwardMessage = () => {};
@@ -53,10 +60,12 @@ const Message: FC<IProps> = ({ message }) => {
     openContext();
   };
 
+  const isPersian = /^[\u0600-\u06FF\s]+$/.test(message.text);
   return (
     <motion.div
       onContextMenu={handleRightClick}
       ref={messageRef}
+      lang={isPersian ? 'fa' : window.navigator.language}
       className={classNames(
         'message',
         message.owner === info!.uid ? 'owner' : 'reciver',

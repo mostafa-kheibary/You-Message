@@ -8,6 +8,10 @@
   user-select: text;
   text-align: left;
 }
+.message:lang(fa) {
+  text-align: right;
+  font-family: sans-serif;
+}
 .message.owner {
   position: relative;
   background-color: var(--primary-color);
