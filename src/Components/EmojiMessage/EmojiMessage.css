@@ -3,8 +3,9 @@
 }
 .emoji__select-tab {
   padding: 0.5rem;
+  padding-bottom: 0;
   width: 20rem;
-  height: 16rem;
+  height: 18rem;
   background-color: white;
   position: absolute;
   bottom: 1rem;
@@ -18,13 +19,19 @@
   visibility: hidden;
   transition: all 300ms ease;
 }
-.emoji__select-tab__head {
+.emoji__select-tab__bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  padding: 0.3rem;
   display: flex;
-  overflow-x: auto;
+  overflow-x: hidden;
   touch-action: pan-x;
-  height: 3rem;
-  gap: 0.5rem;
+  gap: 0.3rem;
   font-size: 0.5rem !important;
+  box-shadow: 0 -1rem 1rem rgba(0, 0, 0, 0.1);
 }
 .emoji__select-tab__wrapper {
   display: flex;
@@ -33,9 +40,10 @@
   align-items: center;
   padding: 0.5rem;
   gap: 0.5rem;
-  max-height: calc(100% - 3.5rem);
+  max-height: calc(100% - 4.9rem);
   overflow-y: auto;
 }
+
 .emoji__select-tab__emoji {
   font-size: 1.3rem;
   cursor: pointer;
@@ -49,4 +57,42 @@
   transform: scale(1);
   opacity: 1;
   visibility: visible;
+}
+.emoji__select-tab__search-head {
+  text-align: center;
+}
+.emoji__select-tab__search-input {
+  width: 90%;
+  margin: 0 auto;
+  height: 2rem;
+}
+.emoji__select__not-found {
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+}
+
+@media screen and (max-width: 700px) {
+  .emoji__select-tab {
+    height: 14rem;
+    width: 100%;
+    left: 0;
+    bottom: 5rem;
+    position: fixed;
+    border-radius: 0;
+    transform-origin: center bottom;
+  }
+  .emoji__select-tab::after {
+    content: '';
+    position: absolute;
+    bottom: -5rem;
+    left: 0;
+    width: 5rem;
+    height: 5rem;
+    background-color: transparent;
+    z-index: -1;
+  }
+  .emoji__select-tab__bottom {
+    justify-content: space-around;
+  }
 }
