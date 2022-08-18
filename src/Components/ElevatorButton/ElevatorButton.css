@@ -13,3 +13,11 @@
   opacity: 1;
   bottom: 6rem;
 }
+      
+
+@media (prefers-color-scheme: dark) {
+  .elevator-button{
+    background-color: #333 !important;
+    color: #fff !important;
+  }
+}
