@@ -34,9 +34,13 @@ const messageInput = createSlice({
       delete state.replyTo;
       state.mode = 'create';
     },
+    chnageMessageInputMode: (state: IMessageInput, action: PayloadAction<'create' | 'edit' | 'reply'>) => {
+      state.mode = action.payload;
+    },
   },
 });
 
 export default messageInput.reducer;
-export const { setMessageInput, clearMessageInput, addMessageInput, clearReplyTo, setReplyTo } = messageInput.actions;
+export const { setMessageInput, clearMessageInput, addMessageInput, clearReplyTo, setReplyTo, chnageMessageInputMode } =
+  messageInput.actions;
 export const selectMessageInput = (state: RootState) => state.messageInput;

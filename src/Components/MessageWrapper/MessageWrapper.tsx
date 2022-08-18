@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import { doc, updateDoc } from 'firebase/firestore';
 import { useInView } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
@@ -10,8 +11,11 @@ import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import ElevatorButton from '../ElevatorButton/ElevatorButton';
 import './MessageWrapper.css';
+interface IProps {
+  messageLoaded: boolean | null;
+}
 
-const MessageWrapper: FC = () => {
+const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
   const messages = useSelector(selectMessage);
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
@@ -22,7 +26,7 @@ const MessageWrapper: FC = () => {
   // for seen messages when user see the bottom of the message
   useEffect(() => {
     if (isInView) {
-      messages.forEach(async (message) => {
+      messages.messages.forEach(async (message) => {
         if (message.owner !== info?.uid) {
           await updateDoc(doc(db, 'conversations', id, 'messages', message.id), {
             status: 'seen',
@@ -37,21 +41,22 @@ const MessageWrapper: FC = () => {
   }, [messages]);
 
   const renderdAllMessage = () => {
-    if (messages.length <= 0) {
+    if (messages.messages.length <= 0 && messageLoaded === null) {
       return (
         <h4 className='message-wrapper__conversation-start-text'>
           conversation created <br /> No messages here yet... Send a message
         </h4>
       );
     }
-    return messages.map((message) => {
+    return messages.messages.map((message) => {
       return <Message message={message} key={message.id} />;
     });
   };
 
   return (
-    <div ref={messageDivRef} className={classNames('message-wrapper',)}>
-      {false ? <h2>loading</h2> : renderdAllMessage()}
+    <div ref={messageDivRef} className={classNames('message-wrapper')}>
+      {messageLoaded && <CircularProgress className='message-loading' />}
+      {renderdAllMessage()}
       <div ref={isSeenRef}></div>
       <ElevatorButton containerRef={messageDivRef.current} />
     </div>

@@ -20,17 +20,21 @@ import './Chat.css';
 const Chat: FC = () => {
   const { id, toUser } = useSelector(selectCurrentConversation);
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean | null>(true); // null for no message;
 
   const handleGoBack = (): void => {
     dispatch(changeOpenStatus(false));
   };
 
-  // loading chat message
   useEffect(() => {
     if (!id) return;
+    setLoading(true);
     dispatch(clearMessage());
     const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
-    onSnapshot(messagesRef, { includeMetadataChanges: true }, (snapShot) => {
+    const unsub = onSnapshot(messagesRef, { includeMetadataChanges: true }, (snapShot) => {
+      if (snapShot.size <= 0) {
+        setLoading(null); // null for no message
+      }
       snapShot.docChanges().forEach((change) => {
         switch (change.type) {
           case 'added':
@@ -44,8 +48,10 @@ const Chat: FC = () => {
             dispatch(removeMessage(change.doc.id));
             break;
         }
+        setLoading(false);
       });
     });
+    return unsub;
   }, [id]);
 
   if (!toUser) {
@@ -84,7 +90,7 @@ const Chat: FC = () => {
           </IconButton>
         </div>
       </div>
-      <MessageWrapper />
+      <MessageWrapper messageLoaded={loading} />
       <SendMessageBar />
     </div>
   );
