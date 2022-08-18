@@ -19,10 +19,9 @@ const useInit = () => {
 
   // Initialize auth and check user auth status
   useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, async (user) => {
+    const unSubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         getInitialsConversations(user.uid);
-        console.log(user.uid);
         onSnapshot(doc(db, 'users', user.uid), { includeMetadataChanges: true }, (snapShot) => {
           dispatch(login(snapShot.data() as IUser));
         });
@@ -30,7 +29,7 @@ const useInit = () => {
         dispatch(logout());
       }
     });
-    return () => unSubscribe();
+    return unSubscribe;
   }, []);
 
   // get all contact and messgae related to each contact
@@ -58,8 +57,8 @@ const useInit = () => {
   };
 
   const registerEvent = () => {
-    window.addEventListener('offline', () => toast('No internet! you are offline', 'error'));
-    window.addEventListener('online', () => toast('Internet is back! you are online', 'success'));
+    // window.addEventListener('offline', () => toast('No internet! you are offline', 'error'));
+    // window.addEventListener('online', () => toast('Internet is back! you are online', 'success'));
     window.addEventListener('contextmenu', (e) => e.preventDefault());
   };
   const init = (): void => {

@@ -36,8 +36,8 @@ const ContextMenu: FC = () => {
       animate={open ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
       className='context-menu'
       style={location}
-      onMouseLeave={() => dispatch(changeStatus(false))}
-      // onMouseOut={() => dispatch(changeStatus(false))}
+      onMouseMove={() => dispatch(changeStatus(true))}
+      onMouseOut={() => dispatch(changeStatus(false))}
     >
       <List onClick={() => setTimeout(() => dispatch(changeStatus(false)), 150)} className='context-menu__list'>
         {menu.map((contextItem, i) => (

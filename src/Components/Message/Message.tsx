@@ -1,5 +1,5 @@
 import { deleteDoc, doc } from 'firebase/firestore';
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -20,6 +20,7 @@ import {
 interface IProps {
   message: IMessage;
 }
+
 const Message: FC<IProps> = ({ message }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
@@ -62,7 +63,7 @@ const Message: FC<IProps> = ({ message }) => {
 
   const isPersian = /^[\u0600-\u06FF\s]+$/.test(message.text);
   return (
-    <motion.div
+    <div
       onContextMenu={handleRightClick}
       ref={messageRef}
       lang={isPersian ? 'fa' : window.navigator.language}
@@ -82,7 +83,7 @@ const Message: FC<IProps> = ({ message }) => {
           ''
         )}
       </p>
-    </motion.div>
+    </div>
   );
 };
 

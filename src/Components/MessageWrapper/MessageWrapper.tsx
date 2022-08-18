@@ -1,6 +1,6 @@
 import { CircularProgress } from '@mui/material';
 import { doc, updateDoc } from 'firebase/firestore';
-import { useInView } from 'framer-motion';
+import { AnimatePresence, useInView } from 'framer-motion';
 import { FC, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { Message } from '../';
@@ -44,7 +44,7 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
     if (messages.messages.length <= 0 && messageLoaded === null) {
       return (
         <h4 className='message-wrapper__conversation-start-text'>
-          conversation created <br /> No messages here yet... Send a message
+          conversation created <br /> No messages here yet... Send a message 👋
         </h4>
       );
     }
@@ -56,7 +56,7 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
   return (
     <div ref={messageDivRef} className={classNames('message-wrapper')}>
       {messageLoaded && <CircularProgress className='message-loading' />}
-      {renderdAllMessage()}
+      <AnimatePresence>{renderdAllMessage()}</AnimatePresence>
       <div ref={isSeenRef}></div>
       <ElevatorButton containerRef={messageDivRef.current} />
     </div>

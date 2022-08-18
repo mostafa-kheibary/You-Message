@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../config/firebase.config';
 import { IconButton, OutlinedInput } from '@mui/material';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
+import { doc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { addMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
@@ -52,7 +52,11 @@ const SendMessageBar: FC = () => {
       dispatch(clearMessageInput());
       dispatch(addMessage({ ...messagePayload, status: 'pending' }));
       const messageRef = doc(db, 'conversations', id, 'messages', messageId);
-      await setDoc(messageRef, messagePayload);
+      const conversationRef = doc(db, 'conversation', id);
+      Promise.all([
+        await updateDoc(conversationRef, { timeStamp: Timestamp.now() }),
+        await setDoc(messageRef, messagePayload),
+      ]);
     } catch (error) {
       console.log(error);
     }
