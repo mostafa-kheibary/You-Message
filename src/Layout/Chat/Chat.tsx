@@ -2,11 +2,15 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Avatar, Badge, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { collection, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { SendMessageBar } from '../../Components';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
-import { changeOpenStatus, selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
+import {
+  changeOpenStatus,
+  selectCurrentConversation,
+  setCurrentConversation,
+} from '../../store/reducers/conversations/conversationsSlice';
 import { db } from '../../config/firebase.config';
 import {
   addMessage,
@@ -16,6 +20,7 @@ import {
   removeMessage,
 } from '../../store/reducers/message/messageSlice';
 import './Chat.css';
+import { IUser } from '../../store/reducers/user/userSlice';
 
 const Chat: FC = () => {
   const { id, toUser } = useSelector(selectCurrentConversation);
@@ -31,6 +36,9 @@ const Chat: FC = () => {
     setLoading(true);
     dispatch(clearMessage());
     const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
+    const unsub2 = onSnapshot(doc(db, 'users', toUser!.uid), (snapShot) => {
+      dispatch(setCurrentConversation({ id, toUser: snapShot.data() as IUser }));
+    });
     const unsub = onSnapshot(messagesRef, { includeMetadataChanges: true }, (snapShot) => {
       if (snapShot.size <= 0) {
         setLoading(null); // null for no message
@@ -51,7 +59,10 @@ const Chat: FC = () => {
         setLoading(false);
       });
     });
-    return unsub;
+    return () => {
+      unsub();
+      unsub2();
+    };
   }, [id]);
 
   if (!toUser) {

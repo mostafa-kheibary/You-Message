@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent, useRef } from 'react';
+import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from 'firebase/auth';
@@ -18,16 +18,18 @@ import {
   clearMessageInput,
   clearReplyTo,
 } from '../../store/reducers/messageInput/messageInputSlice';
+import { setTextRange } from 'typescript';
 
 const SendMessageBar: FC = () => {
   const auth = getAuth();
-  const { id } = useSelector(selectCurrentConversation);
+  const { id, toUser } = useSelector(selectCurrentConversation);
   const { message, mode } = useSelector(selectMessageInput);
   const { replyTo } = useSelector(selectMessageInput);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
 
   const handleSubmit = (e: FormEvent) => {
+    console.log('sss');
     e.preventDefault();
     switch (mode) {
       case 'create':
@@ -52,24 +54,30 @@ const SendMessageBar: FC = () => {
       dispatch(clearMessageInput());
       dispatch(addMessage({ ...messagePayload, status: 'pending' }));
       const messageRef = doc(db, 'conversations', id, 'messages', messageId);
-      const conversationRef = doc(db, 'conversation', id);
-      Promise.all([
-        await updateDoc(conversationRef, { timeStamp: Timestamp.now() }),
-        await setDoc(messageRef, messagePayload),
-      ]);
+      const conversationRef = doc(db, 'conversations', id);
+      // Promise.all([
+      // await updateDoc(conversationRef, { timeStamp: Timestamp.now() }),
+      await setDoc(messageRef, messagePayload);
+      // ]);
     } catch (error) {
       console.log(error);
     }
   };
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setMessageInput(e.target.value));
+    // clearTimeout(x.current);
+    // const userRef = doc(db, 'users', auth.currentUser!.uid);
+    // await updateDoc(userRef, { isTyping: true });
+    // x.current = setTimeout(async () => {
+    //   await updateDoc(userRef, { isTyping: false });
+    // }, 500);
   };
 
   const closeReply = () => {
     dispatch(clearReplyTo());
   };
   return (
-    <form className='send-message-bar' onSubmit={handleSubmit}>
+    <div className='send-message-bar'>
       <AnimatePresence>
         {replyTo && (
           <motion.div
@@ -88,19 +96,21 @@ const SendMessageBar: FC = () => {
       </AnimatePresence>
       <div className='send-message-bar__wrapper'>
         <EmojiMessage />
-        <OutlinedInput
-          inputRef={inputRef}
-          onChange={handleChange}
-          autoComplete='off'
-          value={message}
-          size='medium'
-          name='chat'
-          className='send-message-bar__input'
-          placeholder='Your message ...'
-        />
+        <form className='send-message-bar__form' onSubmit={handleSubmit}>
+          <OutlinedInput
+            inputRef={inputRef}
+            onChange={handleChange}
+            autoComplete='off'
+            value={message}
+            size='medium'
+            name='chat'
+            className='send-message-bar__input'
+            placeholder='Your message ...'
+          />
+        </form>
         <VoiceMessageSender />
       </div>
-    </form>
+    </div>
   );
 };
 

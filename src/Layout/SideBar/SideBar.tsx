@@ -1,16 +1,17 @@
 import { FC } from 'react';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { getAuth, signOut } from 'firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import SettingsIcon from '@mui/icons-material/Settings';
-import MapsUgcIcon from '@mui/icons-material/MapsUgc';
-import { Avatar, IconButton } from '@mui/material';
-import { logout, selectUser } from '../../store/reducers/user/userSlice';
-import { db } from '../../config/firebase.config';
-import { ConversationCard } from '../../Components';
-import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import useToast from '../../hook/useToast';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
+import { db } from '../../config/firebase.config';
+import { logout, selectUser } from '../../store/reducers/user/userSlice';
+import { Avatar, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import MapsUgcIcon from '@mui/icons-material/MapsUgc';
+import GroupIcon from '@mui/icons-material/Group';
+import useToast from '../../hook/useToast';
+import { ConversationCard } from '../../Components';
 import { selectConversations } from '../../store/reducers/conversations/conversationsSlice';
 import './SideBar.css';
 
@@ -22,9 +23,7 @@ const SideBar: FC = () => {
   const { info } = useSelector(selectUser);
   const conversations = useSelector(selectConversations);
 
-
-
-  const handleAddContact = async () => {
+  const handleAddConversation = async () => {
     const newUserName = prompt('enter userName');
     const userData = await getDocs(query(collection(db, 'users'), where('userName', '==', newUserName)));
     const docId: string = uuidv4();
@@ -44,17 +43,16 @@ const SideBar: FC = () => {
           </IconButton>
           <h2 className='side-bar__head__title'>Hi {info?.userName}</h2>
         </div>
-        <div className='side-bar__head__buttons'>
-          <IconButton onClick={handleAddContact} color='primary'>
-            <MapsUgcIcon />
-          </IconButton>
-        </div>
       </div>
       <div className='side-bar__conversations-container'>
         {conversations.map((contact: any, i: number) => (
           <ConversationCard key={i} messageData={contact} />
         ))}
       </div>
+      <SpeedDial ariaLabel='SpeedDial basic example' icon={<SpeedDialIcon />} className='side-bar__dial'>
+        <SpeedDialAction onClick={handleAddConversation} icon={<MapsUgcIcon />} tooltipTitle='Create Conversation' />
+        <SpeedDialAction icon={<GroupIcon />} tooltipTitle='Create Group' />
+      </SpeedDial>
     </aside>
   );
 };

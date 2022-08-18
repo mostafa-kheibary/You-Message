@@ -18,7 +18,7 @@ interface IProps {
 const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
   const messages = useSelector(selectMessage);
   const { info } = useSelector(selectUser);
-  const { id } = useSelector(selectCurrentConversation);
+  const { id, toUser } = useSelector(selectCurrentConversation);
   const isSeenRef = useRef<HTMLDivElement | null>(null);
   const messageDivRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(isSeenRef);
@@ -52,11 +52,12 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
       return <Message message={message} key={message.id} />;
     });
   };
-
+  console.log(toUser?.isTyping);
   return (
     <div ref={messageDivRef} className={classNames('message-wrapper')}>
       {messageLoaded && <CircularProgress className='message-loading' />}
       <AnimatePresence>{renderdAllMessage()}</AnimatePresence>
+      <h1>{toUser?.isTyping && 'is Typing ...'}</h1>
       <div ref={isSeenRef}></div>
       <ElevatorButton containerRef={messageDivRef.current} />
     </div>

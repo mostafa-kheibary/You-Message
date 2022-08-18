@@ -1,4 +1,5 @@
 .side-bar {
+  position: relative;
   width: 22.5rem;
   border-right: 0.1rem solid #e6e6e6;
   transition: all 500ms ease;
@@ -53,7 +54,12 @@
   display: flex;
   gap: 0.5rem;
 }
-
+.side-bar__dial {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 0 !important;
+}
 @media screen and (max-width: 700px) {
   .side-bar {
     border-right: none;
