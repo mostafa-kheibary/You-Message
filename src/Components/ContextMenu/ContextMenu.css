@@ -10,6 +10,13 @@
   padding: 0.5rem !important;
   font-size: 0.9rem;
 }
-.context-menu__list > div{
+.context-menu__list > div {
   border-radius: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .context-menu {
+    background-color:#333;
+    color: #fff;
+  }
 }

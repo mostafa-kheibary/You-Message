@@ -14,7 +14,6 @@ const ContextMenu: FC = () => {
 
   useEffect(() => {
     const unsub = window.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
       if (!contextMenuRef.current) return;
       setLocation({
         top:
@@ -29,15 +28,19 @@ const ContextMenu: FC = () => {
     });
     return unsub;
   }, []);
+  const handleClose = () => {
+    dispatch(changeStatus(false));
+  };
 
   return (
     <motion.div
+      onClick={(e) => e.stopPropagation()}
       ref={contextMenuRef}
       animate={open ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
       className='context-menu'
       style={location}
       onMouseMove={() => dispatch(changeStatus(true))}
-      onMouseOut={() => dispatch(changeStatus(false))}
+      onMouseOut={handleClose}
     >
       <List onClick={() => setTimeout(() => dispatch(changeStatus(false)), 150)} className='context-menu__list'>
         {menu.map((contextItem, i) => (

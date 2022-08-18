@@ -7,10 +7,12 @@ import { useDispatch } from 'react-redux';
 import useToast from './useToast';
 import {
   addConversation,
+  changeOpenStatus,
   editConversation,
   IConversation,
   removeConversation,
 } from '../store/reducers/conversations/conversationsSlice';
+import { changeStatus } from '../store/reducers/contextMenu/ContextMenu';
 
 const useInit = () => {
   const auth = getAuth();
@@ -60,6 +62,7 @@ const useInit = () => {
     // window.addEventListener('offline', () => toast('No internet! you are offline', 'error'));
     // window.addEventListener('online', () => toast('Internet is back! you are online', 'success'));
     window.addEventListener('contextmenu', (e) => e.preventDefault());
+    window.addEventListener('click', () => dispatch(changeStatus(false)));
   };
   const init = (): void => {
     enableIndexedDbPersistence(db);
