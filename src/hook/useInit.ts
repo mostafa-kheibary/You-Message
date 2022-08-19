@@ -12,7 +12,7 @@ import {
   IConversation,
   removeConversation,
 } from '../store/reducers/conversations/conversationsSlice';
-import { changeStatus } from '../store/reducers/contextMenu/ContextMenu';
+import { changeStatus } from '../store/reducers/contextMenu/ContextMenuSlice';
 
 const useInit = () => {
   const auth = getAuth();

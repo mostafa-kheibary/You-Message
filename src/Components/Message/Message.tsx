@@ -1,34 +1,41 @@
-import { deleteDoc, doc } from 'firebase/firestore';
 import { FC, useRef } from 'react';
+import { deleteDoc, doc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { db } from '../../config/firebase.config';
 import { motion } from 'framer-motion';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import CheckIcon from '@mui/icons-material/Check';
-import ReplyIcon from '@mui/icons-material/Reply';
+import { db } from '../../config/firebase.config';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import { IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import useContextMenu from '../../hook/useContextMenu';
-import './Message.css';
 import {
   chnageMessageInputMode,
+  setEditMode,
   setMessageInput,
   setReplyTo,
 } from '../../store/reducers/messageInput/messageInputSlice';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CheckIcon from '@mui/icons-material/Check';
+import ReplyIcon from '@mui/icons-material/Reply';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import './Message.css';
+import useToast from '../../hook/useToast';
 
 interface IProps {
   message: IMessage;
   messagesDivRef: { current: HTMLDivElement | null };
 }
-
 const Message: FC<IProps> = ({ message, messagesDivRef }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
   const { changeContextMenus, openContext } = useContextMenu();
-  const dispatch = useDispatch();
   const messageRef = useRef<HTMLDivElement | null>(null);
+  const toast = useToast();
+  const dispatch = useDispatch();
 
   const deleteMessage = async () => {
     if (message.owner !== info?.uid) return;
@@ -38,7 +45,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
 
   const editMessage = () => {
     dispatch(setMessageInput(message.text));
-    dispatch(chnageMessageInputMode('edit'));
+    dispatch(setEditMode(message.id));
   };
 
   const replyMessage = () => {
@@ -46,6 +53,11 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
     dispatch(setReplyTo(replyPayload));
   };
   const forwardMessage = () => {};
+  const copyMessage = () => {
+    navigator.clipboard.writeText(message.text);
+    toast('Message succsesfully copid', 'success');
+  };
+  // for find a replyed message by click on it
   const handleGoToMessage = () => {
     if (!messagesDivRef.current || !message.replyTo) return;
 
@@ -56,19 +68,22 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
   const handleRightClick = async () => {
     if (message.owner === info!.uid) {
       changeContextMenus([
-        { name: 'Reply', function: replyMessage },
-        { name: 'Forward', function: forwardMessage },
-        { name: 'Edit', function: editMessage },
-        { name: 'Delete', function: deleteMessage },
+        { icon: <ContentCopyIcon />, name: 'Copy', function: copyMessage },
+        { icon: <ReplyAllIcon />, name: 'Reply', function: replyMessage },
+        { icon: <ArrowForwardIcon />, name: 'Forward', function: forwardMessage },
+        { icon: <EditIcon />, name: 'Edit', function: editMessage },
+        { icon: <DeleteIcon />, name: 'Delete', function: deleteMessage },
       ]);
     } else {
       changeContextMenus([
-        { name: 'Reply', function: replyMessage },
-        { name: 'Forward', function: forwardMessage },
+        { icon: <ContentCopyIcon />, name: 'Copy', function: copyMessage },
+        { icon: <ReplyAllIcon />, name: 'Reply', function: replyMessage },
+        { icon: <ArrowForwardIcon />, name: 'Forward', function: forwardMessage },
       ]);
     }
     openContext();
   };
+
   const isPersian = /^[\u0600-\u06FF\s]+$/.test(message.text);
   return (
     <>

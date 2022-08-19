@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ReactNode } from 'react';
 import { RootState } from '../..';
 
-export type ContextMenuItem = { name: string; function: () => any };
+export type ContextMenuItem = { icon?: ReactNode; name: string; function: () => any };
 export interface IContextMenu {
   menu: ContextMenuItem[];
   open: boolean;

@@ -4,6 +4,7 @@ import { RootState } from '../..';
 export interface IMessageInput {
   message: string;
   replyTo?: { to: string; message: string; id: string };
+  editInfo?: { id: string };
   mode: 'create' | 'edit' | 'reply';
 }
 const initalState: IMessageInput = {
@@ -34,6 +35,16 @@ const messageInput = createSlice({
       delete state.replyTo;
       state.mode = 'create';
     },
+    setEditMode: (state: IMessageInput, action: PayloadAction<string>) => {
+      const editPayload = { id: action.payload };
+      state.mode = 'edit';
+      state.editInfo = editPayload;
+    },
+    clearEditMode: (state: IMessageInput) => {
+      delete state.editInfo;
+      state.mode = 'create';
+      state.message = '';
+    },
     chnageMessageInputMode: (state: IMessageInput, action: PayloadAction<'create' | 'edit' | 'reply'>) => {
       state.mode = action.payload;
     },
@@ -41,6 +52,14 @@ const messageInput = createSlice({
 });
 
 export default messageInput.reducer;
-export const { setMessageInput, clearMessageInput, addMessageInput, clearReplyTo, setReplyTo, chnageMessageInputMode } =
-  messageInput.actions;
+export const {
+  setMessageInput,
+  clearMessageInput,
+  addMessageInput,
+  clearReplyTo,
+  setReplyTo,
+  chnageMessageInputMode,
+  clearEditMode,
+  setEditMode,
+} = messageInput.actions;
 export const selectMessageInput = (state: RootState) => state.messageInput;

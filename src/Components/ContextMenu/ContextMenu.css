@@ -13,6 +13,11 @@
   padding: 0.5rem !important;
   font-size: 0.9rem;
 }
-.context-menu__list > div {
-  border-radius: 0.5rem;
+.context-menu__lists {
+  border-radius: 0.5rem !important;
+  display: flex;
+  gap: 0.5rem;
+}
+.context-menu__icon > svg {
+  font-size: 1.1rem;
 }

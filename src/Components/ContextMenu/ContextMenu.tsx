@@ -3,7 +3,7 @@ import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeStatus, selectContextMenu } from '../../store/reducers/contextMenu/ContextMenu';
+import { changeStatus, selectContextMenu } from '../../store/reducers/contextMenu/ContextMenuSlice';
 import './ContextMenu.css';
 
 const ContextMenu: FC = () => {
@@ -39,13 +39,13 @@ const ContextMenu: FC = () => {
       animate={open ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
       className='context-menu'
       style={location}
-      onMouseMove={() => dispatch(changeStatus(true))}
-      onMouseOut={handleClose}
+      onMouseLeave={handleClose}
     >
       <List onClick={() => setTimeout(() => dispatch(changeStatus(false)), 150)} className='context-menu__list'>
         {menu.map((contextItem, i) => (
-          <ListItemButton key={i} onClick={contextItem.function}>
-            {contextItem.name}
+          <ListItemButton className='context-menu__lists' key={i} onClick={contextItem.function}>
+            <span className='context-menu__icon'>{contextItem?.icon}</span>
+            <span className='context-menu__text'>{contextItem.name}</span>
           </ListItemButton>
         ))}
       </List>

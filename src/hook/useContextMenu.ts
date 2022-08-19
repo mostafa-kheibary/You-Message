@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContextMenu, setContextMenus, changeStatus } from '../store/reducers/contextMenu/ContextMenu';
+import { selectContextMenu, setContextMenus, changeStatus } from '../store/reducers/contextMenu/ContextMenuSlice';
 const useContextMenu = () => {
   const dispatch = useDispatch();
   const { open } = useSelector(selectContextMenu);

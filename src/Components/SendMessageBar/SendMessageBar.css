@@ -24,6 +24,7 @@
   top: -4rem;
   padding-left: 1rem;
   left: 0;
+  z-index: 100;
   transform-origin: bottom center;
 }
 .send-message-bar__reply__close-button {

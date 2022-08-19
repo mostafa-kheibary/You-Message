@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../config/firebase.config';
 import { IconButton, OutlinedInput } from '@mui/material';
-import { doc, setDoc, Timestamp } from 'firebase/firestore';
+import { doc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { addMessage, IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
@@ -17,13 +17,15 @@ import {
   setMessageInput,
   clearMessageInput,
   clearReplyTo,
+  setEditMode,
+  clearEditMode,
 } from '../../store/reducers/messageInput/messageInputSlice';
+import { async } from '@firebase/util';
 
 const SendMessageBar: FC = () => {
   const auth = getAuth();
   const { id } = useSelector(selectCurrentConversation);
-  const { message, mode } = useSelector(selectMessageInput);
-  const { replyTo } = useSelector(selectMessageInput);
+  const { message, mode, editInfo, replyTo } = useSelector(selectMessageInput);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
 
@@ -35,7 +37,20 @@ const SendMessageBar: FC = () => {
         break;
       case 'reply':
         sendMessage();
+        break;
+      case 'edit':
+        editMessage();
+        break;
     }
+  };
+
+  const editMessage = async () => {
+    if (!editInfo) return;
+    const messageText = message;
+    dispatch(clearEditMode());
+    await updateDoc(doc(db, 'conversations', id, 'messages', editInfo.id), {
+      text: messageText,
+    });
   };
 
   const sendMessage = async () => {
@@ -57,15 +72,12 @@ const SendMessageBar: FC = () => {
       dispatch(addMessage({ ...messagePayload, status: 'pending' }));
 
       const messageRef = doc(db, 'conversations', id, 'messages', messageId);
-      // const conversationRef = doc(db, 'conversations', id);
-      // Promise.all([
-      // await updateDoc(conversationRef, { timeStamp: Timestamp.now() }),
       await setDoc(messageRef, messagePayload);
-      // ]);
     } catch (error) {
       console.log(error);
     }
   };
+
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setMessageInput(e.target.value));
     // clearTimeout(x.current);
@@ -76,9 +88,6 @@ const SendMessageBar: FC = () => {
     // }, 500);
   };
 
-  const closeReply = () => {
-    dispatch(clearReplyTo());
-  };
   return (
     <div className='send-message-bar'>
       <AnimatePresence>
@@ -91,7 +100,7 @@ const SendMessageBar: FC = () => {
           >
             <ReplyAllIcon color='primary' />
             <span className='send-message-bar__reply-message'>reply to : {replyTo.message}</span>
-            <IconButton onClick={closeReply} className='send-message-bar__reply__close-button'>
+            <IconButton onClick={() => dispatch(clearReplyTo())} className='send-message-bar__reply__close-button'>
               <CloseIcon />
             </IconButton>
           </motion.div>

@@ -3,7 +3,7 @@ import toastReducer from './reducers/toast/toastSlice';
 import messageReducer from './reducers/message/messageSlice';
 import conversationReducer from './reducers/conversations/conversationsSlice';
 import userReducer from './reducers/user/userSlice';
-import ContextReducer from './reducers/contextMenu/ContextMenu';
+import ContextReducer from './reducers/contextMenu/ContextMenuSlice';
 import messageInputReducer from './reducers/messageInput/messageInputSlice';
 
 const store = configureStore({
