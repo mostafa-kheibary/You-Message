@@ -50,7 +50,10 @@ const conversationSlice = createSlice({
     changeOpenStatus: (state: IConversationState, action: PayloadAction<boolean>) => {
       state.isOpen = action.payload;
     },
-    setCurrentConversation: (state: IConversationState, action: PayloadAction<{ toUser: IUser; id: string }>) => {
+    setCurrentConversation: (
+      state: IConversationState,
+      action: PayloadAction<{ toUser: IUser | null; id: string }>
+    ) => {
       state.currentConversation = action.payload;
     },
   },

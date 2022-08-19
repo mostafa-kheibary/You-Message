@@ -1,10 +1,10 @@
 import { Avatar, Button, Skeleton } from '@mui/material';
-import { info } from 'console';
 import { getAuth } from 'firebase/auth';
-import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
+import useContextMenu from '../../hook/useContextMenu';
 import {
   changeOpenStatus,
   IConversation,
@@ -12,6 +12,7 @@ import {
   setCurrentConversation,
 } from '../../store/reducers/conversations/conversationsSlice';
 import { IMessage } from '../../store/reducers/message/messageSlice';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { IUser, selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import './ConversationCard.css';
@@ -20,13 +21,14 @@ interface IProps {
   messageData: IConversation;
 }
 const ConversationCard: FC<IProps> = ({ messageData }) => {
-  const auth = getAuth();
-  const dispatch = useDispatch();
-  const currentConversation = useSelector(selectCurrentConversation);
-  const { info } = useSelector(selectUser);
   const [toUser, setToUser] = useState<IUser | null>(null);
   const [unReadMessage, setUnReadMessage] = useState<number>(0);
   const [lastMessage, setLastMessage] = useState<IMessage | null>(null);
+  const { info } = useSelector(selectUser);
+  const currentConversation = useSelector(selectCurrentConversation);
+  const { changeContextMenus, openContext } = useContextMenu();
+  const auth = getAuth();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!auth.currentUser) return;
@@ -62,12 +64,16 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
     dispatch(setCurrentConversation({ id: messageData.id, toUser }));
     dispatch(changeOpenStatus(true));
   };
+  const deleteConversation = async () => {
+    deleteDoc(doc(db, 'conversations', messageData.id));
+    if (currentConversation.id === messageData.id) {
+      dispatch(setCurrentConversation({ toUser: null, id: '' }));
+    }
+  };
 
   const handleRightClick = () => {
-    // setContextMenus([
-    //   { name: 'delete', function: () => console.log('delte') },
-    //   { name: 'edit', function: () => console.log('edit') },
-    // ])
+    changeContextMenus([{ icon: <DeleteIcon />, name: 'Delete', function: deleteConversation }]);
+    openContext();
   };
 
   if (!toUser) {
