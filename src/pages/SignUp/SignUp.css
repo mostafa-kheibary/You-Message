@@ -17,6 +17,7 @@
   width: 7rem;
 }
 .sign-up__inputs {
+  position: relative;
   margin-top: 2rem;
   display: flex;
   flex-direction: column;
@@ -24,6 +25,7 @@
 }
 .sign-up__submit-button {
   width: 10rem !important;
+  height: 2.5rem !important;
   margin: 0.5rem auto !important;
 }
 .sign-up__link {
@@ -31,4 +33,17 @@
   color: black;
   font-weight: 300;
   font-size: 0.9rem;
+}
+.sign-up__user-exist {
+  color: red;
+  font-weight: 300;
+  position: absolute;
+  right: 0;
+  top: -1.6rem;
+}
+.sign-up__avatar {
+  width: 12rem !important;
+  height: 12rem !important;
+  margin: 0 auto;
+  object-fit: cover;
 }
