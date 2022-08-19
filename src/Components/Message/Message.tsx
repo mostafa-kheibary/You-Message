@@ -1,13 +1,14 @@
 import { FC, useRef } from 'react';
-import { deleteDoc, doc } from 'firebase/firestore';
+import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { db } from '../../config/firebase.config';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import { IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import useContextMenu from '../../hook/useContextMenu';
+import useToast from '../../hook/useToast';
 import {
   chnageMessageInputMode,
   setEditMode,
@@ -23,7 +24,6 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './Message.css';
-import useToast from '../../hook/useToast';
 
 interface IProps {
   message: IMessage;
@@ -64,7 +64,17 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
     const replyedMessage = messagesDivRef.current.querySelector(`[id="${message.replyTo.id}"]`) as HTMLDivElement;
     replyedMessage.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
   };
-
+  const handleAddReaction = async (reaction: string) => {
+    if (message.reactions!.length > 0) {
+      await updateDoc(doc(db, 'conversations', id, 'messages', message.id), {
+        reactions: arrayRemove(reaction),
+      });
+      return;
+    }
+    await updateDoc(doc(db, 'conversations', id, 'messages', message.id), {
+      reactions: arrayUnion(reaction),
+    });
+  };
   const handleRightClick = async () => {
     if (message.owner === info!.uid) {
       changeContextMenus([
@@ -94,7 +104,8 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
           <ReplyIcon className='reply-message__icon' />
         </motion.div>
       )}
-      <motion.div
+      <div
+        onDoubleClick={() => handleAddReaction('❤️')}
         onContextMenu={handleRightClick}
         ref={messageRef}
         lang={isPersian ? 'fa' : window.navigator.language}
@@ -115,7 +126,16 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
             ''
           )}
         </span>
-      </motion.div>
+        <div className={classNames('message-reactions', message.owner === info!.uid ? 'owner' : '')}>
+          <AnimatePresence>
+            {message.reactions?.map((reaction, i) => (
+              <span key={i} className='message-reactions__emoji'>
+                {reaction}
+              </span>
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
     </>
   );
 };

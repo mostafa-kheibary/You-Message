@@ -64,6 +64,21 @@
 .message-status > svg {
   font-size: 1rem !important;
 }
+.message-reactions {
+  border-radius: 50rem;
+  padding: 0.2rem;
+  position: absolute;
+  bottom: -0.8rem;
+  left: 0.5rem;
+  z-index: 100;
+}
+.message-reactions__emoji {
+  font-size: 0.8rem;
+}
+.message-reactions.owner {
+  left: unset;
+  right: 0.5rem;
+}
 .reply-message {
   cursor: pointer;
   position: relative;

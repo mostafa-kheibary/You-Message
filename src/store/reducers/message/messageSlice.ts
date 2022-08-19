@@ -8,6 +8,7 @@ export interface IMessage {
   owner: string;
   status: 'pending' | 'sent' | 'seen';
   text: string;
+  reactions?: string[];
   replyTo?: { id: string; message: string; to: string };
 }
 export interface IMessageState {
