@@ -2,7 +2,7 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
-import { motion, useDragControls } from 'framer-motion';
+import { motion } from 'framer-motion';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckIcon from '@mui/icons-material/Check';
 import ReplyIcon from '@mui/icons-material/Reply';
@@ -26,7 +26,6 @@ interface IProps {
 const Message: FC<IProps> = ({ message, messagesDivRef }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
-  const onDrag = useDragControls();
   const { changeContextMenus, openContext } = useContextMenu();
   const dispatch = useDispatch();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -54,10 +53,6 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
     replyedMessage.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
   };
 
-  const handleDrag = (e: MouseEvent) => {
-    onDrag.start(e);
-    console.log(e);
-  };
   const handleRightClick = async () => {
     if (message.owner === info!.uid) {
       changeContextMenus([

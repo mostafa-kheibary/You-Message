@@ -53,13 +53,15 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
     });
   };
   return (
-    <div ref={messagesDivRef} className={classNames('message-wrapper')}>
-      {messageLoaded && <CircularProgress className='message-loading' />}
-      <AnimatePresence>{renderdAllMessage()}</AnimatePresence>
-      <h1>{toUser?.isTyping && 'is Typing ...'}</h1>
-      <div ref={isSeenRef}></div>
+    <>
+      <div ref={messagesDivRef} className={classNames('message-wrapper')}>
+        {messageLoaded && <CircularProgress className='message-loading' />}
+        <AnimatePresence>{renderdAllMessage()}</AnimatePresence>
+        <h1>{toUser?.isTyping && 'is Typing ...'}</h1>
+        <div ref={isSeenRef}></div>
+      </div>
       <ElevatorButton containerRef={messagesDivRef.current} />
-    </div>
+    </>
   );
 };
 

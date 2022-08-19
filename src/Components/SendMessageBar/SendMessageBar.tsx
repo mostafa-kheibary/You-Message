@@ -1,10 +1,10 @@
-import { ChangeEvent, FC, FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FC, FormEvent, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../config/firebase.config';
 import { IconButton, OutlinedInput } from '@mui/material';
-import { doc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
 import { addMessage, IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
@@ -21,7 +21,7 @@ import {
 
 const SendMessageBar: FC = () => {
   const auth = getAuth();
-  const { id, toUser } = useSelector(selectCurrentConversation);
+  const { id } = useSelector(selectCurrentConversation);
   const { message, mode } = useSelector(selectMessageInput);
   const { replyTo } = useSelector(selectMessageInput);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -57,7 +57,7 @@ const SendMessageBar: FC = () => {
       dispatch(addMessage({ ...messagePayload, status: 'pending' }));
 
       const messageRef = doc(db, 'conversations', id, 'messages', messageId);
-      const conversationRef = doc(db, 'conversations', id);
+      // const conversationRef = doc(db, 'conversations', id);
       // Promise.all([
       // await updateDoc(conversationRef, { timeStamp: Timestamp.now() }),
       await setDoc(messageRef, messagePayload);
