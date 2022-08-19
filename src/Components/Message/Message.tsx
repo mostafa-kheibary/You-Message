@@ -65,7 +65,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
     replyedMessage.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
   };
   const handleAddReaction = async (reaction: string) => {
-    if (message.reactions!.length > 0) {
+    if (!message.reactions || message.reactions!.length > 0) {
       await updateDoc(doc(db, 'conversations', id, 'messages', message.id), {
         reactions: arrayRemove(reaction),
       });
