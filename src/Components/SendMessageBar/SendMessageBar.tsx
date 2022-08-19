@@ -6,7 +6,7 @@ import { db } from '../../config/firebase.config';
 import { IconButton, OutlinedInput } from '@mui/material';
 import { doc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
-import { addMessage } from '../../store/reducers/message/messageSlice';
+import { addMessage, IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import CloseIcon from '@mui/icons-material/Close';
 import { VoiceMessageSender, EmojiMessage } from '../';
@@ -18,7 +18,6 @@ import {
   clearMessageInput,
   clearReplyTo,
 } from '../../store/reducers/messageInput/messageInputSlice';
-import { setTextRange } from 'typescript';
 
 const SendMessageBar: FC = () => {
   const auth = getAuth();
@@ -29,7 +28,6 @@ const SendMessageBar: FC = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (e: FormEvent) => {
-    console.log('sss');
     e.preventDefault();
     switch (mode) {
       case 'create':
@@ -44,15 +42,20 @@ const SendMessageBar: FC = () => {
     if (!auth.currentUser) return;
     try {
       const messageId = uuidv4();
-      const messagePayload = {
+      let messagePayload: IMessage = {
         timeStamp: Timestamp.now(),
         owner: auth.currentUser.uid,
         text: message,
         status: 'sent',
         id: messageId,
       };
+      if (replyTo) {
+        messagePayload = { ...messagePayload, replyTo: replyTo };
+      }
       dispatch(clearMessageInput());
+      dispatch(clearReplyTo());
       dispatch(addMessage({ ...messagePayload, status: 'pending' }));
+
       const messageRef = doc(db, 'conversations', id, 'messages', messageId);
       const conversationRef = doc(db, 'conversations', id);
       // Promise.all([

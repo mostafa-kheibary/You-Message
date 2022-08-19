@@ -20,7 +20,7 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
   const { info } = useSelector(selectUser);
   const { id, toUser } = useSelector(selectCurrentConversation);
   const isSeenRef = useRef<HTMLDivElement | null>(null);
-  const messageDivRef = useRef<HTMLDivElement | null>(null);
+  const messagesDivRef = useRef<HTMLDivElement | null>(null);
   const isInView = useInView(isSeenRef);
 
   // for seen messages when user see the bottom of the message
@@ -37,7 +37,7 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
   }, [isInView, messages]);
 
   useEffect(() => {
-    messageDivRef.current?.scrollTo({ top: messageDivRef.current.scrollHeight, left: 0, behavior: 'auto' });
+    messagesDivRef.current?.scrollTo({ top: messagesDivRef.current.scrollHeight, left: 0, behavior: 'auto' });
   }, [messages]);
 
   const renderdAllMessage = () => {
@@ -49,17 +49,16 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
       );
     }
     return messages.messages.map((message) => {
-      return <Message message={message} key={message.id} />;
+      return <Message messagesDivRef={messagesDivRef} message={message} key={message.id} />;
     });
   };
-  console.log(toUser?.isTyping);
   return (
-    <div ref={messageDivRef} className={classNames('message-wrapper')}>
+    <div ref={messagesDivRef} className={classNames('message-wrapper')}>
       {messageLoaded && <CircularProgress className='message-loading' />}
       <AnimatePresence>{renderdAllMessage()}</AnimatePresence>
       <h1>{toUser?.isTyping && 'is Typing ...'}</h1>
       <div ref={isSeenRef}></div>
-      <ElevatorButton containerRef={messageDivRef.current} />
+      <ElevatorButton containerRef={messagesDivRef.current} />
     </div>
   );
 };

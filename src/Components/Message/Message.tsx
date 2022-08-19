@@ -1,12 +1,13 @@
 import { deleteDoc, doc } from 'firebase/firestore';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
+import { motion, useDragControls } from 'framer-motion';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckIcon from '@mui/icons-material/Check';
+import ReplyIcon from '@mui/icons-material/Reply';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
-import { motion } from 'framer-motion';
 import { IMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import useContextMenu from '../../hook/useContextMenu';
@@ -19,11 +20,13 @@ import {
 
 interface IProps {
   message: IMessage;
+  messagesDivRef: { current: HTMLDivElement | null };
 }
 
-const Message: FC<IProps> = ({ message }) => {
+const Message: FC<IProps> = ({ message, messagesDivRef }) => {
   const { info } = useSelector(selectUser);
   const { id } = useSelector(selectCurrentConversation);
+  const onDrag = useDragControls();
   const { changeContextMenus, openContext } = useContextMenu();
   const dispatch = useDispatch();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -40,10 +43,21 @@ const Message: FC<IProps> = ({ message }) => {
   };
 
   const replyMessage = () => {
-    dispatch(setReplyTo({ to: message.owner, text: message.text }));
+    const replyPayload = { to: message.owner, text: message.text, id: message.id };
+    dispatch(setReplyTo(replyPayload));
   };
   const forwardMessage = () => {};
+  const handleGoToMessage = () => {
+    if (!messagesDivRef.current || !message.replyTo) return;
 
+    const replyedMessage = messagesDivRef.current.querySelector(`[id="${message.replyTo.id}"]`) as HTMLDivElement;
+    replyedMessage.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
+  };
+
+  const handleDrag = (e: MouseEvent) => {
+    onDrag.start(e);
+    console.log(e);
+  };
   const handleRightClick = async () => {
     if (message.owner === info!.uid) {
       changeContextMenus([
@@ -60,30 +74,39 @@ const Message: FC<IProps> = ({ message }) => {
     }
     openContext();
   };
-
   const isPersian = /^[\u0600-\u06FF\s]+$/.test(message.text);
   return (
-    <div
-      onContextMenu={handleRightClick}
-      ref={messageRef}
-      lang={isPersian ? 'fa' : window.navigator.language}
-      className={classNames(
-        'message',
-        message.owner === info!.uid ? 'owner' : 'reciver',
-        message.status === 'pending' ? 'pending' : ''
+    <>
+      {message.replyTo && (
+        <motion.div onClick={handleGoToMessage} className='reply-message'>
+          <span className='reply-message__line'></span>
+          <span className='reply-message__text'>{message.replyTo.message}</span>
+          <ReplyIcon className='reply-message__icon' />
+        </motion.div>
       )}
-    >
-      {message.text}
-      <p className='message-status'>
-        {message.status === 'pending' ? (
-          <AccessTimeIcon />
-        ) : message.status === 'seen' && message.owner === info!.uid ? (
-          <CheckIcon />
-        ) : (
-          ''
+      <motion.div
+        onContextMenu={handleRightClick}
+        ref={messageRef}
+        lang={isPersian ? 'fa' : window.navigator.language}
+        id={message.id}
+        className={classNames(
+          'message',
+          message.owner === info!.uid ? 'owner' : 'reciver',
+          message.status === 'pending' ? 'pending' : ''
         )}
-      </p>
-    </div>
+      >
+        {message.text}
+        <span className='message-status'>
+          {message.status === 'pending' ? (
+            <AccessTimeIcon />
+          ) : message.status === 'seen' && message.owner === info!.uid ? (
+            <CheckIcon />
+          ) : (
+            ''
+          )}
+        </span>
+      </motion.div>
+    </>
   );
 };
 

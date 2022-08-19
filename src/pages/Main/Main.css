@@ -6,9 +6,7 @@
   .chat-app > .chat {
     position: fixed;
     height: 100vh;
-    right: -100%;
-    opacity: 0;
-    visibility: hidden;
+    right: -50%;
   }
   .chat-app > .side-bar {
     width: 100%;
@@ -16,7 +14,5 @@
   .chat-app.open > .chat {
     width: 100%;
     right: 0;
-    opacity: 1;
-    visibility: visible;
   }
 }

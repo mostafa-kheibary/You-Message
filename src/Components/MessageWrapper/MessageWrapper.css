@@ -5,6 +5,7 @@
   height: calc(100% - 8.6rem);
   width: 100%;
   overflow-y: scroll;
+  overflow-x: hidden;
   padding: 1rem;
   gap: 0.5rem;
 }

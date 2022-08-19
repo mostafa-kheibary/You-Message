@@ -3,7 +3,7 @@ import { RootState } from '../..';
 
 export interface IMessageInput {
   message: string;
-  replyTo?: { to: string; message: string };
+  replyTo?: { to: string; message: string; id: string };
   mode: 'create' | 'edit' | 'reply';
 }
 const initalState: IMessageInput = {
@@ -24,9 +24,9 @@ const messageInput = createSlice({
     addMessageInput: (state: IMessageInput, action: PayloadAction<string>) => {
       state.message += action.payload;
     },
-    setReplyTo: (state: IMessageInput, action: PayloadAction<{ to: string; text: string }>) => {
-      const { to, text } = action.payload;
-      const replyTo = { to, message: text };
+    setReplyTo: (state: IMessageInput, action: PayloadAction<{ to: string; id: string; text: string }>) => {
+      const { to, text, id } = action.payload;
+      const replyTo = { to, message: text, id };
       state.replyTo = replyTo;
       state.mode = 'reply';
     },
