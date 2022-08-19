@@ -88,15 +88,21 @@
   border: 0.1rem solid var(--primary-color);
   border-radius: 1.5rem;
   padding: 0.2rem 0.5rem;
-  margin-left: auto;
-  transform: translate(-0.5rem, 0.2rem);
+
   color: var(--primary-color);
   z-index: 10;
   background-color: white;
 }
+.reply-message.owner {
+  margin-left: auto;
+  transform: translate(-0.5rem, 0.2rem);
+}
+.reply-message.reciver {
+  transform: translate(0.5rem, 0.2rem);
+  margin-right: auto;
+}
 .reply-message__line {
   position: absolute;
-  right: -0.8rem;
   top: 50%;
   width: 0.1rem;
   height: 150%;
@@ -106,19 +112,35 @@
   content: '';
   position: absolute;
   top: 0;
-  right: 0;
   width: 0.8rem;
   height: 0.1rem;
   background-color: var(--primary-color);
+}
+.reply-message.reciver > .reply-message__line {
+  left: -0.8rem;
+}
+.reply-message.owner > .reply-message__line {
+  right: -0.8rem;
+}
+.reply-message.reciver > .reply-message__line::after {
+  left: 0;
+}
+.reply-message.owner > .reply-message__line::after {
+  right: 0;
 }
 .reply-message__line::before {
   content: '';
   position: absolute;
   bottom: 0;
-  right: 0;
-  width: 0.9rem;
+  width: 0.8rem;
   height: 0.1rem;
   background-color: var(--primary-color);
+}
+.reply-message.owner > .reply-message__line::before {
+  right: 0;
+}
+.reply-message.reciver > .reply-message__line::before {
+  left: 0;
 }
 .reply-message__icon {
   font-size: 1rem !important;

@@ -98,7 +98,10 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
   return (
     <>
       {message.replyTo && (
-        <motion.div onClick={handleGoToMessage} className='reply-message'>
+        <motion.div
+          onClick={handleGoToMessage}
+          className={classNames('reply-message', message.owner === info!.uid ? 'owner' : 'reciver')}
+        >
           <span className='reply-message__line'></span>
           <span className='reply-message__text'>{message.replyTo.message}</span>
           <ReplyIcon className='reply-message__icon' />
