@@ -18,7 +18,7 @@
   padding: 1rem;
   font-size: 1rem;
   font-weight: 300;
-  width: fit-content;
+  max-width: 20rem;
   text-align: center;
   border-radius: 0.5rem;
 }

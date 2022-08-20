@@ -1,34 +1,34 @@
 .sign-in {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+    width: 100%;
+    overflow: hidden;
 }
 .sign-in__content {
-  text-align: center;
-  width: 20rem;
-  margin-top: -8rem;
+    text-align: center;
+    max-width: 20rem;
+    margin: 0 auto;
+    margin-top: 10rem;
 }
 .sign-in__title {
-  font-size: 1.5rem;
-  font-weight: 400;
+    font-size: 1.5rem;
+    font-weight: 400;
 }
 .sign-in__logo-image {
-  width: 7rem;
+    width: 7rem;
 }
 .sign-in__inputs {
-  margin-top: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+    margin-top: 2rem;
+    padding: 0 1rem ;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 .sign-in__submit-button {
-  width: 10rem !important;
-  margin: 0.5rem auto !important;
+    width: 10rem !important;
+    margin: 0.5rem auto !important;
 }
 .sign-in__link {
-  text-decoration: none;
-  color: black;
-  font-weight: 300;
-  font-size: 0.9rem;
+    text-decoration: none;
+    color: black;
+    font-weight: 300;
+    font-size: 0.9rem;
 }

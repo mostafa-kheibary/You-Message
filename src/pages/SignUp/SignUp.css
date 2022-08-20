@@ -1,6 +1,6 @@
 .sign-up {
   width: 100%;
-  text-align: center;
+  overflow: hidden;
 }
 .sign-up__content {
   margin: 0 auto;
