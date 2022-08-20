@@ -6,6 +6,7 @@ import { RootState } from '../..';
 export interface IUser {
   uid: string;
   userName: string;
+  name:string;
   bio: string;
   email: string;
   lastSeen: Timestamp;

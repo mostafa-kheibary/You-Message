@@ -1,13 +1,12 @@
 .sign-up {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  width: 100%;
+  text-align: center;
 }
 .sign-up__content {
+  margin: 0 auto;
+  margin-top: 10rem;
   text-align: center;
-  width: 20rem;
-  margin-top: -8rem;
+  max-width: 20rem;
 }
 .sign-up__title {
   font-size: 1.5rem;
@@ -22,6 +21,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+.sign-up__inputs > div {
+  width: 90%;
+  margin: 0 auto;
 }
 .sign-up__submit-button {
   width: 10rem !important;
@@ -42,8 +45,62 @@
   top: -1.6rem;
 }
 .sign-up__avatar {
+  position: relative;
   width: 12rem !important;
   height: 12rem !important;
   margin: 0 auto;
   object-fit: cover;
+}
+.sign-up__avatar.uploading::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.24) !important;
+}
+.sign-up__email-image {
+  width: 7rem;
+}
+.sign-up__email-text {
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+.sign-up__stepper {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  max-width: 35rem;
+  width: 100%;
+  transform: translateX(-50%);
+}
+.sign-up__avatar-wrapper {
+  position: relative;
+  width: fit-content !important;
+  margin: 0 auto;
+}
+.sign-up__change-avatar {
+  cursor: pointer;
+  position: absolute !important;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background-color: white !important;
+  box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.2);
+}
+.sign-up__progress {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  z-index: 1000 !important;
+  font-size: 2.5rem !important;
+}
+.sign-up__avatar__lable {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
 }

@@ -1,27 +1,39 @@
-import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Avatar, Button, CircularProgress, IconButton, TextareaAutosize, TextField } from '@mui/material';
 import { AnimatePresence, motion } from 'framer-motion';
-import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
+import { setDoc, doc, Timestamp, collection, query, where, limit, getDocs } from 'firebase/firestore';
+import { uuidv4 } from '@firebase/util';
 import iconImage from '../../assets/image/icon.png';
 import useForm from '../../hook/useForm';
 import { db } from '../../config/firebase.config';
 import useToast from '../../hook/useToast';
 import { Loader } from '../../Layout';
-import { setDoc, doc, Timestamp, collection, query, where, limit, getDocs, getDoc } from 'firebase/firestore';
 import { IUser } from '../../store/reducers/user/userSlice';
+import { Avatar, Button, CircularProgress, IconButton, Step, StepLabel, Stepper, TextField } from '@mui/material';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import emailImage from '../../assets/image/email.png';
+import classNames from '../../utils/classNames';
 import './SignUp.css';
 
 const SignUp: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [userNameExist, setUserNameExist] = useState<boolean>(false);
   const [userNameProcecing, setUserNameProcecing] = useState<boolean>(false);
+
+  const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [profilePicUrl, setProfilePicUrl] = useState<string>('');
+  const [uplaodPercent, setUploadPercent] = useState<number>(0);
+
   const [signUpStep, setSignUpStep] = useState<0 | 1 | 2>(0);
+  const storage = getStorage();
   const navigate = useNavigate();
   const toast = useToast();
 
   const handleNextStep = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (userNameExist) return;
 
     const step = signUpStep + 1;
@@ -35,28 +47,24 @@ const SignUp: FC = () => {
       const userPayload: IUser = {
         uid: '',
         userName: values.userName,
-        bio: '',
+        name: values.name,
+        bio: values.bio,
         email: values.email,
         lastSeen: Timestamp.now(),
         isTyping: false,
         isOnline: true,
-        avatar: '',
+        avatar: profilePicUrl,
       };
       await Promise.all([
         await createUserWithEmailAndPassword(auth, values.email, values.password),
+        await updateProfile(auth.currentUser!, { photoURL: profilePicUrl }),
         await setDoc(doc(db, 'users', auth.currentUser!.uid), { ...userPayload, uid: auth.currentUser?.uid }),
       ]);
       navigate('/');
       setLoading(false);
     } catch (e: any) {
       console.log(e);
-      const error = e.message as string;
       setLoading(false);
-      if (error.includes('email-already-in-use')) {
-        toast('email already use by another person', 'error');
-      } else if (error.includes('weak-password')) {
-        toast('password must be 8 or more', 'error');
-      }
     }
   };
 
@@ -73,13 +81,39 @@ const SignUp: FC = () => {
     setUserNameProcecing(false);
   };
 
-  const { handleChange, handleSubmit, values } = useForm(handleSignUp, {
-    userName: '',
-    email: '',
-    password: '',
-    name: '',
-    bio: '',
-  });
+  const handleUploadProfilePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+
+    const urlCreator = window.URL || window.webkitURL;
+    const storageRef = ref(storage, `profile-photos/${uuidv4()}`);
+    const imageUrl = urlCreator.createObjectURL(e.target.files[0]);
+    setProfilePic(imageUrl);
+
+    const uploadTask = uploadBytesResumable(storageRef, e.target.files[0]);
+    uploadTask.on(
+      'state_changed',
+      (snapShot) => {
+        // progress
+        const progress = (snapShot.bytesTransferred / snapShot.totalBytes) * 100;
+        setUploadPercent(progress);
+      },
+      (error) => {
+        // error
+        toast('cant upload the image,try again', 'error');
+      },
+      async () => {
+        // compelite
+        const link = await getDownloadURL(uploadTask.snapshot.ref);
+        setProfilePicUrl(link);
+      }
+    );
+  };
+
+  const progress = () => {
+    if (+uplaodPercent.toFixed(0) > 0 && +uplaodPercent.toFixed(0) < 100) {
+      return <CircularProgress className='sign-up__progress' variant='determinate' value={+uplaodPercent.toFixed(0)} />;
+    }
+  };
 
   const animationVarient = {
     start: {
@@ -95,6 +129,15 @@ const SignUp: FC = () => {
       opacity: 0,
     },
   };
+
+  const { handleChange, handleSubmit, values } = useForm(handleSignUp, {
+    userName: '',
+    email: '',
+    password: '',
+    name: '',
+    bio: '',
+  });
+
   const step1 = () => {
     return (
       <motion.div variants={animationVarient} initial='start' animate='animate' exit='exit'>
@@ -132,7 +175,8 @@ const SignUp: FC = () => {
   const step2 = () => {
     return (
       <motion.div variants={animationVarient} initial='start' animate='animate' exit='exit'>
-        <h4>Add your email and password</h4>
+        <img className='sign-up__email-image' src={emailImage} alt='' />
+        <h4 className='sign-up__email-text'>Add email and password</h4>
         <form onSubmit={handleNextStep} className='sign-up__inputs'>
           <TextField
             onChange={handleChange}
@@ -161,11 +205,32 @@ const SignUp: FC = () => {
       </motion.div>
     );
   };
+
   const step3 = () => {
     return (
       <motion.div variants={animationVarient} initial='start' animate='animate' exit='exit'>
-        <form onSubmit={handleNextStep} className='sign-up__inputs'>
-          <Avatar className='sign-up__avatar' />
+        <form onSubmit={handleSubmit} className='sign-up__inputs'>
+          <div className='sign-up__avatar-wrapper'>
+            <Avatar
+              src={profilePic ? profilePic : ''}
+              className={classNames('sign-up__avatar', uplaodPercent < 100 && uplaodPercent > 0 ? 'uploading' : '')}
+            />
+            {progress()}
+            <input
+              multiple={false}
+              accept='image/*'
+              onChange={handleUploadProfilePhoto}
+              type='file'
+              name='ppu'
+              hidden
+              id='ppu'
+            />
+            <IconButton color='primary' className='sign-up__change-avatar'>
+              <label className='sign-up__avatar__lable' htmlFor='ppu'>
+                <AddPhotoAlternateIcon />
+              </label>
+            </IconButton>
+          </div>
           <TextField
             onChange={handleChange}
             value={values.name}
@@ -176,17 +241,28 @@ const SignUp: FC = () => {
             type='text'
             variant='outlined'
           />
-          <TextareaAutosize onChange={handleChange} value={values.bio} name='bio' minRows={3} required />
+          <TextField label='bio' onChange={handleChange} value={values.bio} name='bio' minRows={3} required />
           <Button className='sign-up__submit-button' variant='contained' type='submit'>
-            Sign up
+            Finish
           </Button>
         </form>
       </motion.div>
     );
   };
+
   return (
     <div className='sign-up'>
-      <button onClick={() => setSignUpStep((signUpStep - 1) as 0 | 1 | 2)}>c</button>
+      <Stepper className='sign-up__stepper' activeStep={signUpStep} alternativeLabel>
+        <Step>
+          <StepLabel>Select User Name</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Add Email Password</StepLabel>
+        </Step>
+        <Step>
+          <StepLabel>Complete your Profile</StepLabel>
+        </Step>
+      </Stepper>
       <Loader isLoading={loading} />
       <div className='sign-up__content'>
         <AnimatePresence key={signUpStep}>
