@@ -1,18 +1,18 @@
 .chat-app {
-  display: flex;
-  height: 100vh;
+    display: flex;
+    height: 100vh;
 }
 @media screen and (max-width: 700px) {
-  .chat-app > .chat {
-    position: fixed;
-    height: 100vh;
-    right: -50%;
-  }
-  .chat-app > .side-bar {
-    width: 100%;
-  }
-  .chat-app.open > .chat {
-    width: 100%;
-    right: 0;
-  }
+    .chat-app > .chat {
+        position: fixed;
+        height: 100vh;
+        right: -60%;
+    }
+    .chat-app > .side-bar {
+        width: 100%;
+    }
+    .chat-app.open > .chat {
+        width: 100%;
+        right: 0;
+    }
 }

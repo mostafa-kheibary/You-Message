@@ -1,4 +1,6 @@
 .send-message-bar {
+  display: flex;
+  align-items: center;
   position: relative;
   padding: 0.4rem 1rem;
   background-color: var(--gray);
@@ -8,6 +10,7 @@
   transition: all 500ms ease;
 }
 .send-message-bar__wrapper {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;

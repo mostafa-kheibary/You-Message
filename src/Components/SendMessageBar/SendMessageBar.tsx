@@ -124,7 +124,7 @@ const SendMessageBar: FC = () => {
                         placeholder='Your message ...'
                     />
                 </form>
-                <VoiceMessageSender />
+                {/* <VoiceMessageSender /> */}
             </div>
         </div>
     );

@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../config/firebase.config';
@@ -10,27 +9,39 @@ import { Avatar, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@
 import SettingsIcon from '@mui/icons-material/Settings';
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import GroupIcon from '@mui/icons-material/Group';
-import useToast from '../../hook/useToast';
 import { ConversationCard } from '../../Components';
 import { selectConversations } from '../../store/reducers/conversations/conversationsSlice';
+import useToast from '../../hook/useToast';
 import './SideBar.css';
 
 const SideBar: FC = () => {
-    const auth = getAuth();
-    const toast = useToast();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const toast = useToast();
     const { info } = useSelector(selectUser);
     const conversations = useSelector(selectConversations);
 
     const handleAddConversation = async () => {
         const newUserName = prompt('enter userName');
-        const userData = await getDocs(query(collection(db, 'users'), where('userName', '==', newUserName)));
-        const docId: string = uuidv4();
-        await setDoc(doc(db, 'conversations', docId), {
-            id: docId,
-            owners: [doc(db, 'users', info!.uid), doc(db, 'users', userData.docs[0].id)],
-        });
+        try {
+            const userData = await getDocs(query(collection(db, 'users'), where('userName', '==', newUserName)));
+
+            if (!userData) {
+                toast('User not found,username is not correct', 'error');
+                return;
+            }
+            if (conversations.find((conver) => conver.owners[1].id === userData.docs[0].id)) {
+                toast('user allready added', 'error');
+                return;
+            }
+
+            const docId: string = uuidv4();
+            await setDoc(doc(db, 'conversations', docId), {
+                id: docId,
+                owners: [doc(db, 'users', info!.uid), doc(db, 'users', userData.docs[0].id)],
+            });
+        } catch (error) {
+            toast('error happend, try again', 'error');
+        }
     };
 
     return (
@@ -39,7 +50,11 @@ const SideBar: FC = () => {
                 <div className='side-bar__head__left'>
                     <IconButton onClick={() => navigate('/profile')} style={{ position: 'relative' }}>
                         <Avatar className='side-bar__avatar'>
-                            <img width='100%' src={info!.avatar} alt='avatar' />
+                            {info?.avatar ? (
+                                <img width='100%' src={info.avatar} alt={info!.name.slice(0, 1)} />
+                            ) : (
+                                <span>{info!.name.slice(0, 1)}</span>
+                            )}
                         </Avatar>
                         <SettingsIcon color='action' className='side-bar__head__edit-profile' />
                     </IconButton>

@@ -6,13 +6,14 @@ import store from './store';
 import App from './App';
 import './style/style.css';
 import './config/firebase.config';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
-
 root.render(
-  <ThemeProvider theme={defultTheme}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </ThemeProvider>
+    <ThemeProvider theme={defultTheme}>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </ThemeProvider>
 );
+serviceWorkerRegistration.register();
