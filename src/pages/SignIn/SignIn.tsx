@@ -11,23 +11,38 @@ import { Loader } from '../../Layout';
 import { doc, getDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
 import './SignIn.css';
+import useToast from '../../hook/useToast';
 
 const SignIn: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const handleSignIn = async () => {
         setLoading(true);
         const auth = getAuth();
+        try {
+            const [_, userData] = await Promise.all([
+                await signInWithEmailAndPassword(auth, values.email, values.password),
+                await getDoc(doc(db, 'users', auth.currentUser!.uid)),
+            ]);
+            dispatch(login(userData.data() as IUser));
+        } catch (error) {
+            const { message } = error as Error;
+            setLoading(false);
 
-        const [_, userData] = await Promise.all([
-            await signInWithEmailAndPassword(auth, values.email, values.password),
-            await getDoc(doc(db, 'users', auth.currentUser!.uid)),
-        ]);
-
-        dispatch(login(userData.data() as IUser));
+            if (message.includes('invalid-email')) {
+                toast('email invalid, enter correct email', 'error');
+            } else if (message.includes('user-not-found')) {
+                toast('user not found, enter valid email', 'error');
+            } else if (message.includes('wrong-password')) {
+                toast('password is incorrect', 'error');
+            }
+            console.log(message);
+        }
         navigate('/');
+        setLoading(false);
     };
 
     const { handleChange, handleSubmit, values } = useForm(handleSignIn, {
@@ -49,10 +64,12 @@ const SignIn: FC = () => {
                         name='email'
                         size='small'
                         label='Email'
+                        type='email'
                         required
                         variant='outlined'
                     />
                     <TextField
+                        type='password'
                         onChange={handleChange}
                         value={values.password}
                         name='password'

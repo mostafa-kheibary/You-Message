@@ -247,7 +247,7 @@ const SignUp: FC = () => {
                         type='text'
                         variant='outlined'
                     />
-                    <TextField label='bio' onChange={handleChange} value={values.bio} name='bio' minRows={3} required />
+                    <TextField label='bio' onChange={handleChange} value={values.bio} name='bio' minRows={3} />
                     <Button className='sign-up__submit-button' variant='contained' type='submit'>
                         Finish
                     </Button>
