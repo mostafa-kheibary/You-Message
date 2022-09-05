@@ -1,0 +1,65 @@
+.profile {
+    width: 100%;
+}
+.profile__content {
+    max-width: 30rem;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 4rem;
+}
+.profile__avatar {
+    width: 15rem !important;
+    height: 15rem !important;
+    margin: 0 auto;
+}
+.profile__back-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    color: white !important;
+}
+.profile__name {
+    display: block !important;
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+.profile__bio {
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 1rem;
+}
+.profile__conversation-length {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+}
+.profile__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.profile__avatar-wrapper {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto;
+}
+.profile__edit {
+    position: absolute !important;
+    bottom: 0;
+    right: 1rem;
+    background-color: white !important;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.445);
+}
+.profile__edit:hover {
+    background-color: white;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.445);
+}
+.profile__backdrop {
+    background-color: var(--primary-color);
+    width: 100%;
+    height: 15rem;
+    position: absolute;
+}
