@@ -5,5 +5,4 @@ import Message from './Message/Message';
 import ElevatorButton from './ElevatorButton/ElevatorButton';
 import EmojiMessage from './EmojiMessage/EmojiMessage';
 import VoiceMessageSender from './VoiceMessageSender/VoiceMessageSender';
-
 export { SendMessageBar, Toast, ConversationCard, Message, ElevatorButton, EmojiMessage, VoiceMessageSender };
