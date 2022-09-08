@@ -1,28 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ReactNode } from 'react';
+import { ContextMenuItem, IContextMenu } from '../../../interfaces';
 import { RootState } from '../..';
 
-export type ContextMenuItem = { icon?: ReactNode; name: string; function: () => any };
-export interface IContextMenu {
-  menu: ContextMenuItem[];
-  open: boolean;
-}
 const initialState: IContextMenu = {
-  menu: [],
-  open: false,
+    menu: [],
+    open: false,
 };
 
 const contextMenu = createSlice({
-  name: 'contextMenu',
-  initialState: initialState,
-  reducers: {
-    changeStatus: (state: IContextMenu, action: PayloadAction<boolean>) => {
-      state.open = action.payload;
+    name: 'contextMenu',
+    initialState: initialState,
+    reducers: {
+        changeStatus: (state: IContextMenu, action: PayloadAction<boolean>) => {
+            state.open = action.payload;
+        },
+        setContextMenus: (state: IContextMenu, action: PayloadAction<ContextMenuItem[]>) => {
+            state.menu = action.payload;
+        },
     },
-    setContextMenus: (state: IContextMenu, action: PayloadAction<ContextMenuItem[]>) => {
-      state.menu = action.payload;
-    },
-  },
 });
 
 export default contextMenu.reducer;

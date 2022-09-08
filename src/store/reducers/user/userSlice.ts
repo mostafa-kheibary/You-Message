@@ -1,24 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Timestamp } from 'firebase/firestore';
 import { RootState } from '../..';
-
-// *** types ***
-export interface IUser {
-  uid: string;
-  userName: string;
-  name:string;
-  bio: string;
-  email: string;
-  lastSeen: Timestamp;
-  isTyping: boolean;
-  isOnline: boolean;
-  avatar: string;
-}
-export interface IUserState {
-  info: IUser | null;
-  status: 'loading' | 'isAuth' | 'isNotAuth';
-}
-// *** types ***
+import { IUser, IUserState } from '../../../interfaces';
 
 const initialState: IUserState = {
   info: null,

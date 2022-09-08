@@ -1,27 +1,26 @@
 import { ChangeEvent, FC, FormEvent, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
+import { doc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../config/firebase.config';
-import { IconButton, OutlinedInput } from '@mui/material';
-import { doc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
-import { addMessage, IMessage } from '../../store/reducers/message/messageSlice';
-import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
-import CloseIcon from '@mui/icons-material/Close';
-import { VoiceMessageSender, EmojiMessage } from '../';
+import { v4 as uuidv4 } from 'uuid';
+import { IconButton, OutlinedInput } from '@mui/material';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import CloseIcon from '@mui/icons-material/Close';
+
+import { addMessage } from '../../store/reducers/message/messageSlice';
+import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
+import { EmojiMessage } from '../';
 import './SendMessageBar.css';
 import {
     selectMessageInput,
     setMessageInput,
     clearMessageInput,
     clearReplyTo,
-    setEditMode,
     clearEditMode,
 } from '../../store/reducers/messageInput/messageInputSlice';
-import { async } from '@firebase/util';
-import useAudio from '../../hook/useAudio';
+import { IMessage } from '../../interfaces';
 
 const SendMessageBar: FC = () => {
     const auth = getAuth();

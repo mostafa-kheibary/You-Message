@@ -11,16 +11,10 @@ import {
     selectCurrentConversation,
     setCurrentConversation,
 } from '../../store/reducers/conversations/conversationsSlice';
+import { addMessage, clearMessage, editMessage, removeMessage } from '../../store/reducers/message/messageSlice';
 import { db } from '../../config/firebase.config';
-import {
-    addMessage,
-    clearMessage,
-    editMessage,
-    IMessage,
-    removeMessage,
-} from '../../store/reducers/message/messageSlice';
 import './Chat.css';
-import { IUser } from '../../store/reducers/user/userSlice';
+import { IMessage, IUser } from '../../interfaces';
 
 const Chat: FC = () => {
     const { id, toUser } = useSelector(selectCurrentConversation);

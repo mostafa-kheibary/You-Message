@@ -1,19 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Timestamp } from 'firebase/firestore';
+import { IMessage, IMessageState } from '../../../interfaces';
 import { RootState } from '../..';
-
-export interface IMessage {
-  timeStamp: Timestamp;
-  id: string;
-  owner: string;
-  status: 'pending' | 'sent' | 'seen';
-  text: string;
-  reactions?: string[];
-  replyTo?: { id: string; message: string; to: string };
-}
-export interface IMessageState {
-  messages: IMessage[];
-}
 
 const initialState: IMessageState = {
   messages: [],

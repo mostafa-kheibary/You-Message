@@ -1,17 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../..';
-
-interface IToastState {
-  message: string;
-  status: 'error' | 'success';
-  visibility: boolean;
-}
+import { IToastState } from '../../../interfaces';
 
 const initialState: IToastState = {
   message: '',
   status: 'success',
   visibility: false,
 };
+
 const toastSlice = createSlice({
   name: 'toast',
   initialState: initialState,

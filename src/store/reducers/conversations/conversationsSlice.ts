@@ -1,20 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { DocumentReference, Timestamp } from 'firebase/firestore';
+import { IConversation, IConversationState, IUser } from '../../../interfaces';
 import { RootState } from '../..';
-import { IUser } from '../user/userSlice';
-
-// *** type ***
-export interface IConversation {
-    timeStamp: Timestamp;
-    id: string;
-    owners: DocumentReference[];
-}
-export interface IConversationState {
-    conversations: IConversation[];
-    currentConversation: { toUser: null | IUser; id: string };
-    isOpen: boolean;
-}
-// *** type ***
 
 const initialState: IConversationState = {
     conversations: [],
@@ -58,6 +44,7 @@ const conversationSlice = createSlice({
         },
     },
 });
+
 export default conversationSlice.reducer;
 export const { addConversation, editConversation, removeConversation, changeOpenStatus, setCurrentConversation } =
     conversationSlice.actions;

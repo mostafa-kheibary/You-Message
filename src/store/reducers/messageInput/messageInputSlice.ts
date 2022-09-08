@@ -1,12 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../..';
+import { IMessageInput } from '../../../interfaces';
 
-export interface IMessageInput {
-  message: string;
-  replyTo?: { to: string; message: string; id: string };
-  editInfo?: { id: string };
-  mode: 'create' | 'edit' | 'reply';
-}
+
 const initalState: IMessageInput = {
   message: '',
   mode: 'create',

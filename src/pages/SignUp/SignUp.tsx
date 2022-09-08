@@ -4,17 +4,18 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
 import { setDoc, doc, Timestamp, collection, query, where, limit, getDocs } from 'firebase/firestore';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { Avatar, Button, CircularProgress, IconButton, Step, StepLabel, Stepper, TextField } from '@mui/material';
 import { uuidv4 } from '@firebase/util';
-import iconImage from '../../assets/image/icon.png';
+import { IUser } from '../../interfaces';
 import useForm from '../../hook/useForm';
 import { db } from '../../config/firebase.config';
 import useToast from '../../hook/useToast';
 import { Loader } from '../../Layout';
-import { IUser } from '../../store/reducers/user/userSlice';
-import { Avatar, Button, CircularProgress, IconButton, Step, StepLabel, Stepper, TextField } from '@mui/material';
-import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import emailImage from '../../assets/image/email.png';
 import classNames from '../../utils/classNames';
+import iconImage from '../../assets/image/icon.png';
+
 import './SignUp.css';
 
 const SignUp: FC = () => {

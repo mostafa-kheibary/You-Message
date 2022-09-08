@@ -1,17 +1,19 @@
 import { FC, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, TextField } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { motion } from 'framer-motion';
+
 import useForm from '../../hook/useForm';
 import iconImage from '../../assets/image/icon.png';
-import { useDispatch } from 'react-redux';
-import { IUser, login } from '../../store/reducers/user/userSlice';
+import { login } from '../../store/reducers/user/userSlice';
+import { IUser } from '../../interfaces';
 import { db } from '../../config/firebase.config';
 import { Loader } from '../../Layout';
-import { doc, getDoc } from 'firebase/firestore';
-import { motion } from 'framer-motion';
-import './SignIn.css';
 import useToast from '../../hook/useToast';
+import './SignIn.css';
 
 const SignIn: FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
