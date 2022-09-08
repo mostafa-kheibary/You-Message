@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { collection, doc, enableIndexedDbPersistence, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, doc, enableIndexedDbPersistence, enableMultiTabIndexedDbPersistence, onSnapshot, query, where } from 'firebase/firestore';
 import { db } from '../config/firebase.config';
 import { login, logout } from '../store/reducers/user/userSlice';
 import { useDispatch } from 'react-redux';
@@ -9,25 +9,27 @@ import {
     editConversation,
     removeConversation,
 } from '../store/reducers/conversations/conversationsSlice';
+import useToast from './useToast';
 import { changeStatus } from '../store/reducers/contextMenu/ContextMenuSlice';
 import { IConversation, IUser } from '../interfaces';
 
 const useInit = () => {
     const auth = getAuth();
     const dispatch = useDispatch();
-
+    const toast = useToast();
     // Initialize auth and check user auth status
     useEffect(() => {
         const unSubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                getInitialsConversations(user.uid);
                 onSnapshot(doc(db, 'users', user.uid), { includeMetadataChanges: true }, (snapShot) => {
                     dispatch(login(snapShot.data() as IUser));
                 });
+                getInitialsConversations(user.uid);
             } else {
                 dispatch(logout());
             }
         });
+
         return unSubscribe;
     }, []);
 
@@ -56,8 +58,8 @@ const useInit = () => {
     };
 
     const registerEvent = () => {
-        // window.addEventListener('offline', () => toast('No internet! you are offline', 'error'));
-        // window.addEventListener('online', () => toast('Internet is back! you are online', 'success'));
+        window.addEventListener('offline', () => toast('No internet! you are offline', 'error'));
+        window.addEventListener('online', () => toast('Internet is back! you are online', 'success'));
         window.addEventListener('contextmenu', (e) => e.preventDefault());
         window.addEventListener('click', () => dispatch(changeStatus(false)));
     };
