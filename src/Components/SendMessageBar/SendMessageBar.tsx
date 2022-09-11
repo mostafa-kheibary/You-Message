@@ -31,6 +31,8 @@ const SendMessageBar: FC = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        
+        if (message.trim() === '') return;
         updateDoc(doc(db, 'conversations', id), { timeStamp: serverTimestamp() });
         switch (mode) {
             case 'create':
