@@ -1,0 +1,8 @@
+[
+    "linear-gradient(var(--orange-color-top),var(--orange-color-bottom))",
+    "linear-gradient(var(--red-color-top),var(--red-color-bottom))",
+    "linear-gradient(var(--blue-color-top),var(--blue-color-bottom))",
+    "linear-gradient(var(--green-color-top),var(--green-color-bottom))",
+    "linear-gradient(var(--pink-color-top),var(--pink-color-bottom))",
+    "linear-gradient(var(--dark-blue-color-top),var(--dark-blue-color-bottom))"
+]

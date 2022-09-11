@@ -1,4 +1,4 @@
-import { Avatar, Button, Skeleton } from '@mui/material';
+import { Button, Skeleton } from '@mui/material';
 import { getAuth } from 'firebase/auth';
 import { collection, deleteDoc, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
@@ -14,6 +14,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import { IConversation, IMessage, IUser } from '../../interfaces';
+import ProfileAvatar from '../ProfileAvatar/ProfileAvatar';
+import avatarColorSchema from '../../data/avatarColorSchema.json';
 import './ConversationCard.css';
 
 interface IProps {
@@ -28,14 +30,15 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
     const [toUser, setToUser] = useState<IUser | null>(null);
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [lastMessage, setLastMessage] = useState<null | IMessage>(null);
+    const [avatarColor] = useState<string>(avatarColorSchema[Math.floor(Math.random() * avatarColorSchema.length)]);
 
     useEffect(() => {
         if (!auth.currentUser) return;
+
         let queryUserDoc = doc(db, 'users', conversationData.owners[0]);
         if (conversationData.owners[0] === auth.currentUser.uid) {
             queryUserDoc = doc(db, 'users', conversationData.owners[1]);
         }
-
         const unsub = onSnapshot(queryUserDoc, (snapShot) => {
             setToUser(snapShot.data() as IUser);
         });
@@ -58,7 +61,7 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
             }
         });
 
-        return ()=>{
+        return () => {
             unsub();
             unsub2();
         };
@@ -68,7 +71,7 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
         if (!toUser) {
             return;
         }
-        dispatch(setCurrentConversation({ id: conversationData.id, toUser }));
+        dispatch(setCurrentConversation({ id: conversationData.id, toUser, avatarColor }));
         dispatch(changeOpenStatus(true));
     };
 
@@ -107,13 +110,7 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
             className={classNames('conversation-card', toUser.uid === currentConversation.toUser?.uid ? 'active' : '')}
         >
             <div className='conversation-card__content'>
-                {info?.avatar !== '' ? (
-                    <Avatar className='conversation-card__avatar' src={toUser.avatar} />
-                ) : (
-                    <Avatar className='conversation-card__avatar'>
-                        {/* {info.name.split(' ').map((text) => text.charAt(0).toUpperCase())} */}
-                    </Avatar>
-                )}
+                <ProfileAvatar src={toUser.avatar} name={toUser.name} color={avatarColor} />
                 <div className='conversation-card__info'>
                     <h4 className='conversation-card__user-name'>{toUser.userName}</h4>
                     <p className='conversation-card__last-message'>{lastMessage?.text || 'conversation started'}</p>

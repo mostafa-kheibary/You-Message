@@ -27,7 +27,7 @@ const conversationSlice = createSlice({
         },
         setCurrentConversation: (
             state: IConversationState,
-            action: PayloadAction<{ toUser: IUser | null; id: string }>
+            action: PayloadAction<{ toUser: IUser | null; id: string; avatarColor?: string }>
         ) => {
             state.currentConversation = action.payload;
         },

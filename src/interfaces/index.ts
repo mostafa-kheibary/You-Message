@@ -18,7 +18,7 @@ export interface IConversation {
 }
 export interface IConversationState {
     conversations: IConversation[];
-    currentConversation: { toUser: null | IUser; id: string };
+    currentConversation: { toUser: null | IUser; id: string; avatarColor?: string };
     isOpen: boolean;
 }
 
@@ -65,4 +65,5 @@ export interface IUser {
 export interface IUserState {
     info: IUser | null;
     status: 'loading' | 'isAuth' | 'isNotAuth';
+    avatarColor: string;
 }

@@ -16,11 +16,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../config/firebase.config';
 import { selectUser } from '../../store/reducers/user/userSlice';
-import { Avatar, IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import { IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import GroupIcon from '@mui/icons-material/Group';
-import { ConversationCard } from '../../Components';
+import { ConversationCard, ProfileAvatar } from '../../Components';
 import {
     clearConversations,
     selectConversations,
@@ -35,7 +35,7 @@ const SideBar: FC = () => {
     const toast = useToast();
     const conversations = useSelector(selectConversations);
     const dispatch = useDispatch();
-    const { info } = useSelector(selectUser);
+    const { info, avatarColor } = useSelector(selectUser);
 
     const handleAddConversation = async () => {
         const newConversation = prompt('enter userName');
@@ -84,13 +84,7 @@ const SideBar: FC = () => {
             <div className='side-bar__head'>
                 <div className='side-bar__head__left'>
                     <IconButton onClick={() => navigate('/profile')} style={{ position: 'relative' }}>
-                        <Avatar className='side-bar__avatar'>
-                            {info?.avatar ? (
-                                <img width='100%' src={info.avatar} alt={info!.name.slice(0, 1)} />
-                            ) : (
-                                <span>{info?.name?.slice(0, 1)}</span>
-                            )}
-                        </Avatar>
+                        <ProfileAvatar color={avatarColor} name={info!.name} src={info!.avatar} />
                         <SettingsIcon color='action' className='side-bar__head__edit-profile' />
                     </IconButton>
                     <h2 className='side-bar__head__title'>Hi {info?.userName}</h2>

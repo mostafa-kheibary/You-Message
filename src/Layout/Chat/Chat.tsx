@@ -13,11 +13,11 @@ import {
 } from '../../store/reducers/conversations/conversationsSlice';
 import { addMessage, clearMessage, editMessage, removeMessage } from '../../store/reducers/message/messageSlice';
 import { db } from '../../config/firebase.config';
-import './Chat.css';
 import { IMessage, IUser } from '../../interfaces';
+import './Chat.css';
 
 const Chat: FC = () => {
-    const { id, toUser } = useSelector(selectCurrentConversation);
+    const { id, toUser, avatarColor } = useSelector(selectCurrentConversation);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean | null>(true); // null for no message;
 
@@ -33,12 +33,16 @@ const Chat: FC = () => {
         setLoading(true);
         dispatch(clearMessage());
         const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
+
+        // --- lithen for chnage on touser for changes ---
         const unsub2 = onSnapshot(doc(db, 'users', toUser!.uid), (snapShot) => {
-            dispatch(setCurrentConversation({ id, toUser: snapShot.data() as IUser }));
+            dispatch(setCurrentConversation({ id, toUser: snapShot.data() as IUser, avatarColor }));
         });
+
+        // --- get Messages ---
         const unsub = onSnapshot(messagesRef, { includeMetadataChanges: true }, (snapShot) => {
             if (snapShot.size <= 0) {
-                setLoading(null); // null for no message
+                setLoading(null); // --- null for no message
             }
             snapShot.docChanges().forEach((change) => {
                 switch (change.type) {
@@ -82,7 +86,11 @@ const Chat: FC = () => {
                     <IconButton className='chat__head__back-button' onClick={handleGoBack}>
                         <ArrowBackIosNewIcon />
                     </IconButton>
-                    <Avatar src={toUser.avatar} />
+                    {toUser.avatar !== '' ? (
+                        <Avatar src={toUser.avatar} />
+                    ) : (
+                        <Avatar sx={{ background: avatarColor }}>{toUser.name.charAt(0)}</Avatar>
+                    )}
                     <div className='chat__head__user-info'>
                         {/* <Badge variant='dot' color={toUser.isOnline ? 'success' : 'error'}> */}
                         <h4 className='chat__head__user-name'>{toUser.userName}</h4>

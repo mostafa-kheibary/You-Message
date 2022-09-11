@@ -1,28 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-  user-select: none;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    user-select: none;
 }
 :root {
-  --gray: #f7f7f7;
-  --primary-color: #1088ff;
+    /* main color */
+    --gray: #f7f7f7;
+    --primary-color: #1088ff;
+    /* avatar color */
+
+    --orange-color-top: #ffcd6a;
+    --orange-color-bottom: #ffa85c;
+    --blue-color-top: #4aa5ff;
+    --blue-color-bottom: #1088ff;
+    --dark-blue-color-top: rgb(121, 134, 255);
+    --dark-blue-color-bottom: rgb(70, 88, 255);
+    --red-color-top: rgb(255, 132, 132);
+    --red-color-bottom: rgb(231, 58, 58);
+    --green-color-top: rgb(187, 68, 241);
+    --green-color-bottom: rgb(124, 0, 173);
+    --pink-color-top: rgb(247, 153, 255);
+    --pink-color-bottom: rgb(189, 96, 184);
 }
 
 ::-webkit-scrollbar {
-  width: 0.8rem;
+    width: 0.8rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(206, 206, 206);
-  border: 0.2rem white solid;
-  border-radius: 10px;
+    background: rgb(206, 206, 206);
+    border: 0.2rem white solid;
+    border-radius: 10px;
 }
 
 @media screen and (max-width: 700px) {
-  ::-webkit-scrollbar {
-    display: none;
-  }
+    ::-webkit-scrollbar {
+        display: none;
+    }
 }

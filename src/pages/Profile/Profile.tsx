@@ -13,12 +13,13 @@ import { db } from '../../config/firebase.config';
 import useToast from '../../hook/useToast';
 import './Profile.css';
 import { Loader } from '../../Layout';
+import { ProfileAvatar } from '../../Components';
 
 const Profile: FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const auth = getAuth();
-    const { info } = useSelector(selectUser);
+    const { info, avatarColor } = useSelector(selectUser);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const toast = useToast();
@@ -73,13 +74,12 @@ const Profile: FC = () => {
             </IconButton>
             <div className='profile__content'>
                 <div className='profile__avatar-wrapper'>
-                    {info?.avatar !== '' ? (
-                        <Avatar src={info?.avatar} className='profile__avatar' alt='prfile image' color='primary' />
-                    ) : (
-                        <Avatar className='profile__avatar' alt='profile image'>
-                            {info?.name.split(' ').map((text) => text.charAt(0))}
-                        </Avatar>
-                    )}
+                    <ProfileAvatar
+                        name={info!.name}
+                        src={info!.avatar}
+                        color={avatarColor}
+                        className='profile__avatar'
+                    />
                     <MotionIconButton
                         animate={editMode ? { rotate: 360 } : { rotate: 1 }}
                         onClick={handleChangeEditMode}
