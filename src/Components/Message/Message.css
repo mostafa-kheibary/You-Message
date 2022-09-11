@@ -5,6 +5,7 @@
   padding: 0.8rem 1rem;
   transition: margin 200ms ease;
   word-wrap: break-word;
+  font-size: 0.95rem;
   user-select: text;
   text-align: left;
 }

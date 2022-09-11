@@ -8,26 +8,28 @@ import useInit from './hook/useInit';
 import ContextMenu from './Components/ContextMenu/ContextMenu';
 
 const App: FC = () => {
-  const init = useInit();
+    const init = useInit();
 
-  useEffect(() => {
-    init();
-  }, []);
+    useEffect(() => {
+        init();
+    }, []);
 
-  return (
-    <BrowserRouter>
-      <Toast />
-      <ContextMenu />
-      <Routes>
-        <Route element={<PriveteRoute />}>
-          <Route path='/' element={<Main />} />
-          <Route path='/profile' element={<Profile />} />
-        </Route>
-        <Route path='/sign-in' element={<SignIn />} />
-        <Route path='/sign-up' element={<SignUp />} />
-      </Routes>
-    </BrowserRouter>
-  );
+    return (
+        <BrowserRouter>
+            <Toast />
+            <ContextMenu />
+            <div className='app'>
+                <Routes>
+                    <Route element={<PriveteRoute />}>
+                        <Route path='/' element={<Main />} />
+                        <Route path='/profile' element={<Profile />} />
+                    </Route>
+                    <Route path='/sign-in' element={<SignIn />} />
+                    <Route path='/sign-up' element={<SignUp />} />
+                </Routes>
+            </div>
+        </BrowserRouter>
+    );
 };
 
 export default App;

@@ -1,23 +1,21 @@
 .context-menu {
-  --context-menu-Background: #fff;
-  --context-menu-color: #000;
-  position: fixed;
-  width: 14rem !important;
-  background-color: var(--context-menu-Background);
-  color: var(--context-menu-color);
-  border-radius: 0.8rem;
-  z-index: 100000;
-  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+    position: fixed;
+    width: 10rem !important;
+    background-color: white;
+    color: black;
+    border-radius: 0.8rem;
+    z-index: 100000;
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
 }
 .context-menu__list {
-  padding: 0.5rem !important;
-  font-size: 0.9rem;
+    padding: 0.5rem !important;
+    font-size: 0.9rem;
 }
 .context-menu__lists {
-  border-radius: 0.5rem !important;
-  display: flex;
-  gap: 0.5rem;
+    border-radius: 0.5rem !important;
+    display: flex;
+    gap: 0.5rem;
 }
 .context-menu__icon > svg {
-  font-size: 1.1rem;
+    font-size: 1rem;
 }

@@ -69,7 +69,7 @@ const Profile: FC = () => {
             <div className='profile__backdrop'></div>
             <span className='profile__you-message'>You Message V 0.10</span>
             <Loader isLoading={isLoading} />
-            <IconButton className='profile__back-button' onClick={() => navigate(-1)}>
+            <IconButton color='primary' className='profile__back-button' onClick={() => navigate(-1)}>
                 <ArrowBackIosNew />
             </IconButton>
             <div className='profile__content'>

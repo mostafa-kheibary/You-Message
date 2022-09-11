@@ -18,7 +18,7 @@
     position: absolute;
     top: 1rem;
     left: 1rem;
-    color: white !important;
+    background-color: white !important;
 }
 .profile__input-wrapper {
     display: flex;
@@ -60,6 +60,8 @@
     background: url('/src/assets/image/profile-backdrop.png');
     background-attachment: fixed;
     width: 100%;
+    left: 0;
+    top: 0;
     height: 15rem;
     position: absolute;
 }

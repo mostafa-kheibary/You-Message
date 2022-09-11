@@ -44,7 +44,7 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
     if (messages.messages.length <= 0 && messageLoaded === null) {
       return (
         <h4 className='message-wrapper__conversation-start-text'>
-          conversation created <br /> No messages here yet . . . 
+          conversation created 👋 <br /> No messages here yet . . . 
         </h4>
       );
     }

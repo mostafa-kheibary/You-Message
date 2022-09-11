@@ -6,6 +6,10 @@
     font-family: 'Poppins', sans-serif;
     user-select: none;
 }
+.app {
+    max-width: 1980px;
+    margin: 0 auto;
+}
 :root {
     /* main color */
     --gray: #f7f7f7;
