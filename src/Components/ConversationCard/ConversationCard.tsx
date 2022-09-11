@@ -17,67 +17,74 @@ import { IConversation, IMessage, IUser } from '../../interfaces';
 import './ConversationCard.css';
 
 interface IProps {
-    messageData: IConversation;
+    conversationData: IConversation;
 }
-const ConversationCard: FC<IProps> = ({ messageData }) => {
-    const [toUser, setToUser] = useState<IUser | null>(null);
-    const [unReadMessage, setUnReadMessage] = useState<number>(0);
-    const [lastMessage, setLastMessage] = useState<IMessage | null>(null);
-    const { info } = useSelector(selectUser);
-    const currentConversation = useSelector(selectCurrentConversation);
-    const { changeContextMenus, openContext } = useContextMenu();
+const ConversationCard: FC<IProps> = ({ conversationData }) => {
     const auth = getAuth();
     const dispatch = useDispatch();
+    const { changeContextMenus, openContext } = useContextMenu();
+    const { info } = useSelector(selectUser);
+    const currentConversation = useSelector(selectCurrentConversation);
+    const [toUser, setToUser] = useState<IUser | null>(null);
+    const [unreadCount, setUnreadCount] = useState<number>(0);
+    const [lastMessage, setLastMessage] = useState<null | IMessage>(null);
 
     useEffect(() => {
         if (!auth.currentUser) return;
-        if (messageData.owners[0].id === auth.currentUser.uid) {
-            onSnapshot(messageData.owners[1], (snapShot) => {
-                setToUser(snapShot.data() as IUser);
-            });
-        } else {
-            onSnapshot(messageData.owners[0], (snapShot) => {
-                setToUser(snapShot.data() as IUser);
-            });
+        let queryUserDoc = doc(db, 'users', conversationData.owners[0]);
+        if (conversationData.owners[0] === auth.currentUser.uid) {
+            queryUserDoc = doc(db, 'users', conversationData.owners[1]);
         }
-        getLastMessage();
-    }, []);
 
-    const getLastMessage = async () => {
-        const messageRef = query(
-            collection(db, 'conversations', messageData.id, 'messages'),
-            orderBy('timeStamp', 'asc')
+        const unsub = onSnapshot(queryUserDoc, (snapShot) => {
+            setToUser(snapShot.data() as IUser);
+        });
+
+        const lastMessageQuery = query(
+            collection(db, 'conversations', conversationData.id, 'messages'),
+            orderBy('timeStamp', 'desc')
         );
-        onSnapshot(messageRef, (snapShot) => {
-            if (!snapShot.empty) {
-                setLastMessage(snapShot.docs[snapShot.docs.length - 1].data() as IMessage);
-                const unread = snapShot.docs.filter(
-                    (message) => message.data().status === 'sent' && message.data().owner !== info!.uid
+
+        const unsub2 = onSnapshot(lastMessageQuery, (snapShot) => {
+            if (snapShot.size > 0) {
+                setLastMessage(snapShot.docs[0].data() as IMessage);
+                const messages: IMessage[] = snapShot.docs.map((message) => message.data() as IMessage);
+                setUnreadCount(
+                    messages.filter((message) => message.status === 'sent' && message.owner !== info?.uid).length
                 );
-                setUnReadMessage(unread.length);
+            } else {
+                setLastMessage(null);
+                setUnreadCount(0);
             }
         });
-    };
 
-    const handleOpenChat = () => {
+        return ()=>{
+            unsub();
+            unsub2();
+        };
+    }, [conversationData]);
+
+    const handleOpenChat = (): void => {
         if (!toUser) {
             return;
         }
-        dispatch(setCurrentConversation({ id: messageData.id, toUser }));
+        dispatch(setCurrentConversation({ id: conversationData.id, toUser }));
         dispatch(changeOpenStatus(true));
     };
+
     const deleteConversation = async () => {
-        deleteDoc(doc(db, 'conversations', messageData.id));
-        if (currentConversation.id === messageData.id) {
+        await deleteDoc(doc(db, 'conversations', conversationData.id));
+        if (currentConversation.id === conversationData.id) {
             dispatch(setCurrentConversation({ toUser: null, id: '' }));
         }
     };
 
-    const handleRightClick = () => {
+    const handleRightClick = (): void => {
         changeContextMenus([{ icon: <DeleteIcon />, name: 'Delete', function: deleteConversation }]);
         openContext();
     };
 
+    // --- skeleton loading ---
     if (!toUser) {
         return (
             <div className='conversation-card__skeleton'>
@@ -100,7 +107,13 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
             className={classNames('conversation-card', toUser.uid === currentConversation.toUser?.uid ? 'active' : '')}
         >
             <div className='conversation-card__content'>
-                <Avatar className='conversation-card__avatar' src={toUser.avatar} />
+                {info?.avatar !== '' ? (
+                    <Avatar className='conversation-card__avatar' src={toUser.avatar} />
+                ) : (
+                    <Avatar className='conversation-card__avatar'>
+                        {/* {info.name.split(' ').map((text) => text.charAt(0).toUpperCase())} */}
+                    </Avatar>
+                )}
                 <div className='conversation-card__info'>
                     <h4 className='conversation-card__user-name'>{toUser.userName}</h4>
                     <p className='conversation-card__last-message'>{lastMessage?.text || 'conversation started'}</p>
@@ -111,7 +124,7 @@ const ConversationCard: FC<IProps> = ({ messageData }) => {
                             .toDate()
                             .toLocaleTimeString()}
                     </h5>
-                    {unReadMessage > 0 && <h5 className='conversation-card__notif'>{unReadMessage}</h5>}
+                    {unreadCount > 0 && <h5 className='conversation-card__notif'>{unreadCount}</h5>}
                 </div>
             </div>
         </Button>

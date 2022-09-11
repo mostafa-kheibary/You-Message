@@ -15,24 +15,13 @@ const conversationSlice = createSlice({
     name: 'conversation',
     initialState: initialState,
     reducers: {
-        addConversation: (state: IConversationState, action: PayloadAction<IConversation>) => {
-            const sameMessage = state.conversations.find((conversation: any) => conversation.id === action.payload.id);
-            if (!sameMessage) {
-                state.conversations.push(action.payload);
-            }
+        setConversations: (state: IConversationState, action: PayloadAction<IConversation[]>) => {
+            state.conversations = action.payload;
         },
-        removeConversation: (state: IConversationState, action: PayloadAction<string>) => {
-            const id = action.payload;
-            const index = state.conversations.findIndex((m) => m.id === id);
-            if (index !== -1) {
-                state.conversations.splice(index, 1);
-            }
+        clearConversations: (state: IConversationState) => {
+            state.conversations = [];
         },
-        editConversation: (state: IConversationState, action: PayloadAction<any>) => {
-            const { id, conversation } = action.payload;
-            const index = state.conversations.findIndex((m) => m.id === id);
-            state.conversations[index] = conversation;
-        },
+
         changeOpenStatus: (state: IConversationState, action: PayloadAction<boolean>) => {
             state.isOpen = action.payload;
         },
@@ -46,7 +35,7 @@ const conversationSlice = createSlice({
 });
 
 export default conversationSlice.reducer;
-export const { addConversation, editConversation, removeConversation, changeOpenStatus, setCurrentConversation } =
+export const { clearConversations, setConversations, changeOpenStatus, setCurrentConversation } =
     conversationSlice.actions;
 export const selectOpenStatus = (state: RootState) => state.conversations.isOpen;
 export const selectConversations = (state: RootState) => state.conversations.conversations;

@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, FormEvent, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { doc, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc, Timestamp, updateDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { db } from '../../config/firebase.config';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -12,7 +12,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { addMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import { EmojiMessage } from '../';
-import './SendMessageBar.css';
 import {
     selectMessageInput,
     setMessageInput,
@@ -21,6 +20,7 @@ import {
     clearEditMode,
 } from '../../store/reducers/messageInput/messageInputSlice';
 import { IMessage } from '../../interfaces';
+import './SendMessageBar.css';
 
 const SendMessageBar: FC = () => {
     const auth = getAuth();
@@ -31,6 +31,7 @@ const SendMessageBar: FC = () => {
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
+        updateDoc(doc(db, 'conversations', id), { timeStamp: serverTimestamp() });
         switch (mode) {
             case 'create':
                 sendMessage();

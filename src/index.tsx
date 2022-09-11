@@ -16,4 +16,4 @@ root.render(
         </Provider>
     </ThemeProvider>
 );
-serviceWorkerRegistration.register();
+serviceWorkerRegistration.unregister();

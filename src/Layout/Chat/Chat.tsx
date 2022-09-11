@@ -23,6 +23,9 @@ const Chat: FC = () => {
 
     const handleGoBack = (): void => {
         dispatch(changeOpenStatus(false));
+        setTimeout(() => {
+            dispatch(setCurrentConversation({ id: '', toUser: null }));
+        }, 200);
     };
 
     useEffect(() => {

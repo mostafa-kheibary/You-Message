@@ -14,7 +14,7 @@ export interface IContextMenu {
 export interface IConversation {
     timeStamp: Timestamp;
     id: string;
-    owners: DocumentReference[];
+    owners: string[];
 }
 export interface IConversationState {
     conversations: IConversation[];
