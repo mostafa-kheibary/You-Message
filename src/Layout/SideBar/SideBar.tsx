@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import {
     collection,
     doc,
@@ -16,10 +16,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../config/firebase.config';
 import { selectUser } from '../../store/reducers/user/userSlice';
-import { IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import { IconButton, OutlinedInput, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import MapsUgcIcon from '@mui/icons-material/MapsUgc';
 import GroupIcon from '@mui/icons-material/Group';
+import SearchIcon from '@mui/icons-material/Search';
 import { ConversationCard, ProfileAvatar } from '../../Components';
 import {
     clearConversations,
@@ -28,14 +29,18 @@ import {
 } from '../../store/reducers/conversations/conversationsSlice';
 import useToast from '../../hook/useToast';
 import { IConversation } from '../../interfaces';
+import useStorage from '../../hook/useStorage';
 import './SideBar.css';
 
 const SideBar: FC = () => {
     const navigate = useNavigate();
     const toast = useToast();
     const conversations = useSelector(selectConversations);
+    const [filterdConversations, setFilterdConversation] = useState<IConversation[]>([]);
+
     const dispatch = useDispatch();
-    const { info, avatarColor } = useSelector(selectUser);
+    const { info } = useSelector(selectUser);
+    const { setStorage, getStorage } = useStorage();
 
     const handleAddConversation = async () => {
         const newConversation = prompt('enter userName');
@@ -71,28 +76,53 @@ const SideBar: FC = () => {
             where('owners', 'array-contains', info.uid),
             orderBy('timeStamp', 'desc')
         );
-
         onSnapshot(messagesQuery, (snapShot) => {
             dispatch(clearConversations());
+            // --- empty the local storage for new conversations ---
+            setStorage('youMessage-conversations', []);
             const conversationsData = snapShot.docs.map((conversation) => conversation.data());
             dispatch(setConversations(conversationsData as IConversation[]));
+            setFilterdConversation(conversationsData as IConversation[]);
         });
     }, []);
+
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        const conversationsData = getStorage('youMessage-conversations') || [];
+        const founded: any = [];
+        conversationsData.forEach((conversation: { id: string; name: string }) => {
+            if (conversation.name.includes(e.target.value.trim())) {
+                const foundedConversation = conversations.find((con) => con.id === conversation.id);
+                founded.push(foundedConversation);
+            }
+        });
+        setFilterdConversation(founded);
+    };
 
     return (
         <aside className='side-bar'>
             <div className='side-bar__head'>
                 <div className='side-bar__head__left'>
                     <IconButton onClick={() => navigate('/profile')} style={{ position: 'relative' }}>
-                        <ProfileAvatar color={avatarColor} name={info!.name} src={info!.avatar} />
+                        <ProfileAvatar color={info!.avatarColor} name={info!.name} src={info!.avatar} />
                         <SettingsIcon color='action' className='side-bar__head__edit-profile' />
                     </IconButton>
-                    <h2 className='side-bar__head__title'>Hi {info?.userName}</h2>
+                    <div className='side-bar__head__titles'>
+                        <h2 className='side-bar__head__title'>Hi {info?.name}</h2>
+                        <h4 className='side-bar__head__user-name'>@{info?.userName}</h4>
+                    </div>
                 </div>
             </div>
-
+            <div className='side-bar__search-wrapper'>
+                <OutlinedInput
+                    onChange={handleSearch}
+                    size='small'
+                    placeholder='search conversations name'
+                    className='side-bar__search-input'
+                    startAdornment={<SearchIcon color='primary' />}
+                />
+            </div>
             <div className='side-bar__conversations-container'>
-                {conversations.map((contact, i) => (
+                {filterdConversations.map((contact, i) => (
                     <ConversationCard key={i} conversationData={contact} />
                 ))}
             </div>

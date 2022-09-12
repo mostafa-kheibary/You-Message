@@ -1,67 +1,86 @@
 .side-bar {
-  position: relative;
-  width: 22.5rem;
-  border-right: 0.1rem solid #e6e6e6;
-  transition: all 500ms ease;
+    position: relative;
+    width: 22.5rem;
+    border-right: 0.1rem solid #e6e6e6;
+    transition: all 500ms ease;
 }
 .side-bar__head {
-  width: 100%;
-  display: flex;
-  z-index: 1000;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--gray);
-  border-bottom: 0.1rem solid #e6e6e6;
-  height: 3.6rem;
-  padding: 1rem;
-  transition: all 500ms ease;
+    width: 100%;
+    display: flex;
+    z-index: 1000;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--gray);
+    border-bottom: 0.1rem solid #e6e6e6;
+    height: 3.6rem;
+    padding: 1rem;
+    transition: all 500ms ease;
+}
+.side-bar__head__user-name {
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin-top: -0.2rem;
+    color: rgb(172, 172, 172);
 }
 .side-bar__conversations-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-height: calc(100% - 3.6rem);
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: 0.3rem;
-  padding-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: calc(100% - 7rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0.3rem;
+    padding-top: 0.5rem;
 }
 .side-bar__head__edit-profile {
-  position: absolute;
-  bottom: 0.2rem;
-  right: 0.2rem;
-  background-color: var(--gray);
-  border-radius: 50%;
-  padding: 0.15rem;
-  font-size: 1.3rem !important;
-  box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 0.2rem;
+    right: 0.2rem;
+    background-color: var(--gray);
+    border-radius: 50%;
+    padding: 0.15rem;
+    font-size: 1.3rem !important;
+    box-shadow: 0 0 0.5rem 0.1rem rgba(0, 0, 0, 0.1);
 }
 .side-bar__avatar {
-  width: 2.6rem !important;
-  height: 2.6rem !important;
+    width: 2.6rem !important;
+    height: 2.6rem !important;
 }
 .side-bar__head__left {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 .side-bar__head__title {
-  font-weight: 300;
-  padding-left: 0.5rem;
-  font-size: 1.2rem;
+    font-weight: 300;
+    font-size: 1.2rem;
+}
+.side-bar__head__titles {
+    padding-left: 0.5rem;
 }
 .side-bar__head__buttons {
-  display: flex;
-  gap: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
 }
 .side-bar__dial {
-  position: absolute;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  z-index: 0 !important;
+    position: absolute;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 0 !important;
+}
+.side-bar__search-wrapper {
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+    padding-bottom: 0;
+}
+.side-bar__search-input {
+    border-radius: 50rem !important;
+    width: 100%;
+    font-size: 0.9rem !important;
 }
 @media screen and (max-width: 700px) {
-  .side-bar {
-    border-right: none;
-  }
+    .side-bar {
+        border-right: none;
+    }
 }
