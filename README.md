@@ -17,6 +17,10 @@ i use firebase as main backend service and react/redux/typescript as front end.
 - custom context menu
 - real time data update for chat messages and other datas 
 - pwa (installable app on desktop and android|ios) , ofline compatibility
+- custome emoji sender tab 
+- search conversations
+- edit your profile 
+- dynamic profile avatar
 
 ## Upcomming Features
 - [ ] forward messages
