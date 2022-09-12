@@ -10,15 +10,15 @@
 .profile__avatar {
     width: 15rem !important;
     height: 15rem !important;
-    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
     margin: 0 auto;
     font-size: 3rem !important;
+    background-color: white !important;
 }
 .profile__back-button {
     position: absolute;
     top: 1rem;
     left: 1rem;
-    background-color: white !important;
 }
 .profile__input-wrapper {
     display: flex;
@@ -28,6 +28,21 @@
     width: 80%;
     margin: 0 auto;
     margin-top: 1.5rem;
+}
+.profile__input-wrapper-title {
+    position: relative;
+    font-weight: 400;
+}
+.profile__input-wrapper-title::after {
+    position: absolute;
+    bottom: -0.4rem;
+    left: 50%;
+    translate: -50% 0;
+    content: '';
+    width: 10%;
+    height: 0.2rem;
+    border-radius: 10rem;
+    background-color: var(--primary-color);
 }
 .profile__conversation-length {
     margin-top: 0.5rem;
@@ -57,8 +72,8 @@
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.3);
 }
 .profile__backdrop {
-    background: url('/src/assets/image/profile-backdrop.png');
-    background-attachment: fixed;
+    background-color: var(--gray);
+    border-bottom: solid 0.1rem #e6e6e6;
     width: 100%;
     left: 0;
     top: 0;

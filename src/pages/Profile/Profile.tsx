@@ -1,25 +1,25 @@
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
-import { Avatar, Button, IconButton, TextField } from '@mui/material';
+import { Button, IconButton, TextField } from '@mui/material';
 import { getAuth, signOut } from 'firebase/auth';
 import { FC, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { logout, selectUser } from '../../store/reducers/user/userSlice';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckIcon from '@mui/icons-material/Check';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../config/firebase.config';
 import useToast from '../../hook/useToast';
-import './Profile.css';
 import { Loader } from '../../Layout';
 import { ProfileAvatar } from '../../Components';
+import './Profile.css';
 
 const Profile: FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const auth = getAuth();
-    const { info, avatarColor } = useSelector(selectUser);
+    const { info } = useSelector(selectUser);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const toast = useToast();
@@ -30,9 +30,9 @@ const Profile: FC = () => {
     });
 
     const handleSignOut = async () => {
+        navigate('/sign-in');
         await signOut(auth);
         dispatch(logout);
-        navigate('/');
     };
     const handleChangeEditMode = async () => {
         // toggle editmode
@@ -77,7 +77,7 @@ const Profile: FC = () => {
                     <ProfileAvatar
                         name={info!.name}
                         src={info!.avatar}
-                        color={avatarColor}
+                        color={info!.avatarColor}
                         className='profile__avatar'
                     />
                     <MotionIconButton
@@ -89,6 +89,7 @@ const Profile: FC = () => {
                     </MotionIconButton>
                 </div>
                 <div className='profile__input-wrapper'>
+                    <h4 className='profile__input-wrapper-title'>Edit Information</h4>
                     <TextField variant='standard' disabled label='user name' value={info?.userName || ''} />
                     <TextField
                         variant='standard'
@@ -101,6 +102,8 @@ const Profile: FC = () => {
                     />
                     <TextField
                         variant='standard'
+                        multiline
+                        sx={{ whiteSpace: 'pre-wrap' }}
                         name='bio'
                         label='bio'
                         onChange={handleChange}

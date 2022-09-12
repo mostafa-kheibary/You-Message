@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Avatar, Badge, IconButton } from '@mui/material';
+import { Badge, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { SendMessageBar } from '../../Components';
+import { ProfileAvatar, SendMessageBar } from '../../Components';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
 import {
     changeOpenStatus,
@@ -17,7 +17,7 @@ import { IMessage, IUser } from '../../interfaces';
 import './Chat.css';
 
 const Chat: FC = () => {
-    const { id, toUser, avatarColor } = useSelector(selectCurrentConversation);
+    const { id, toUser } = useSelector(selectCurrentConversation);
     const dispatch = useDispatch();
     const [loading, setLoading] = useState<boolean | null>(true); // null for no message;
 
@@ -36,7 +36,7 @@ const Chat: FC = () => {
 
         // --- lithen for chnage on touser for changes ---
         const unsub2 = onSnapshot(doc(db, 'users', toUser!.uid), (snapShot) => {
-            dispatch(setCurrentConversation({ id, toUser: snapShot.data() as IUser, avatarColor }));
+            dispatch(setCurrentConversation({ id, toUser: snapShot.data() as IUser }));
         });
 
         // --- get Messages ---
@@ -86,18 +86,14 @@ const Chat: FC = () => {
                     <IconButton className='chat__head__back-button' onClick={handleGoBack}>
                         <ArrowBackIosNewIcon />
                     </IconButton>
-                    {toUser.avatar !== '' ? (
-                        <Avatar src={toUser.avatar} />
-                    ) : (
-                        <Avatar sx={{ background: avatarColor }}>{toUser.name.charAt(0)}</Avatar>
-                    )}
+                    <ProfileAvatar color={toUser.avatarColor} name={toUser.name} src={toUser.avatar} />
                     <div className='chat__head__user-info'>
-                        {/* <Badge variant='dot' color={toUser.isOnline ? 'success' : 'error'}> */}
-                        <h4 className='chat__head__user-name'>{toUser.userName}</h4>
-                        {/* </Badge> */}
-                        {/* <p className='chat__head__user-status'>
+                        <Badge variant='dot' color={toUser.isOnline ? 'success' : 'error'}>
+                            <h4 className='chat__head__name'>{toUser.name}</h4>
+                        </Badge>
+                        <p className='chat__head__user-status'>
                             {lastSeenTime.toDateString()} , {lastSeenTime.toLocaleTimeString()}
-                        </p> */}
+                        </p>
                     </div>
                 </div>
                 <div className='chat__head__buttons'>

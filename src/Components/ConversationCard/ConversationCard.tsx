@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
 import useContextMenu from '../../hook/useContextMenu';
+import { ProfileAvatar } from '../';
 import {
     changeOpenStatus,
     selectCurrentConversation,
@@ -14,13 +15,13 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import { IConversation, IMessage, IUser } from '../../interfaces';
-import ProfileAvatar from '../ProfileAvatar/ProfileAvatar';
-import avatarColorSchema from '../../data/avatarColorSchema.json';
+import useStorage from '../../hook/useStorage';
 import './ConversationCard.css';
 
 interface IProps {
     conversationData: IConversation;
 }
+
 const ConversationCard: FC<IProps> = ({ conversationData }) => {
     const auth = getAuth();
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
     const [toUser, setToUser] = useState<IUser | null>(null);
     const [unreadCount, setUnreadCount] = useState<number>(0);
     const [lastMessage, setLastMessage] = useState<null | IMessage>(null);
-    const [avatarColor] = useState<string>(avatarColorSchema[Math.floor(Math.random() * avatarColorSchema.length)]);
+    const { setStorage, getStorage } = useStorage();
 
     useEffect(() => {
         if (!auth.currentUser) return;
@@ -41,13 +42,18 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
         }
         const unsub = onSnapshot(queryUserDoc, (snapShot) => {
             setToUser(snapShot.data() as IUser);
+
+            // --- set conversation to local storage for searching base on name ---
+            const data = { id: conversationData.id, name: snapShot.data()!.name };
+            let oldData = getStorage('youMessage-conversations') || [];
+            oldData = oldData.filter((con: { id: string }) => con.id !== data.id);
+            setStorage('youMessage-conversations', [...oldData, data]);
         });
 
         const lastMessageQuery = query(
             collection(db, 'conversations', conversationData.id, 'messages'),
             orderBy('timeStamp', 'desc')
         );
-
         const unsub2 = onSnapshot(lastMessageQuery, (snapShot) => {
             if (snapShot.size > 0) {
                 setLastMessage(snapShot.docs[0].data() as IMessage);
@@ -71,7 +77,7 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
         if (!toUser) {
             return;
         }
-        dispatch(setCurrentConversation({ id: conversationData.id, toUser, avatarColor }));
+        dispatch(setCurrentConversation({ id: conversationData.id, toUser }));
         dispatch(changeOpenStatus(true));
     };
 
@@ -110,9 +116,9 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
             className={classNames('conversation-card', toUser.uid === currentConversation.toUser?.uid ? 'active' : '')}
         >
             <div className='conversation-card__content'>
-                <ProfileAvatar src={toUser.avatar} name={toUser.name} color={avatarColor} />
+                <ProfileAvatar src={toUser.avatar} name={toUser.name} color={toUser.avatarColor} />
                 <div className='conversation-card__info'>
-                    <h4 className='conversation-card__user-name'>{toUser.userName}</h4>
+                    <h4 className='conversation-card__user-name'>{toUser.name}</h4>
                     <p className='conversation-card__last-message'>{lastMessage?.text || 'conversation started'}</p>
                 </div>
                 <div className='conversation-card__status'>

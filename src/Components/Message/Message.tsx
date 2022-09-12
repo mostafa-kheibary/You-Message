@@ -115,7 +115,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
                     message.status === 'pending' ? 'pending' : ''
                 )}
             >
-                {message.text}
+                {message.text.trim()}
                 <span className='message-status'>
                     {message.status === 'pending' ? (
                         <AccessTimeIcon />

@@ -1,154 +1,155 @@
 .message {
-  position: relative;
-  border-radius: 1.5rem;
-  max-width: 480px;
-  padding: 0.8rem 1rem;
-  transition: margin 200ms ease;
-  word-wrap: break-word;
-  font-size: 0.95rem;
-  user-select: text;
-  text-align: left;
+    position: relative;
+    border-radius: 1.5rem;
+    max-width: 480px;
+    padding: 0.8rem 1rem;
+    transition: margin 200ms ease;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    font-size: 0.95rem;
+    cursor: pointer;
+    text-align: left;
 }
 .message:lang(fa) {
-  text-align: right;
-  font-family: sans-serif;
+    text-align: right;
+    font-family: sans-serif;
 }
 .message.owner {
-  position: relative;
-  background-color: var(--primary-color);
-  color: white;
-  margin-left: auto;
-  margin-right: 0.5rem;
+    position: relative;
+    background-color: var(--primary-color);
+    color: white;
+    margin-left: auto;
+    margin-right: 0.5rem;
 }
 .message.owner.pending {
-  margin-right: 1rem;
+    margin-right: 1rem;
 }
 .message.reciver.pending {
-  margin-left: 1rem;
+    margin-left: 1rem;
 }
 .message.owner::after {
-  content: '';
-  position: absolute;
-  bottom: 0.3rem;
-  right: -0.8rem;
-  width: 1rem;
-  height: 1rem;
-  border-left: 0.5rem solid var(--primary-color);
-  border-radius: 50%;
-  transform: rotate(-20deg);
+    content: '';
+    position: absolute;
+    bottom: 0.3rem;
+    right: -0.8rem;
+    width: 1rem;
+    height: 1rem;
+    border-left: 0.5rem solid var(--primary-color);
+    border-radius: 50%;
+    transform: rotate(-20deg);
 }
 .message.reciver {
-  position: relative;
-  margin-right: auto;
-  margin-left: 0.5rem;
-  color: black;
-  background-color: #e7e6ec;
+    position: relative;
+    margin-right: auto;
+    margin-left: 0.5rem;
+    color: black;
+    background-color: #e7e6ec;
 }
 .message.reciver::after {
-  content: '';
-  position: absolute;
-  bottom: 0.3rem;
-  left: -0.8rem;
-  width: 1rem;
-  height: 1rem;
-  border-right: 0.5rem solid #e7e6ec;
-  border-radius: 50%;
-  transform: rotate(20deg);
+    content: '';
+    position: absolute;
+    bottom: 0.3rem;
+    left: -0.8rem;
+    width: 1rem;
+    height: 1rem;
+    border-right: 0.5rem solid #e7e6ec;
+    border-radius: 50%;
+    transform: rotate(20deg);
 }
 .message-status {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  right: -1.2rem;
-  color: var(--primary-color);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -1.2rem;
+    color: var(--primary-color);
 }
 .message-status > svg {
-  font-size: 1rem !important;
+    font-size: 1rem !important;
 }
 .message-reactions {
-  border-radius: 50rem;
-  padding: 0.2rem;
-  position: absolute;
-  bottom: -0.8rem;
-  left: 0.5rem;
-  z-index: 100;
+    border-radius: 50rem;
+    padding: 0.2rem;
+    position: absolute;
+    bottom: -0.8rem;
+    left: 0.5rem;
+    z-index: 100;
 }
 .message-reactions__emoji {
-  font-size: 0.8rem;
+    font-size: 0.8rem;
 }
 .message-reactions.owner {
-  left: unset;
-  right: 0.5rem;
+    left: unset;
+    right: 0.5rem;
 }
 .reply-message {
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.2rem;
-  border: 0.1rem solid var(--primary-color);
-  border-radius: 1.5rem;
-  padding: 0.2rem 0.5rem;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    border: 0.1rem solid var(--primary-color);
+    border-radius: 1.5rem;
+    padding: 0.2rem 0.5rem;
 
-  color: var(--primary-color);
-  z-index: 10;
-  background-color: white;
+    color: var(--primary-color);
+    z-index: 10;
+    background-color: white;
 }
 .reply-message.owner {
-  margin-left: auto;
-  transform: translate(-0.5rem, 0.2rem);
+    margin-left: auto;
+    transform: translate(-0.5rem, 0.2rem);
 }
 .reply-message.reciver {
-  transform: translate(0.5rem, 0.2rem);
-  margin-right: auto;
+    transform: translate(0.5rem, 0.2rem);
+    margin-right: auto;
 }
 .reply-message__line {
-  position: absolute;
-  top: 50%;
-  width: 0.1rem;
-  height: 150%;
-  background-color: var(--primary-color);
+    position: absolute;
+    top: 50%;
+    width: 0.1rem;
+    height: 150%;
+    background-color: var(--primary-color);
 }
 .reply-message__line::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 0.8rem;
-  height: 0.1rem;
-  background-color: var(--primary-color);
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0.8rem;
+    height: 0.1rem;
+    background-color: var(--primary-color);
 }
 .reply-message.reciver > .reply-message__line {
-  left: -0.8rem;
+    left: -0.8rem;
 }
 .reply-message.owner > .reply-message__line {
-  right: -0.8rem;
+    right: -0.8rem;
 }
 .reply-message.reciver > .reply-message__line::after {
-  left: 0;
+    left: 0;
 }
 .reply-message.owner > .reply-message__line::after {
-  right: 0;
+    right: 0;
 }
 .reply-message__line::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  width: 0.8rem;
-  height: 0.1rem;
-  background-color: var(--primary-color);
+    content: '';
+    position: absolute;
+    bottom: 0;
+    width: 0.8rem;
+    height: 0.1rem;
+    background-color: var(--primary-color);
 }
 .reply-message.owner > .reply-message__line::before {
-  right: 0;
+    right: 0;
 }
 .reply-message.reciver > .reply-message__line::before {
-  left: 0;
+    left: 0;
 }
 .reply-message__icon {
-  font-size: 1rem !important;
+    font-size: 1rem !important;
 }
 
 @media screen and (max-width: 700px) {
-  .message {
-    max-width: 90%;
-  }
+    .message {
+        max-width: 90%;
+    }
 }

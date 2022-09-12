@@ -1,12 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../..';
 import { IUser, IUserState } from '../../../interfaces';
-import avatarColorSchema from '../../../data/avatarColorSchema.json';
 
 const initialState: IUserState = {
     info: null,
     status: 'loading',
-    avatarColor: avatarColorSchema[Math.floor(Math.random() * avatarColorSchema.length)],
 };
 
 const userSlice = createSlice({

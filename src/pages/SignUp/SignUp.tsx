@@ -5,6 +5,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
 import { setDoc, doc, Timestamp, collection, query, where, limit, getDocs } from 'firebase/firestore';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import DoneIcon from '@mui/icons-material/Done';
 import { Avatar, Button, CircularProgress, IconButton, Step, StepLabel, Stepper, TextField } from '@mui/material';
 import { uuidv4 } from '@firebase/util';
 import { IUser } from '../../interfaces';
@@ -15,6 +16,7 @@ import { Loader } from '../../Layout';
 import emailImage from '../../assets/image/email.png';
 import classNames from '../../utils/classNames';
 import iconImage from '../../assets/image/icon.png';
+import avatarColorSchema from '../../data/avatarColorSchema.json';
 
 import './SignUp.css';
 
@@ -42,6 +44,10 @@ const SignUp: FC = () => {
     };
 
     const handleSignUp = async () => {
+        if (+uplaodPercent.toFixed(0) !== 0 && +uplaodPercent.toFixed(0) !== 100) {
+            toast('image is uploading,wait until complete', 'error');
+            return;
+        }
         setLoading(true);
         const auth = getAuth();
         try {
@@ -55,6 +61,7 @@ const SignUp: FC = () => {
                 isTyping: false,
                 isOnline: true,
                 avatar: profilePicUrl,
+                avatarColor: avatarColorSchema[Math.floor(Math.random() * avatarColorSchema.length)],
             };
             await Promise.all([
                 await createUserWithEmailAndPassword(auth, values.email, values.password),
@@ -84,9 +91,10 @@ const SignUp: FC = () => {
 
     const handleUploadProfilePhoto = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files) return;
-
         const urlCreator = window.URL || window.webkitURL;
-        const storageRef = ref(storage, `profile-photos/${uuidv4()}`);
+        const fileName = `${uuidv4().toString()}`;
+        console.log(fileName);
+        const storageRef = ref(storage, `profile_photos/${fileName}`);
         const imageUrl = urlCreator.createObjectURL(e.target.files[0]);
         setProfilePic(imageUrl);
 
@@ -100,6 +108,7 @@ const SignUp: FC = () => {
             },
             (error) => {
                 // error
+                console.log(error);
                 toast('cant upload the image,try again', 'error');
             },
             async () => {
@@ -119,6 +128,9 @@ const SignUp: FC = () => {
                     value={+uplaodPercent.toFixed(0)}
                 />
             );
+        }
+        if (+uplaodPercent.toFixed(0) === 100) {
+            return <DoneIcon color='success' className='sign-up__progress' />;
         }
     };
 
@@ -248,7 +260,15 @@ const SignUp: FC = () => {
                         type='text'
                         variant='outlined'
                     />
-                    <TextField label='bio' onChange={handleChange} value={values.bio} name='bio' minRows={3} />
+                    <TextField
+                        multiline={true}
+                        maxRows={4}
+                        label='bio'
+                        onChange={handleChange}
+                        value={values.bio}
+                        name='bio'
+                        minRows={3}
+                    />
                     <Button className='sign-up__submit-button' variant='contained' type='submit'>
                         Finish
                     </Button>
