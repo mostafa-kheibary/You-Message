@@ -9,6 +9,7 @@
     height: fit-content;
     border-top: 0.1rem solid #e6e6e6;
     transition: all 500ms ease;
+    z-index: 100;
 }
 .send-message-bar__wrapper {
     width: 100%;

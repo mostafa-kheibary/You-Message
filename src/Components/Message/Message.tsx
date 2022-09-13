@@ -99,7 +99,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
                     className={classNames('reply-message', message.owner === info!.uid ? 'owner' : 'reciver')}
                 >
                     <span className='reply-message__line'></span>
-                    <span className='reply-message__text'>{message.replyTo.message}</span>
+                    <span className='reply-message-text'>{message.replyTo.message}</span>
                     <ReplyIcon className='reply-message__icon' />
                 </motion.div>
             )}

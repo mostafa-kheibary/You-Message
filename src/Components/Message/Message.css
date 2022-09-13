@@ -90,10 +90,15 @@
     border: 0.1rem solid var(--primary-color);
     border-radius: 1.5rem;
     padding: 0.2rem 0.5rem;
-
     color: var(--primary-color);
     z-index: 10;
     background-color: white;
+    width: 70%;
+}
+.reply-message-text {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .reply-message.owner {
     margin-left: auto;
