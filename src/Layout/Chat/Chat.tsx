@@ -4,7 +4,7 @@ import { Badge, IconButton } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { ProfileAvatar, SendMessageBar } from '../../Components';
+import { Modal, ProfileAvatar, SendMessageBar } from '../../Components';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
 import {
     changeOpenStatus,
@@ -103,7 +103,11 @@ const Chat: FC = () => {
     return (
         <div className='chat'>
             <div className='chat__head'>
-                {/* <Modal handleClose={() => setIsModalOpen(false)} isOpen={isModalOpen}></Modal> */}
+                <Modal handleClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
+                    <h2>wikenfwn</h2>
+                    <h4>wikenfwn</h4>
+                    <p>idfiwnmefwikenfwn</p>
+                </Modal>
                 <div onClick={() => setIsModalOpen(true)} className='chat__head__left'>
                     <IconButton className='chat__head__back-button' onClick={handleGoBack}>
                         <ArrowBackIosNewIcon />
