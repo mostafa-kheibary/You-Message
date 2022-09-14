@@ -57,9 +57,7 @@ const SignUp: FC = () => {
                 name: values.name,
                 bio: values.bio,
                 email: values.email,
-                lastSeen: Timestamp.now(),
                 isTyping: false,
-                isOnline: true,
                 avatar: profilePicUrl,
                 avatarColor: avatarColorSchema[Math.floor(Math.random() * avatarColorSchema.length)],
             };

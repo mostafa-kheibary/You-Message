@@ -6,7 +6,9 @@ import ElevatorButton from './ElevatorButton/ElevatorButton';
 import EmojiMessage from './EmojiMessage/EmojiMessage';
 import VoiceMessageSender from './VoiceMessageSender/VoiceMessageSender';
 import ProfileAvatar from './ProfileAvatar/ProfileAvatar';
+import Modal from './Modal/Modal';
 export {
+    Modal,
     SendMessageBar,
     Toast,
     ConversationCard,

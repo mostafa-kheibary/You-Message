@@ -57,9 +57,7 @@ export interface IUser {
     name: string;
     bio: string;
     email: string;
-    lastSeen: Timestamp;
     isTyping: boolean;
-    isOnline: boolean;
     avatar: string;
     avatarColor: string;
 }

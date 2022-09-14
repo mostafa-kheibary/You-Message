@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import { getDatabase } from 'firebase/database';
 import { CACHE_SIZE_UNLIMITED, initializeFirestore } from 'firebase/firestore';
 // Initialize Firebase
 
@@ -15,4 +16,5 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = initializeFirestore(app, { cacheSizeBytes: CACHE_SIZE_UNLIMITED });
-export { db, app };
+const rDb = getDatabase();
+export { db, rDb, app };

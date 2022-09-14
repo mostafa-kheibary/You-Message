@@ -122,11 +122,11 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
                     <p className='conversation-card__last-message'>{lastMessage?.text || 'conversation started'}</p>
                 </div>
                 <div className='conversation-card__status'>
-                    <h5 className='conversation-card__last-seen'>
+                    {/* <h5 className='conversation-card__last-seen'>
                         {new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds)
                             .toDate()
                             .toLocaleTimeString()}
-                    </h5>
+                    </h5> */}
                     {unreadCount > 0 && <h5 className='conversation-card__notif'>{unreadCount}</h5>}
                 </div>
             </div>

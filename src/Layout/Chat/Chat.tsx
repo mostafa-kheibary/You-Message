@@ -12,14 +12,25 @@ import {
     setCurrentConversation,
 } from '../../store/reducers/conversations/conversationsSlice';
 import { addMessage, clearMessage, editMessage, removeMessage } from '../../store/reducers/message/messageSlice';
-import { db } from '../../config/firebase.config';
+import { serverTimestamp } from 'firebase/database';
+import { db, rDb } from '../../config/firebase.config';
 import { IMessage, IUser } from '../../interfaces';
+
 import './Chat.css';
+import { onValue, ref } from 'firebase/database';
+import timeSince from '../../utils/timeSince';
+
+type userPresenceType = {
+    timeStamp: number | null;
+    isOnline: boolean;
+};
 
 const Chat: FC = () => {
     const { id, toUser } = useSelector(selectCurrentConversation);
+    const [userPresence, setUserPresence] = useState<userPresenceType>({ timeStamp: null, isOnline: true }); // --- last seen and user status
+    const [loading, setLoading] = useState<boolean | null>(true); // --- null for no message
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState<boolean | null>(true); // null for no message;
 
     const handleGoBack = (): void => {
         dispatch(changeOpenStatus(false));
@@ -33,6 +44,15 @@ const Chat: FC = () => {
         setLoading(true);
         dispatch(clearMessage());
         const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
+
+        // --- get user presence from realtime database ---
+        const unsub3 = onValue(ref(rDb, '/status/' + toUser!.uid), (snapShot) => {
+            if (!snapShot.exists()) {
+                setUserPresence(snapShot.val());
+            } else {
+                setUserPresence(snapShot.val());
+            }
+        });
 
         // --- lithen for chnage on touser for changes ---
         const unsub2 = onSnapshot(doc(db, 'users', toUser!.uid), (snapShot) => {
@@ -63,6 +83,7 @@ const Chat: FC = () => {
         return () => {
             unsub();
             unsub2();
+            unsub3();
         };
     }, [id]);
 
@@ -78,21 +99,22 @@ const Chat: FC = () => {
             </div>
         );
     }
-    const lastSeenTime = new Timestamp(toUser.lastSeen.seconds, toUser.lastSeen.nanoseconds).toDate();
+    const lastSeenTime = new Date(userPresence.timeStamp || 0);
     return (
         <div className='chat'>
             <div className='chat__head'>
-                <div className='chat__head__left'>
+                {/* <Modal handleClose={() => setIsModalOpen(false)} isOpen={isModalOpen}></Modal> */}
+                <div onClick={() => setIsModalOpen(true)} className='chat__head__left'>
                     <IconButton className='chat__head__back-button' onClick={handleGoBack}>
                         <ArrowBackIosNewIcon />
                     </IconButton>
                     <ProfileAvatar color={toUser.avatarColor} name={toUser.name} src={toUser.avatar} />
                     <div className='chat__head__user-info'>
-                        <Badge variant='dot' color={toUser.isOnline ? 'success' : 'error'}>
+                        <Badge variant='dot' color={userPresence.isOnline ? 'success' : 'error'}>
                             <h4 className='chat__head__name'>{toUser.name}</h4>
                         </Badge>
                         <p className='chat__head__user-status'>
-                            {lastSeenTime.toDateString()} , {lastSeenTime.toLocaleTimeString()}
+                            {userPresence.isOnline ? 'online' : `last seen ${timeSince(lastSeenTime)} ago`}
                         </p>
                     </div>
                 </div>
