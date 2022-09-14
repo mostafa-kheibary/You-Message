@@ -41,6 +41,57 @@
     font-size: 1rem;
     font-weight: 400;
 }
+.chat-modal__container {
+    max-height: 30rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.chat-modal__content {
+    padding: 1.5rem;
+    padding-top: 0;
+    margin-top: -2.5rem;
+}
+.chat-modal__top-back {
+    width: 100%;
+    height: 8rem;
+    background-color: #e6e6e6;
+    border-radius: 0.5rem;
+}
+.chat-modal__content__top {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+}
+.chat-modal__profile-avatar {
+    cursor: zoom-in;
+    background-color: white !important;
+    box-shadow: 0 0.2rem 1rem rgba(0, 0, 0, 0.15);
+    width: 7rem !important;
+    height: 7rem !important;
+    font-size: 2.5rem !important;
+}
+.chat-modal__info {
+    translate: 0 -1.5rem;
+}
+.chat-modal__info-name {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+.chat-modal__info-user-name {
+    font-size: 0.8rem;
+    font-weight: 300;
+    margin-top: -0.2rem;
+}
+.chat-modal__content__info-section {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    margin-top: 1rem;
+    gap: 2rem;
+}
+.chat-modal__content-input {
+    pointer-events: none !important;
+}
 @media screen and (min-width: 700px) {
     .chat__head__back-button {
         display: none !important;

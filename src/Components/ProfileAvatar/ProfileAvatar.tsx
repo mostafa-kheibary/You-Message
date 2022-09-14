@@ -1,18 +1,19 @@
 import { Avatar } from '@mui/material';
-import { FC } from 'react';
+import { FC, MouseEventHandler } from 'react';
 
 interface IProps {
     name: string;
     src: string;
-    className?: string;
     color: string;
+    className?: string;
+    onClick?: () => MouseEventHandler;
 }
 
-const ProfileAvatar: FC<IProps> = ({ name, src, className, color }) => {
+const ProfileAvatar: FC<IProps> = ({ name, src, className, color, onClick }) => {
     return src.trim() !== '' ? (
-        <Avatar src={src} className={className} />
+        <Avatar onClick={onClick} src={src} className={className} />
     ) : (
-        <Avatar className={className} sx={{ background: color }}>
+        <Avatar onClick={onClick} className={className} sx={{ background: color }}>
             {name.split(' ').map((char) => char.charAt(0).toUpperCase())}
         </Avatar>
     );

@@ -7,8 +7,6 @@
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     width: 35rem;
     border-radius: 0.5rem;
-    padding: 1rem;
-    padding-top: 2rem;
     z-index: 10000000;
 }
 .modal-backdrop {
@@ -25,6 +23,7 @@
     position: absolute !important;
     top: 0.3rem;
     left: 0.3rem;
+    z-index: 10000;
 }
 @media screen and (max-width: 700px) {
     .modal {
@@ -32,8 +31,6 @@
         height: 100%;
         left: 0;
         translate: unset;
-        padding: 2.5rem;
-        padding-top: 4rem;
         top: 0;
     }
     .modal__close-button {

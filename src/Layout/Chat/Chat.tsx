@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Badge, IconButton } from '@mui/material';
+import { Badge, IconButton, TextField } from '@mui/material';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
@@ -12,7 +12,6 @@ import {
     setCurrentConversation,
 } from '../../store/reducers/conversations/conversationsSlice';
 import { addMessage, clearMessage, editMessage, removeMessage } from '../../store/reducers/message/messageSlice';
-import { serverTimestamp } from 'firebase/database';
 import { db, rDb } from '../../config/firebase.config';
 import { IMessage, IUser } from '../../interfaces';
 
@@ -32,7 +31,8 @@ const Chat: FC = () => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const dispatch = useDispatch();
 
-    const handleGoBack = (): void => {
+    const handleGoBack = (e: MouseEvent): void => {
+        e.stopPropagation();
         dispatch(changeOpenStatus(false));
         setTimeout(() => {
             dispatch(setCurrentConversation({ id: '', toUser: null }));
@@ -103,11 +103,31 @@ const Chat: FC = () => {
     return (
         <div className='chat'>
             <div className='chat__head'>
+                {/* modal */}
                 <Modal handleClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
-                    <h2>wikenfwn</h2>
-                    <h4>wikenfwn</h4>
-                    <p>idfiwnmefwikenfwn</p>
+                    <div className='chat-modal__container'>
+                        <div className='chat-modal__top-back'></div>
+                        <div className='chat-modal__content'>
+                            <div className='chat-modal__content__top'>
+                                <ProfileAvatar
+                                    className='chat-modal__profile-avatar'
+                                    color={toUser.avatarColor}
+                                    name={toUser.name}
+                                    src={toUser.avatar}
+                                />
+                                <div className='chat-modal__info'>
+                                    <h4 className='chat-modal__info-name'>{toUser.name}</h4>
+                                    <h6 className='chat-modal__info-user-name'>@{toUser.userName}</h6>
+                                </div>
+                            </div>
+                            <div className='chat-modal__content__info-section'>
+                                <TextField className='chat-modal__content-input' multiline label='bio' value={toUser.bio} />
+                                <TextField className='chat-modal__content-input' label='email' value={toUser.email} />
+                            </div>
+                        </div>
+                    </div>
                 </Modal>
+                {/* modal */}
                 <div onClick={() => setIsModalOpen(true)} className='chat__head__left'>
                     <IconButton className='chat__head__back-button' onClick={handleGoBack}>
                         <ArrowBackIosNewIcon />
