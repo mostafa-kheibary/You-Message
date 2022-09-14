@@ -5,12 +5,12 @@ import { getAuth } from 'firebase/auth';
 import { db } from '../../config/firebase.config';
 import { AnimatePresence, motion } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
-import { IconButton, OutlinedInput } from '@mui/material';
+import { IconButton, OutlinedInput, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import CloseIcon from '@mui/icons-material/Close';
 import { addMessage } from '../../store/reducers/message/messageSlice';
 import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
-import { EmojiMessage } from '../';
+import { EmojiMessage, VoiceMessageSender } from '../';
 import {
     selectMessageInput,
     setMessageInput,
@@ -133,7 +133,7 @@ const SendMessageBar: FC = () => {
                         placeholder='Your message ...'
                     />
                 </div>
-                {/* <VoiceMessageSender /> */}
+                <VoiceMessageSender />
             </div>
         </div>
     );

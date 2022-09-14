@@ -1,8 +1,7 @@
-import { FC, MouseEvent, MouseEventHandler, useEffect, useState } from 'react';
+import { FC, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Badge, IconButton, TextField } from '@mui/material';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import { collection, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Modal, ProfileAvatar, SendMessageBar } from '../../Components';
 import MessageWrapper from '../../Components/MessageWrapper/MessageWrapper';
@@ -12,12 +11,13 @@ import {
     setCurrentConversation,
 } from '../../store/reducers/conversations/conversationsSlice';
 import { addMessage, clearMessage, editMessage, removeMessage } from '../../store/reducers/message/messageSlice';
+import CallIcon from '@mui/icons-material/Call';
+import DuoIcon from '@mui/icons-material/Duo';
 import { db, rDb } from '../../config/firebase.config';
 import { IMessage, IUser } from '../../interfaces';
-
-import './Chat.css';
 import { onValue, ref } from 'firebase/database';
 import timeSince from '../../utils/timeSince';
+import './Chat.css';
 
 type userPresenceType = {
     timeStamp: number | null;
@@ -121,7 +121,12 @@ const Chat: FC = () => {
                                 </div>
                             </div>
                             <div className='chat-modal__content__info-section'>
-                                <TextField className='chat-modal__content-input' multiline label='bio' value={toUser.bio} />
+                                <TextField
+                                    className='chat-modal__content-input'
+                                    multiline
+                                    label='bio'
+                                    value={toUser.bio}
+                                />
                                 <TextField className='chat-modal__content-input' label='email' value={toUser.email} />
                             </div>
                         </div>
@@ -143,8 +148,11 @@ const Chat: FC = () => {
                     </div>
                 </div>
                 <div className='chat__head__buttons'>
-                    <IconButton color='secondary'>
-                        <MoreVertOutlinedIcon />
+                    <IconButton color='primary'>
+                        <CallIcon />
+                    </IconButton>
+                    <IconButton color='primary'>
+                        <DuoIcon />
                     </IconButton>
                 </div>
             </div>

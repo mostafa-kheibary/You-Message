@@ -127,7 +127,7 @@ const SideBar: FC = () => {
                 ))}
             </div>
 
-            <SpeedDial ariaLabel='SpeedDial basic example' icon={<SpeedDialIcon />} className='side-bar__dial'>
+            <SpeedDial ariaLabel='start conversation' icon={<SpeedDialIcon />} className='side-bar__dial'>
                 <SpeedDialAction
                     onClick={handleAddConversation}
                     icon={<MapsUgcIcon />}

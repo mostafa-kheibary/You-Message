@@ -5,6 +5,9 @@
     padding: 0;
     font-family: 'Poppins', sans-serif;
     user-select: none;
+    /* make blue box on mobile click disappare */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
 }
 .app {
     max-width: 1980px;
@@ -14,7 +17,7 @@
     /* main color */
     --gray: #f7f7f7;
     --primary-color: #1088ff;
-    --dark-primary-color:#2a5077;
+    --dark-primary-color: #2a5077;
     /* avatar color */
 
     --orange-color-top: #ffcd6a;

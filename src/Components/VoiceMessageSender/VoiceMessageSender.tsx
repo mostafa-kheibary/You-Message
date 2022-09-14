@@ -7,23 +7,23 @@ import useAudio from '../../hook/useAudio';
 const VoiceMessageSender: FC = () => {
     const { audioChunk, isRecourding, recourd, puase } = useAudio();
     const handleClick = () => {
-        if (!isRecourding) {
-            recourd();
-        } else {
-            puase();
-        }
+        // if (!isRecourding) {
+        //     recourd();
+        // } else {
+        //     puase();
+        // }
     };
-    useEffect(() => {
-        if (!isRecourding) {
-            const audioBlob = new Blob(audioChunk);
-            const audioUrl = URL.createObjectURL(audioBlob);
-            const audio = new Audio(audioUrl);
-            audio.play();
-            console.log(audioChunk);
-        }
-    }, [isRecourding]);
+    // useEffect(() => {
+    //     if (!isRecourding) {
+    //         const audioBlob = new Blob(audioChunk);
+    //         const audioUrl = URL.createObjectURL(audioBlob);
+    //         const audio = new Audio(audioUrl);
+    //         audio.play();
+    //         console.log(audioChunk);
+    //     }
+    // }, [isRecourding]);
     return (
-        <IconButton onClick={handleClick} size='large' className='input-bar__send' color='primary'>
+        <IconButton onClick={handleClick} size='large' color='primary'>
             {isRecourding ? '=' : <KeyboardVoiceIcon />}
         </IconButton>
     );
