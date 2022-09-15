@@ -9,7 +9,7 @@ import useToast from './useToast';
 import { changeStatus } from '../store/reducers/contextMenu/ContextMenuSlice';
 import { IUser } from '../interfaces';
 import useStorage from './useStorage';
-import { selectSettings } from '../store/reducers/settings/settingsSlice';
+import { changeTheme, selectSettings } from '../store/reducers/settings/settingsSlice';
 
 const useInit = () => {
     const auth = getAuth();
@@ -69,6 +69,13 @@ const useInit = () => {
         window.addEventListener('online', () => toast('Internet is back! you are online', 'success'));
         window.addEventListener('contextmenu', (e) => e.preventDefault());
         window.addEventListener('click', () => dispatch(changeStatus(false)));
+
+        // --- lithen for device theme changes
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+            const newColorScheme = event.matches ? 'dark' : 'light';
+            dispatch(changeTheme(newColorScheme === 'dark'));
+        });
     };
     const init = (): void => {
         enableIndexedDbPersistence(db);

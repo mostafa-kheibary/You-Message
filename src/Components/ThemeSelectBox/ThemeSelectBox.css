@@ -10,7 +10,7 @@
     cursor: pointer;
 }
 .theme-select-box.select {
-    outline: 0.2rem solid var(--primary-color);
+    box-shadow: 0rem 0rem 0 0rem var(--primary-color),-0rem -0rem 0 0.2rem var(--primary-color);
 }
 .theme-select-box.light {
     background-color: #fff;

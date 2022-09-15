@@ -2,7 +2,9 @@
     position: relative;
     width: calc(100% - 20rem);
     background-color: var(--background-white);
-    transition: all 500ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition-property: width, right;
+    transition-duration: 500ms;
+    transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 .chat__head {
     display: flex;
@@ -10,7 +12,6 @@
     padding: 0.5rem 1rem;
     align-items: center;
     width: 100%;
-    transition: all 500ms ease;
     background-color: var(--background-gray);
     color: var(--black-text);
     justify-content: space-between;

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../..';
 import { ISettings } from '../../../interfaces';
 
-const theme = JSON.parse(localStorage.getItem('youMessage-theme') || 'null') || { darkMode: true };
+const theme = JSON.parse(localStorage.getItem('youMessage-theme') || 'null') || { darkMode: false };
 
 const initialState: ISettings = {
     theme: theme,

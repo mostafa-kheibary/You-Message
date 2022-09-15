@@ -2,7 +2,6 @@
     position: relative;
     width: 22.5rem;
     border-right: 0.1rem solid var(--background-dark-gray);
-    transition: all 500ms ease;
 }
 .side-bar__head {
     width: 100%;
@@ -15,7 +14,6 @@
     border-bottom: 0.1rem solid var(--background-dark-gray);
     height: 3.6rem;
     padding: 1rem;
-    transition: all 500ms ease;
 }
 .side-bar__head__user-name {
     font-size: 0.8rem;
