@@ -1,29 +1,29 @@
 .toast-bar > div {
-  background-color: white;
-  color: black;
+    background-color: var(--background-white);
+    color: var(--black-text);
 }
 .toast-bar {
-  position: relative;
-  z-index: 100000;
-  transform: scale(1);
+    position: relative;
+    z-index: 100000;
+    transform: scale(1);
 }
 .toast-bar.error > div::after {
-  content: '';
-  position: absolute;
-  left: 0.4rem;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 70%;
-  width: 0.13rem;
-  background-color: red;
+    content: '';
+    position: absolute;
+    left: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 0.13rem;
+    background-color: red;
 }
 .toast-bar.success > div::after {
-  content: '';
-  position: absolute;
-  left: 0.4rem;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 70%;
-  width: 0.13rem;
-  background-color: #2e7d32;
+    content: '';
+    position: absolute;
+    left: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 0.13rem;
+    background-color: #2e7d32;
 }

@@ -3,17 +3,15 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    padding: 1rem 1rem;
+    padding: 0.5rem 1rem;
     background-color: var(--background-gary);
     width: 100%;
     height: fit-content;
     border-top: 0.1rem solid var(--background-dark-gray);
-    transition: all 500ms ease;
     z-index: 100;
 }
 .send-message-bar__wrapper {
     width: 100%;
-    height: fit-content;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -68,11 +66,9 @@
 }
 .send-message-bar__form {
     width: 100%;
+    background-color: var(--background-gary);
 }
-.input-bar__send {
-    width: 4rem;
-    height: 4rem;
-}
+
 .input-bar__send > svg {
     font-size: 2rem !important;
 }

@@ -17,6 +17,7 @@ import classNames from '../../utils/classNames';
 import { IConversation, IMessage, IUser } from '../../interfaces';
 import useStorage from '../../hook/useStorage';
 import './ConversationCard.css';
+import { clearMessageInput } from '../../store/reducers/messageInput/messageInputSlice';
 
 interface IProps {
     conversationData: IConversation;
@@ -74,9 +75,10 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
     }, [conversationData]);
 
     const handleOpenChat = (): void => {
-        if (!toUser) {
+        if (!toUser || toUser.uid === currentConversation.toUser?.uid) {
             return;
         }
+        dispatch(clearMessageInput());
         dispatch(setCurrentConversation({ id: conversationData.id, toUser }));
         dispatch(changeOpenStatus(true));
     };
