@@ -7,7 +7,7 @@
     padding-bottom: 0;
     width: 20rem;
     height: 18rem;
-    background-color: white;
+    background-color: var(--background-gray);
     position: absolute;
     bottom: 1rem;
     left: 1rem;

@@ -1,0 +1,10 @@
+[
+    {
+        "title": "light Theme",
+        "dark": false
+    },
+    {
+        "title": "dark Theme",
+        "dark": true
+    }
+]

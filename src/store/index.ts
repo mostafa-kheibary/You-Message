@@ -5,11 +5,13 @@ import conversationReducer from './reducers/conversations/conversationsSlice';
 import userReducer from './reducers/user/userSlice';
 import ContextReducer from './reducers/contextMenu/ContextMenuSlice';
 import messageInputReducer from './reducers/messageInput/messageInputSlice';
+import settingSlice from './reducers/settings/settingsSlice';
 
 const store = configureStore({
     reducer: {
         user: userReducer,
         toast: toastReducer,
+        settings: settingSlice,
         conversations: conversationReducer,
         message: messageReducer,
         messageInput: messageInputReducer,

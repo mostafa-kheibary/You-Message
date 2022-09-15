@@ -1,8 +1,8 @@
 .context-menu {
     position: fixed;
     width: 10rem !important;
-    background-color: white;
-    color: black;
+    background-color: var(--background-gray-context-menu);
+    color: var(--black-text);
     border-radius: 0.8rem;
     z-index: 100000;
     box-shadow: 0 0 2rem rgba(0, 0, 0, 0.2);

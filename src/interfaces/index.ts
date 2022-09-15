@@ -3,14 +3,14 @@ import { ReactNode } from 'react';
 
 // ** typeSript interfaces ** //
 
-// context menu
+// --- context menu ---
 export type ContextMenuItem = { icon?: ReactNode; name: string; function: () => any };
 export interface IContextMenu {
     menu: ContextMenuItem[];
     open: boolean;
 }
 
-// conversations
+// --- conversations ---
 export interface IConversation {
     timeStamp: Timestamp;
     id: string;
@@ -22,7 +22,7 @@ export interface IConversationState {
     isOpen: boolean;
 }
 
-// message
+// --- message ---
 export interface IMessage {
     timeStamp: Timestamp;
     id: string;
@@ -36,7 +36,7 @@ export interface IMessageState {
     messages: IMessage[];
 }
 
-// message input
+// --- message input ---
 export interface IMessageInput {
     message: string;
     replyTo?: { to: string; message: string; id: string };
@@ -44,13 +44,13 @@ export interface IMessageInput {
     mode: 'create' | 'edit' | 'reply';
 }
 
-// toast
+// --- toast ---
 export interface IToastState {
     message: string;
     status: 'error' | 'success';
     visibility: boolean;
 }
-// user
+// --- user ---
 export interface IUser {
     uid: string;
     userName: string;
@@ -64,4 +64,9 @@ export interface IUser {
 export interface IUserState {
     info: IUser | null;
     status: 'loading' | 'isAuth' | 'isNotAuth';
+}
+
+// --- settings ---
+export interface ISettings {
+    theme: { darkMode: boolean };
 }

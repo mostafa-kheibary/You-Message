@@ -10,7 +10,8 @@
     gap: 0.5rem;
 }
 .message-wrapper__conversation-start-text {
-    background-color: var(--gray);
+    background-color: var(--background-gray);
+    color: var(--black-text);
     padding: 1rem;
     font-size: 1rem;
     font-weight: 300;

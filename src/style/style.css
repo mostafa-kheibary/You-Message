@@ -9,17 +9,25 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
 }
+body {
+    background-color: var(--background-white);
+}
 .app {
     max-width: 1980px;
     margin: 0 auto;
 }
 :root {
-    /* main color */
-    --gray: #f7f7f7;
+    /* main color mormal theme */
     --primary-color: #1088ff;
+    --background-white: #fff;
+    --background-gray-context-menu: #fff;
+    --background-gray: #f7f7f7;
+    --background-dark-gray: #e6e6e6;
+    --black-text: #000;
+    --white-text: #fff;
     --dark-primary-color: #2a5077;
-    /* avatar color */
 
+    /* avatar color */
     --orange-color-top: #ffcd6a;
     --orange-color-bottom: #ffa85c;
     --blue-color-top: #68b4ff;
@@ -33,14 +41,31 @@
     --pink-color-top: rgb(247, 153, 255);
     --pink-color-bottom: rgb(189, 96, 184);
 }
+.dark {
+    /* blue dark theme */
+    /* --primary-color: #1088ff;
+    --background-white: #15202b;
+    --background-dark-gray: #192734;
+    --background-gray: #22303c;
+    --black-text: #fff;
+    --white-text: #000; */
 
+    /* dark */
+    --primary-color: #1088ff;
+    --background-white: #1d1e1f;
+    --background-gray-context-menu: #242526;
+    --background-dark-gray: #2f2f30;
+    --background-gray: #242526;
+    --black-text: #e4e6eb;
+    --white-text: #000;
+}
 ::-webkit-scrollbar {
     width: 0.8rem;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgb(206, 206, 206);
-    border: 0.2rem white solid;
+    background: var(--background-dark-gray);
+    border: 0.2rem var(--background-white) solid;
     border-radius: 10px;
 }
 

@@ -1,6 +1,7 @@
 .sign-in {
     width: 100%;
     overflow: hidden;
+    color: var(--black-text);
 }
 .sign-in__content {
     text-align: center;
@@ -17,7 +18,7 @@
 }
 .sign-in__inputs {
     margin-top: 2rem;
-    padding: 0 1rem ;
+    padding: 0 1rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -28,7 +29,7 @@
 }
 .sign-in__link {
     text-decoration: none;
-    color: black;
     font-weight: 300;
     font-size: 0.9rem;
+    color: var(--black-text);
 }

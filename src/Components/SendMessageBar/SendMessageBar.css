@@ -4,10 +4,10 @@
     bottom: 0;
     right: 0;
     padding: 1rem 1rem;
-    background-color: var(--gray);
+    background-color: var(--background-gary);
     width: 100%;
     height: fit-content;
-    border-top: 0.1rem solid #e6e6e6;
+    border-top: 0.1rem solid var(--background-dark-gray);
     transition: all 500ms ease;
     z-index: 100;
 }
@@ -25,7 +25,8 @@
     gap: 1.5rem;
     width: 100%;
     height: 4rem;
-    background-color: var(--gray);
+    background-color: var(--background-gray);
+    color: var(--black-text);
     top: -4rem;
     padding-left: 1rem;
     left: 0;
@@ -63,7 +64,7 @@
     border-radius: 1.4rem !important;
     padding: 0.8rem 1rem !important;
     font-size: 0.9rem !important;
-    background-color: white;
+    background-color: var(--background-white);
 }
 .send-message-bar__form {
     width: 100%;

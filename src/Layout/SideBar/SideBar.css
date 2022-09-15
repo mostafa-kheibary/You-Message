@@ -1,7 +1,7 @@
 .side-bar {
     position: relative;
     width: 22.5rem;
-    border-right: 0.1rem solid #e6e6e6;
+    border-right: 0.1rem solid var(--background-dark-gray);
     transition: all 500ms ease;
 }
 .side-bar__head {
@@ -10,8 +10,9 @@
     z-index: 1000;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--gray);
-    border-bottom: 0.1rem solid #e6e6e6;
+    background-color: var(--background-gray);
+    color: var(--black-text);
+    border-bottom: 0.1rem solid var(--background-dark-gray);
     height: 3.6rem;
     padding: 1rem;
     transition: all 500ms ease;

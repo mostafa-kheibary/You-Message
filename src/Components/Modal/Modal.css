@@ -3,7 +3,8 @@
     top: 50%;
     left: 50%;
     translate: -50% -50%;
-    background-color: white;
+    background-color: var(--background-white);
+    color: var(--black-text);
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
     width: 35rem;
     border-radius: 0.5rem;

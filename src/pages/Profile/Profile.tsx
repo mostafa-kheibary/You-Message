@@ -2,6 +2,7 @@ import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
 import { Button, IconButton, TextField } from '@mui/material';
 import { getAuth, signOut } from 'firebase/auth';
 import { FC, useMemo, useState } from 'react';
+import { changeTheme, selectSettings } from '../../store/reducers/settings/settingsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -13,6 +14,8 @@ import { db } from '../../config/firebase.config';
 import useToast from '../../hook/useToast';
 import { Loader } from '../../Layout';
 import { ProfileAvatar } from '../../Components';
+import themesData from '../../data/themes.json';
+import ThemeSelectBox from '../../Components/ThemeSelectBox/ThemeSelectBox';
 import './Profile.css';
 
 const Profile: FC = () => {
@@ -20,6 +23,7 @@ const Profile: FC = () => {
     const navigate = useNavigate();
     const auth = getAuth();
     const { info } = useSelector(selectUser);
+    const { theme } = useSelector(selectSettings);
     const [editMode, setEditMode] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const toast = useToast();
@@ -62,6 +66,9 @@ const Profile: FC = () => {
     };
     const handleChange = (e: any) => {
         setEditInfo({ ...editInfo, [e.target.name]: e.target.value });
+    };
+    const handleChangeTheme = (darkMode: boolean) => {
+        dispatch(changeTheme(darkMode));
     };
     const MotionIconButton = useMemo(() => motion(IconButton), []);
     return (
@@ -111,6 +118,19 @@ const Profile: FC = () => {
                         value={editInfo.bio}
                         size='small'
                     />
+                </div>
+                <div className='profile__input-wrapper'>
+                    <h4 className='profile__input-wrapper-title'>Settings</h4>
+                    <div className='profile__theme-wrapper'>
+                        {themesData.map((themeData) => (
+                            <ThemeSelectBox
+                                key={themeData.title}
+                                onClick={() => handleChangeTheme(themeData.dark)}
+                                select={theme.darkMode === themeData.dark}
+                                themeData={themeData}
+                            />
+                        ))}
+                    </div>
                 </div>
                 <div className='profile__buttons'>
                     <Button color='error' onClick={handleSignOut}>
