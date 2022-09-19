@@ -152,6 +152,46 @@
 .reply-message__icon {
     font-size: 1rem !important;
 }
+.forward-modal {
+    text-align: center;
+    padding: 1rem;
+    padding-top: 2rem;
+}
+.forward-modal__title {
+    font-size: 1.2rem;
+    font-weight: 400;
+    text-align: center;
+}
+.forward-modal__conversations {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 1rem;
+    gap: 1rem;
+    max-height: 25rem;
+    overflow-y: auto;
+}
+.forward-modal__users {
+    padding: 1rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    width: 90%;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+.forward-modal__submit-button {
+    width: 80%;
+    margin-left: auto;
+    margin-top: 1rem !important;
+}
+.forward-modal__user {
+    padding: 0.5rem 1rem;
+    border-radius: 10rem;
+    background-color: var(--background-dark-gray);
+    font-size: 0.9rem;
+    font-weight: 300;
+}
 @media screen and (max-width: 900px) {
     .message {
         max-width: 80%;
@@ -160,6 +200,12 @@
 @media screen and (max-width: 700px) {
     .message {
         max-width: 90%;
+    }
+    .forward-modal {
+        height: 100%;
+    }
+    .forward-modal__conversations {
+        max-height: calc(100% - 9rem)!important;
     }
 }
 @media screen and (max-width: 400px) {

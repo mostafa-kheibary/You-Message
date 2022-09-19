@@ -1,0 +1,36 @@
+.conversation-select-card {
+    --checkbox-size: 1.2rem;
+    
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    background-color: var(--background-gray);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background 200ms ease;
+}
+.conversation-select-card:hover {
+    background-color: var(--background-dark-gray);
+}
+.conversation-select-card__checkbox {
+    position: absolute;
+    background-color: transparent;
+    border: 0.1rem solid var(--primary-color);
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    border-radius: 10rem;
+    top: 50%;
+    right: 1rem;
+    transform: translate(0, -50%);
+    transition: background 200ms ease;
+}
+.conversation-select-card__checkbox.checked {
+    background-color: var(--primary-color);
+}
+.conversation-select-card__name {
+    font-weight: 500;
+}
+.conversation-select-card__user-name {
+    font-weight: 300;
+}

@@ -1,11 +1,20 @@
-import { FC, useMemo, useRef } from 'react';
-import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { FC, useRef, useState } from 'react';
+import {
+    arrayRemove,
+    arrayUnion,
+    deleteDoc,
+    doc,
+    serverTimestamp,
+    setDoc,
+    Timestamp,
+    updateDoc,
+} from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { db } from '../../config/firebase.config';
 import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
-import { selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
+import { selectConversations, selectCurrentConversation } from '../../store/reducers/conversations/conversationsSlice';
 import useContextMenu from '../../hook/useContextMenu';
 import useToast from '../../hook/useToast';
 import { setEditMode, setMessageInput, setReplyTo } from '../../store/reducers/messageInput/messageInputSlice';
@@ -17,18 +26,31 @@ import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IMessage } from '../../interfaces';
+import { IMessage, IUser } from '../../interfaces';
+import Modal from '../Modal/Modal';
 import './Message.css';
+import ConversationSelectCard from '../ConversationSelectCard/ConversationSelectCard';
+import { Button } from '@mui/material';
+import { uuidv4 } from '@firebase/util';
 
 interface IProps {
     message: IMessage;
     messagesDivRef: { current: HTMLDivElement | null };
 }
+interface forwardUser {
+    id: string;
+    user: IUser;
+    checked: boolean;
+}
 const Message: FC<IProps> = ({ message, messagesDivRef }) => {
+    const [forwardUsers, setForwardUsers] = useState<forwardUser[]>([]);
+    const [isForwardOpen, setIsForwardOpen] = useState<boolean>(false);
+    const messageRef = useRef<HTMLDivElement | null>(null);
     const { info } = useSelector(selectUser);
     const { id } = useSelector(selectCurrentConversation);
+    const conversations = useSelector(selectConversations);
     const { changeContextMenus, openContext } = useContextMenu();
-    const messageRef = useRef<HTMLDivElement | null>(null);
+
     const toast = useToast();
     const dispatch = useDispatch();
 
@@ -48,7 +70,35 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
         dispatch(setReplyTo(replyPayload));
     };
 
-    const forwardMessage = () => {};
+    const forwardMessage = () => {
+        const messageData = {
+            id: uuidv4(),
+            owner: info!.uid,
+            text: message.text,
+            timeStamp: Timestamp.now(),
+            status: 'sent',
+        };
+
+        forwardUsers.map((forward) => {
+            setDoc(doc(db, 'conversations', forward.id, 'messages', message.id), {
+                ...messageData,
+            });
+            updateDoc(doc(db, 'conversations', forward.id), {
+                timeStamp: Timestamp.now(),
+            });
+        });
+        setIsForwardOpen(false);
+        toast('message forwarded successfuly', 'success');
+    };
+
+    const handleSelectConversation = (id: string, user: IUser, checked: boolean) => {
+        if (checked) {
+            setForwardUsers([...forwardUsers, { id, user, checked }]);
+            return;
+        }
+        const filterdForwardUser = forwardUsers.filter((forward) => forward.id !== id);
+        setForwardUsers(filterdForwardUser);
+    };
 
     const copyMessage = () => {
         navigator.clipboard.writeText(message.text);
@@ -84,7 +134,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
             changeContextMenus([
                 { icon: <ContentCopyIcon />, name: 'Copy', function: copyMessage },
                 { icon: <ReplyAllIcon />, name: 'Reply', function: replyMessage },
-                { icon: <ArrowForwardIcon />, name: 'Forward', function: forwardMessage },
+                { icon: <ArrowForwardIcon />, name: 'Forward', function: () => setIsForwardOpen(true) },
                 { icon: <EditIcon />, name: 'Edit', function: editMessage },
                 { icon: <DeleteIcon />, name: 'Delete', function: deleteMessage },
             ]);
@@ -92,7 +142,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
             changeContextMenus([
                 { icon: <ContentCopyIcon />, name: 'Copy', function: copyMessage },
                 { icon: <ReplyAllIcon />, name: 'Reply', function: replyMessage },
-                { icon: <ArrowForwardIcon />, name: 'Forward', function: forwardMessage },
+                { icon: <ArrowForwardIcon />, name: 'Forward', function: () => setIsForwardOpen(true) },
             ]);
         }
         openContext();
@@ -112,6 +162,31 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
                     <ReplyIcon className='reply-message__icon' />
                 </motion.div>
             )}
+
+            <Modal handleClose={() => setIsForwardOpen(false)} isOpen={isForwardOpen}>
+                <div className='forward-modal'>
+                    <h4 className='forward-modal__title'>Forward Message</h4>
+                    <div className='forward-modal__users'>
+                        {forwardUsers.map((forward) => (
+                            <span key={forward.user.uid} className='forward-modal__user'>
+                                {forward.user.name}
+                            </span>
+                        ))}
+                    </div>
+                    <div className='forward-modal__conversations'>
+                        {conversations.map((conversation) => (
+                            <ConversationSelectCard
+                                onChange={handleSelectConversation}
+                                key={conversation.id}
+                                conversationData={conversation}
+                            />
+                        ))}
+                    </div>
+                    <Button onClick={forwardMessage} className='forward-modal__submit-button' color='primary'>
+                        Send
+                    </Button>
+                </div>
+            </Modal>
 
             <div
                 onDoubleClick={() => handleAddReaction('❤️')}

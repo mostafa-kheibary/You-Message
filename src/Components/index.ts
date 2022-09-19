@@ -7,7 +7,9 @@ import EmojiMessage from './EmojiMessage/EmojiMessage';
 import VoiceMessageSender from './VoiceMessageSender/VoiceMessageSender';
 import ProfileAvatar from './ProfileAvatar/ProfileAvatar';
 import Modal from './Modal/Modal';
+import ConversationCardSelect from './ConversationSelectCard/ConversationSelectCard';
 export {
+    ConversationCardSelect,
     Modal,
     SendMessageBar,
     Toast,

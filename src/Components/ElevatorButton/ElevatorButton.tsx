@@ -25,7 +25,7 @@ const ElevatorButton: FC<IProps> = ({ containerRef, unreadCount }) => {
     const checkForShow = () => {
         if (!containerRef) return;
 
-        if (containerRef.scrollHeight - containerRef.offsetHeight - 200 >= containerRef.scrollTop) {
+        if (containerRef.scrollHeight - containerRef.offsetHeight - 50 >= containerRef.scrollTop) {
             setIshow(true);
         } else {
             setIshow(false);
