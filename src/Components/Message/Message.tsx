@@ -60,6 +60,11 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
 
         // for find a replyed message by click on it
         const replyedMessage = messagesDivRef.current.querySelector(`[id="${message.replyTo.id}"]`) as HTMLDivElement;
+
+        if (!replyedMessage) {
+            toast('cant scroll to message, message is deleted', 'error');
+            return;
+        }
         replyedMessage.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
     };
 

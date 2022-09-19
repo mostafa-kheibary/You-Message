@@ -10,20 +10,22 @@
 .toast-bar.error > div::after {
     content: '';
     position: absolute;
-    left: 0.4rem;
+    left: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
     height: 70%;
     width: 0.13rem;
+    border-radius: 10rem;
     background-color: red;
 }
 .toast-bar.success > div::after {
     content: '';
     position: absolute;
-    left: 0.4rem;
+    left: 0.5rem;
     top: 50%;
     transform: translateY(-50%);
     height: 70%;
     width: 0.13rem;
     background-color: #2e7d32;
+    border-radius: 10rem;
 }
