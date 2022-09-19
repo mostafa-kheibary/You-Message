@@ -3,28 +3,29 @@
 </p>
 <p align="center">open source chat application inspierd by Iphone imessag</p>
 
-## Project 
-#### 👀 my user name is "mostafa" so you can message me in You Message 👀 [start chating ...](https://you-message.vercel.app/)
-#### this is personal project for chalenging my slef to make fully working chat application, so signup in You Message and start chating ! 🎉
-i use firebase as main backend service and react/redux/typescript as front end.
+
+##### 👀 my user name is "mostafa" so you can message me in You Message 👀 [start chating ...](https://you-message.vercel.app/)
+##### this is personal project for challenging my slef to make fully working chat application, so signup in You Message and start chating ! 🎉
+i use firebase as main backend service and react / redux / typescript as front end.
 
 
 ## ⭐ Features
 
 - auth with email and password
+- realtime user presence for showing last seen and is user online or not
 - find users with their user name and start conversation easyly
-- like,delete,edit,reply message
+- like ,delete, edit, reply, forward message
 - custom context menu
-- real time data update for chat messages and other datas 
-- pwa (installable app on desktop and android|ios) , ofline compatibility
 - custome emoji sender tab 
+- real time data update for chat messages and other datas 
 - search conversations
 - edit your profile 
 - dynamic profile avatar
+- dynamic title and favicon for showing notification
 
 ## Upcomming Features
-- [ ] forward messages
-- [ ] see other user profile 
+- [x] forward messages
+- [x] see other user profile 
 - [ ] create group message
 - [ ] add voice message 
 - [ ] webRTC video call and voice call
