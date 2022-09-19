@@ -40,7 +40,6 @@ const MessageWrapper: FC<IProps> = ({ messageLoaded }) => {
     }, [isInView, messages]);
 
     useEffect(() => {
-        console.log('first');
         const scrollTop = getStorage(`youMessage-scroll-${id}`);
         messagesDivRef.current!.scrollTo({ top: scrollTop, left: 0, behavior: 'auto' });
     }, [loading]);

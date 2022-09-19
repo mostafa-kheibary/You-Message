@@ -16,6 +16,7 @@ const ElevatorButton: FC<IProps> = ({ containerRef, unreadCount }) => {
 
     useEffect(() => {
         if (!containerRef) return;
+        checkForShow();
         const unsub = containerRef.addEventListener('scroll', () => {
             checkForShow();
         });
