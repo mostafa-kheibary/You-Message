@@ -68,6 +68,8 @@ export interface IUserState {
 }
 
 // --- settings ---
+type unreadMessage = { id: string; count: number };
 export interface ISettings {
     theme: { darkMode: boolean };
+    unreadMessage: unreadMessage[];
 }

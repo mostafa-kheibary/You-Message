@@ -1,6 +1,6 @@
 import { Button, Skeleton } from '@mui/material';
 import { getAuth } from 'firebase/auth';
-import { collection, deleteDoc, doc, onSnapshot, orderBy, query, Timestamp } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { db } from '../../config/firebase.config';
@@ -16,8 +16,9 @@ import { selectUser } from '../../store/reducers/user/userSlice';
 import classNames from '../../utils/classNames';
 import { IConversation, IMessage, IUser } from '../../interfaces';
 import useStorage from '../../hook/useStorage';
-import './ConversationCard.css';
 import { clearMessageInput } from '../../store/reducers/messageInput/messageInputSlice';
+import { setUnreadMessage } from '../../store/reducers/settings/settingsSlice';
+import './ConversationCard.css';
 
 interface IProps {
     conversationData: IConversation;
@@ -73,6 +74,10 @@ const ConversationCard: FC<IProps> = ({ conversationData }) => {
             unsub2();
         };
     }, [conversationData]);
+
+    useEffect(() => {
+        dispatch(setUnreadMessage({ id: conversationData.id, count: unreadCount }));
+    }, [unreadCount]);
 
     const handleOpenChat = (): void => {
         if (!toUser || toUser.uid === currentConversation.toUser?.uid) {

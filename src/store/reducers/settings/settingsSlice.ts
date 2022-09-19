@@ -6,6 +6,7 @@ const theme = JSON.parse(localStorage.getItem('youMessage-theme') || 'null') || 
 
 const initialState: ISettings = {
     theme: theme,
+    unreadMessage: [],
 };
 
 const settingsSlice = createSlice({
@@ -15,8 +16,13 @@ const settingsSlice = createSlice({
         changeTheme: (state: ISettings, action: PayloadAction<boolean>) => {
             state.theme.darkMode = action.payload;
         },
+        setUnreadMessage: (state: ISettings, action: PayloadAction<{ id: string; count: number }>) => {
+            const { id } = action.payload;
+            state.unreadMessage = state.unreadMessage.filter((message) => message.id !== id);
+            state.unreadMessage.push(action.payload);
+        },
     },
 });
-export const { changeTheme } = settingsSlice.actions;
+export const { changeTheme, setUnreadMessage } = settingsSlice.actions;
 export const selectSettings = (state: RootState) => state.settings;
 export default settingsSlice.reducer;

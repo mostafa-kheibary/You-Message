@@ -16,7 +16,7 @@ const useInit = () => {
     const dispatch = useDispatch();
     const toast = useToast();
     const { setStorage } = useStorage();
-    const { theme } = useSelector(selectSettings);
+    const { theme, unreadMessage } = useSelector(selectSettings);
 
     // --- lithen for theme chnages and apply
     useEffect(() => {
@@ -41,11 +41,23 @@ const useInit = () => {
                 dispatch(logout());
             }
         });
-
-        // --- set darkMode for initial open
-
         return unSubscribe;
     }, []);
+
+
+    useEffect(() => {
+        const unreadCount = unreadMessage.reduce((prev, message) => (prev += message.count), 0);
+        const favIcon = document.getElementById('favicon') as HTMLLinkElement;
+
+        if (unreadCount <= 0) {
+            document.title = 'You Message';
+            favIcon.href = 'favicon.ico';
+            return;
+        }
+
+        document.title = `⨀ ${unreadCount} unread messages`;
+        favIcon.href = 'alert.ico';
+    }, [unreadMessage]);
 
     const checkUserPresence = (user: IUser) => {
         // --- update user prescene ---

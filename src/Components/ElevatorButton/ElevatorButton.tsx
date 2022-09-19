@@ -38,7 +38,7 @@ const ElevatorButton: FC<IProps> = ({ containerRef, unreadCount }) => {
     return (
         <IconButton onClick={goToButton} size='large' className={classNames('elevator-button', isShow ? 'show' : '')}>
             <KeyboardArrowDownIcon />
-            {unreadCount > 0 && <span>{unreadCount}</span>}
+            {unreadCount > 0 && <span className='elevator-button__unread-count'>{unreadCount}</span>}
         </IconButton>
     );
 };

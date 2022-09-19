@@ -71,8 +71,9 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
     };
 
     const forwardMessage = () => {
+        const docId = uuidv4();
         const messageData = {
-            id: uuidv4(),
+            id: docId,
             owner: info!.uid,
             text: message.text,
             timeStamp: Timestamp.now(),
@@ -80,7 +81,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
         };
 
         forwardUsers.map((forward) => {
-            setDoc(doc(db, 'conversations', forward.id, 'messages', message.id), {
+            setDoc(doc(db, 'conversations', forward.id, 'messages', docId), {
                 ...messageData,
             });
             updateDoc(doc(db, 'conversations', forward.id), {

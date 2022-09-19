@@ -16,3 +16,17 @@
     opacity: 1;
     bottom: 6rem;
 }
+.elevator-button__unread-count {
+    display: flex;
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    width: fit-content;
+    padding: 0.5rem;
+    align-items: center;
+    border-radius: 50rem;
+    height: 1.5rem;
+    font-size: 1rem;
+    background-color: var(--primary-color);
+    color: var(--white-text);
+}
