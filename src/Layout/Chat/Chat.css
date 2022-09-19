@@ -1,6 +1,6 @@
 .chat {
     position: relative;
-    width: calc(100% - 20rem);
+    width: calc(100% - 22.5rem);
     background-color: var(--background-white);
     transition-property: width, right;
     transition-duration: 500ms;
@@ -9,9 +9,9 @@
 .chat__head {
     display: flex;
     height: 3.6rem;
+    width: 100%;
     padding: 0.5rem 1rem;
     align-items: center;
-    width: 100%;
     background-color: var(--background-gray);
     color: var(--black-text);
     justify-content: space-between;
@@ -25,6 +25,7 @@
 .chat__head__left {
     display: flex;
     align-items: center;
+    gap: 0.2rem;
     cursor: pointer;
 }
 .chat__head__user-info {
@@ -101,6 +102,7 @@
 .chat-modal__content-input {
     pointer-events: none !important;
 }
+
 @media screen and (min-width: 700px) {
     .chat__head__back-button {
         display: none !important;

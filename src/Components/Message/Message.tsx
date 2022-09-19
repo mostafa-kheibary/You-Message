@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react';
+import { FC, useMemo, useRef } from 'react';
 import { arrayRemove, arrayUnion, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -9,7 +9,6 @@ import { selectCurrentConversation } from '../../store/reducers/conversations/co
 import useContextMenu from '../../hook/useContextMenu';
 import useToast from '../../hook/useToast';
 import { setEditMode, setMessageInput, setReplyTo } from '../../store/reducers/messageInput/messageInputSlice';
-
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckIcon from '@mui/icons-material/Check';
 import ReplyIcon from '@mui/icons-material/Reply';
@@ -48,18 +47,22 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
         const replyPayload = { to: message.owner, text: message.text, id: message.id };
         dispatch(setReplyTo(replyPayload));
     };
+
     const forwardMessage = () => {};
+
     const copyMessage = () => {
         navigator.clipboard.writeText(message.text);
         toast('Message succsesfully copid', 'success');
     };
-    // for find a replyed message by click on it
+
     const handleGoToMessage = () => {
         if (!messagesDivRef.current || !message.replyTo) return;
 
+        // for find a replyed message by click on it
         const replyedMessage = messagesDivRef.current.querySelector(`[id="${message.replyTo.id}"]`) as HTMLDivElement;
         replyedMessage.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'center' });
     };
+
     const handleAddReaction = async (reaction: string) => {
         if (!message.reactions || message.reactions!.length === 0) {
             await updateDoc(doc(db, 'conversations', id, 'messages', message.id), {
@@ -91,6 +94,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
     };
 
     const isPersian = /^[\u0600-\u06FF\s]+$/.test(message.text);
+
     return (
         <>
             {message.replyTo && (
@@ -103,6 +107,7 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
                     <ReplyIcon className='reply-message__icon' />
                 </motion.div>
             )}
+
             <div
                 onDoubleClick={() => handleAddReaction('❤️')}
                 onContextMenu={handleRightClick}
@@ -125,14 +130,13 @@ const Message: FC<IProps> = ({ message, messagesDivRef }) => {
                         ''
                     )}
                 </span>
+
                 <div className={classNames('message-reactions', message.owner === info!.uid ? 'owner' : '')}>
-                    <AnimatePresence>
-                        {message.reactions?.map((reaction, i) => (
-                            <span key={i} className='message-reactions__emoji'>
-                                {reaction}
-                            </span>
-                        ))}
-                    </AnimatePresence>
+                    {message.reactions?.map((reaction, i) => (
+                        <span key={i} className='message-reactions__emoji'>
+                            {reaction}
+                        </span>
+                    ))}
                 </div>
             </div>
         </>

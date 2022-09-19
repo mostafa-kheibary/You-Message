@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useState } from 'react';
+import { FC, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Badge, IconButton, TextField } from '@mui/material';
 import { collection, doc, onSnapshot, orderBy, query } from 'firebase/firestore';
@@ -10,7 +10,7 @@ import {
     selectCurrentConversation,
     setCurrentConversation,
 } from '../../store/reducers/conversations/conversationsSlice';
-import { addMessage, clearMessage, editMessage, removeMessage } from '../../store/reducers/message/messageSlice';
+import { clearMessages, setMessages, setMessagesLoading } from '../../store/reducers/message/messageSlice';
 import CallIcon from '@mui/icons-material/Call';
 import DuoIcon from '@mui/icons-material/Duo';
 import { db, rDb } from '../../config/firebase.config';
@@ -42,7 +42,8 @@ const Chat: FC = () => {
     useEffect(() => {
         if (!id) return;
         setLoading(true);
-        dispatch(clearMessage());
+        dispatch(clearMessages());
+        dispatch(setMessagesLoading(true));
         const messagesRef = query(collection(db, 'conversations', id, 'messages'), orderBy('timeStamp', 'asc'));
 
         // --- get user presence from realtime database ---
@@ -58,28 +59,22 @@ const Chat: FC = () => {
         const unsub2 = onSnapshot(doc(db, 'users', toUser!.uid), (snapShot) => {
             dispatch(setCurrentConversation({ id, toUser: snapShot.data() as IUser }));
         });
-
         // --- get Messages ---
-        const unsub = onSnapshot(messagesRef, { includeMetadataChanges: true }, (snapShot) => {
-            if (snapShot.size <= 0) {
-                setLoading(null); // --- null for no message
-            }
-            snapShot.docChanges().forEach((change) => {
-                switch (change.type) {
-                    case 'added':
-                        const messageData = change.doc.data() as IMessage;
-                        dispatch(addMessage(messageData));
-                        break;
-                    case 'modified':
-                        dispatch(editMessage({ id: change.doc.id, message: change.doc.data() }));
-                        break;
-                    case 'removed':
-                        dispatch(removeMessage(change.doc.id));
-                        break;
-                }
+        const unsub = onSnapshot(
+            messagesRef,
+            { includeMetadataChanges: true },
+            (snapShot) => {
                 setLoading(false);
-            });
-        });
+                if (snapShot.size <= 0) {
+                    setLoading(null); // --- null for no message
+                }
+                const messages = snapShot.docs.map((messageData) => messageData.data());
+                dispatch(setMessages(messages as IMessage[]));
+            },
+            (error: Error) => {
+                console.log(error);
+            }
+        );
         return () => {
             unsub();
             unsub2();
@@ -99,6 +94,7 @@ const Chat: FC = () => {
             </div>
         );
     }
+
     const lastSeenTime = new Date(userPresence.timeStamp || 0);
     return (
         <div className='chat'>

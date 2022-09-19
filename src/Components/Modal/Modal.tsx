@@ -50,7 +50,7 @@ const Modal: FC<IProps> = ({ isOpen, handleClose, children }) => {
                         exit={{ opacity: 0, scale: 0.5 }}
                         transition={{
                             opacity: { duration: 0.2 },
-                            scale: { type: 'spring', bounce: 0.3, duration: 0.9 },
+                            scale: { type: 'spring', bounce: 0.3, duration: 0.4 },
                         }}
                         className='modal'
                     >

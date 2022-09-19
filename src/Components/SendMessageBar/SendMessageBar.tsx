@@ -5,7 +5,7 @@ import { getAuth } from 'firebase/auth';
 import { db } from '../../config/firebase.config';
 import { AnimatePresence, motion } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
-import { IconButton, OutlinedInput, SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import { IconButton, OutlinedInput } from '@mui/material';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 import CloseIcon from '@mui/icons-material/Close';
 import { addMessage } from '../../store/reducers/message/messageSlice';
@@ -34,6 +34,15 @@ const SendMessageBar: FC = () => {
             handleSubmit();
         }
     };
+    const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+        dispatch(setMessageInput(e.target.value));
+        // clearTimeout(x.current);
+        // const userRef = doc(db, 'users', auth.currentUser!.uid);
+        // await updateDoc(userRef, { isTyping: true });
+        // x.current = setTimeout(async () => {
+        //   await updateDoc(userRef, { isTyping: false });
+        // }, 500);
+    };
 
     const handleSubmit = () => {
         if (message.trim() === '') return;
@@ -50,7 +59,6 @@ const SendMessageBar: FC = () => {
                 break;
         }
     };
-
     const editMessage = async () => {
         if (!editInfo) return;
         const messageText = message;
@@ -62,6 +70,7 @@ const SendMessageBar: FC = () => {
 
     const sendMessage = async () => {
         if (!auth.currentUser) return;
+        const messageAddEvent = new Event('message-added');
         try {
             const messageId = uuidv4();
             let messagePayload: IMessage = {
@@ -77,26 +86,16 @@ const SendMessageBar: FC = () => {
             dispatch(clearMessageInput());
             dispatch(clearReplyTo());
             dispatch(addMessage({ ...messagePayload, status: 'pending' }));
-
             const messageRef = doc(db, 'conversations', id, 'messages', messageId);
+            window.dispatchEvent(messageAddEvent);
             await setDoc(messageRef, messagePayload);
         } catch (error) {
             console.log(error);
         }
     };
 
-    const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setMessageInput(e.target.value));
-        // clearTimeout(x.current);
-        // const userRef = doc(db, 'users', auth.currentUser!.uid);
-        // await updateDoc(userRef, { isTyping: true });
-        // x.current = setTimeout(async () => {
-        //   await updateDoc(userRef, { isTyping: false });
-        // }, 500);
-    };
-
     return (
-        <div className='send-message-bar'>
+        <div style={{ marginTop: 2000 }} className='send-message-bar'>
             <AnimatePresence>
                 {replyTo && (
                     <motion.div
@@ -116,6 +115,7 @@ const SendMessageBar: FC = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
             <div className='send-message-bar__wrapper'>
                 <EmojiMessage />
                 <div className='send-message-bar__form'>

@@ -152,9 +152,18 @@
 .reply-message__icon {
     font-size: 1rem !important;
 }
-
+@media screen and (max-width: 900px) {
+    .message {
+        max-width: 80%;
+    }
+}
 @media screen and (max-width: 700px) {
     .message {
         max-width: 90%;
+    }
+}
+@media screen and (max-width: 400px) {
+    .message {
+        max-width: 100%;
     }
 }

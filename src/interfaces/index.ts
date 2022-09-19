@@ -34,14 +34,15 @@ export interface IMessage {
 }
 export interface IMessageState {
     messages: IMessage[];
+    loading: boolean;
 }
 
 // --- message input ---
 export interface IMessageInput {
     message: string;
+    mode: 'create' | 'edit' | 'reply';
     replyTo?: { to: string; message: string; id: string };
     editInfo?: { id: string };
-    mode: 'create' | 'edit' | 'reply';
 }
 
 // --- toast ---

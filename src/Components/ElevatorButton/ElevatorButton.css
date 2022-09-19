@@ -1,16 +1,18 @@
 .elevator-button {
-  position: absolute !important;
-  bottom: 5rem;
-  right: 1rem;
-  background-color: white !important;
-  box-shadow: 0 0.1rem 0.5rem 0 rgba(0, 0, 0, 0.4);
-  visibility: hidden;
-  opacity: 0;
-  z-index: 1000;
-  transition: all 300ms ease !important;
+    position: absolute !important;
+    bottom: 5rem;
+    right: 1rem;
+    box-shadow: 0 0.1rem 0.5rem 0 rgba(0, 0, 0, 0.4);
+    visibility: hidden;
+    opacity: 0;
+    z-index: 1000;
+    background-color: var(--background-white) !important;
+    transition-property: opacity, bottom, visibility !important;
+    transition-duration: 300ms !important;
+    transition-timing-function: ease !important;
 }
 .elevator-button.show {
-  visibility: visible;
-  opacity: 1;
-  bottom: 6rem;
+    visibility: visible;
+    opacity: 1;
+    bottom: 6rem;
 }

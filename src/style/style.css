@@ -11,6 +11,7 @@
 }
 body {
     background-color: var(--background-white);
+    overscroll-behavior: none;
 }
 .app {
     max-width: 1980px;

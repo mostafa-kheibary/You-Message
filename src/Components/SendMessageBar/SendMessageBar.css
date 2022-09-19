@@ -4,11 +4,11 @@
     bottom: 0;
     right: 0;
     padding: 0.5rem 1rem;
-    background-color: var(--background-gary);
+    background-color: var(--background-white) !important;
     width: 100%;
     height: fit-content;
     border-top: 0.1rem solid var(--background-dark-gray);
-    z-index: 100;
+    z-index: 1000;
 }
 .send-message-bar__wrapper {
     width: 100%;

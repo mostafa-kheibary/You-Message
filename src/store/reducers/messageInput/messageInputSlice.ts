@@ -14,6 +14,7 @@ const messageInput = createSlice({
         setMessageInput: (state: IMessageInput, action: PayloadAction<string>) => {
             state.message = action.payload;
         },
+  
         clearMessageInput: (state: IMessageInput) => {
             state.message = '';
             state.mode = 'create';
